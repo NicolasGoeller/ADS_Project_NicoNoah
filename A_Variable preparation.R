@@ -8,9 +8,13 @@ library(magrittr)
 
 EVS_2008 <- read_rds("Data/EVS_2008.rds")
 
-EVS <- select(EVS_2008, S003, A170, S009, A008, A165, A168_01, A168A, C029,
-              C033, X001, X002, X007, X025A) #Pre-selection of variables
-EVS %<>% within({
+EVS <- select(EVS_2008, #Pre-selection of variables
+              S003, A170, S009, A008, X048A, X048B, #base
+              A165, A168_01, A168A, C029, #non-pecuniary
+              C033, X047B, X047C, X047D, #pecuniary
+              X001, X002, X007, X025A, X049) #demographics
+
+EVS %<>% within({ #base variables
   sat <- A170 #Life satisfaction (10 point)
   sat[A170 %in% c(-5, -4, -3, -2, -1)] <- NA
   sat <- as.numeric(sat)
@@ -24,6 +28,14 @@ EVS %<>% within({
   
   cntry_code <- S009 #Country code abbreviation
   
+  state <- X048A #Region on federal state level
+  state <- as_factor(state, ordered = F)
+  
+  reg <- X048B #region on regional level
+  reg <- as_factor(reg, ordered = F)
+}) #base variables
+
+EVS %<>% within({ #non-pecuniary factors
   trst_d <- A165 #Dummy: Do you think you can trust other people
   trst_d[A165 %in% c(-5, -4, -3, -2, -1)] <- NA
   
@@ -35,13 +47,29 @@ EVS %<>% within({
   fair[A168A %in% c(-5, -4, -3, -2, -1)] <- NA
   fair <- as.numeric(fair)
   
-  work <- C029 #Unemployed/ employed
-  work[C029 %in% c(-5, -4, -3, -2, -1)] <- NA
-  
   job_sat <- C033 #Job satisfaction (10 point)
   job_sat[C033 %in% c(-5, -4, -3, -2, -1)] <- NA
   job_sat <- as.numeric(job_sat)
+}) #non-pecuniary factors
+
+EVS %<>% within({ #pecuniary factors 
+  work <- C029 #Unemployed/ employed
+  work[C029 %in% c(-5, -4, -3, -2, -1)] <- NA
   
+  inc_an <- X047C #Annual income in euros
+  inc_an[C033 %in% c(-5, -4, -3, -2, -1)] <- NA
+  inc_an <- as.numeric(inc_an)
+  
+  inc_mon <- X047B #Monthly income in euros
+  inc_mon[C033 %in% c(-5, -4, -3, -2, -1)] <- NA
+  inc_mon <- as.numeric(inc_mon)
+  
+  incppp_mon <- X047D #Monthly income after purchasing power parity
+  incppp_mon[X047D %in% c(-5, -4, -3, -2, -1)] <- NA
+  incppp_mon <- as.numeric(incppp_mon)
+}) #pecuniary factors
+
+EVS %<>% within({ #demographics 
   sex <- X001 #Sex
   sex[X001 %in% c(-5, -4, -3, -2, -1)] <- NA
   
@@ -55,6 +83,11 @@ EVS %<>% within({
   
   edu <- X025A #Education after ISCED code (6 point)
   edu[X025A %in% c(-5, -4, -3, -2, -1)] <- NA
-})
-
+  edu <- as.numeric(edu)
+  
+  town <- X049 #size of town
+  town[X049 %in% c(-5, -4, -3, -2, -1)] <- NA
+  town <- as.numeric(town)
+  
+}) #demographics
 
