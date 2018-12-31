@@ -1,3 +1,7 @@
+###
+# This script provides basic preparation of variables used
+# for further analyses. 
+
 library(haven)
 library(tidyverse)
 library(magrittr)
