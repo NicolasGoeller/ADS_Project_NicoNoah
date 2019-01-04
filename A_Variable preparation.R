@@ -50,8 +50,15 @@ EVS %<>% within({ #non-pecuniary factors
   job_sat <- C033 #Job satisfaction (10 point)
   job_sat[C033 %in% c(-5, -4, -3, -2, -1)] <- NA
   job_sat <- as.numeric(job_sat)
+  
+  SIOPS <- X036A
+    
+  occ_stat <- X036C
+  
 }) #non-pecuniary factors
 
+table(EVS_2008$X036C)
+hist(EVS_2008$X036C)
 EVS %<>% within({ #pecuniary factors 
   work <- C029 #Unemployed/ employed
   work[C029 %in% c(-5, -4, -3, -2, -1)] <- NA
@@ -80,6 +87,7 @@ EVS %<>% within({ #demographics
   
   mar_stat <- X007 #Current marital status
   mar_stat[X007 %in% c(-5, -4, -3, -2, -1)] <- NA
+  mar_stat <- as_factor(mar_stat, ordered = F)
   
   edu <- X025A #Education after ISCED code (6 point)
   edu[X025A %in% c(-5, -4, -3, -2, -1)] <- NA
@@ -88,6 +96,10 @@ EVS %<>% within({ #demographics
   town <- X049 #size of town
   town[X049 %in% c(-5, -4, -3, -2, -1)] <- NA
   town <- as.numeric(town)
+  
+  employ <- X028
+  employ[X028 %in% c(-5, -4, -3, -2, -1)] <- NA
+  employ <- as_factor(employ, ordered = F)
   
 }) #demographics
 
