@@ -10,9 +10,9 @@ EVS_2008 <- read_rds("Data/EVS_2008.rds")
 
 EVS <- select(EVS_2008, #Pre-selection of variables
               S003, A170, S009, A008, X048A, X048B, #base
-              A165, A168_01, A168A, C029, #non-pecuniary
-              C033, X047B, X047C, X047D, #pecuniary
-              X001, X002, X007, X025A, X049) #demographics
+              A165, A168_01, A168A, C029, X036A, #non-pecuniary
+              C033, X047B, X047C, X047D, X036B, #pecuniary
+              X001, X002, X007, X025A, X049, X028, X035_2) #demographics
 
 EVS %<>% within({ #base variables
   sat <- A170 #Life satisfaction (10 point)
@@ -51,14 +51,10 @@ EVS %<>% within({ #non-pecuniary factors
   job_sat[C033 %in% c(-5, -4, -3, -2, -1)] <- NA
   job_sat <- as.numeric(job_sat)
   
-  SIOPS <- X036A
-    
-  occ_stat <- X036C
-  
+  siops <- X036A #Standard Index of Occupational Prestige Scala (1-100)
+  siops <- as.numeric(siops)
 }) #non-pecuniary factors
 
-table(EVS_2008$X036C)
-hist(EVS_2008$X036C)
 EVS %<>% within({ #pecuniary factors 
   work <- C029 #Unemployed/ employed
   work[C029 %in% c(-5, -4, -3, -2, -1)] <- NA
@@ -74,6 +70,9 @@ EVS %<>% within({ #pecuniary factors
   incppp_mon <- X047D #Monthly income after purchasing power parity
   incppp_mon[X047D %in% c(-5, -4, -3, -2, -1)] <- NA
   incppp_mon <- as.numeric(incppp_mon)
+  
+  isei <- X036B #International Socio-Economic Index of Occupational Status
+  isei <- as.numeric(isei)
 }) #pecuniary factors
 
 EVS %<>% within({ #demographics 
@@ -101,5 +100,8 @@ EVS %<>% within({ #demographics
   employ[X028 %in% c(-5, -4, -3, -2, -1)] <- NA
   employ <- as_factor(employ, ordered = F)
   
+  prof <- X035_2 #Job/ profession/ industry
+  prof[X035_2 %in% c(-5, -4, -3, -2, -1)] <- NA
+  prof <- as_factor(prof, ordered = F)
 }) #demographics
 
