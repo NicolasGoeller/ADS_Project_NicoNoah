@@ -6,9 +6,13 @@ library(haven)
 library(tidyverse)
 library(magrittr)
 
+EVS_new <- read_spss("Data/ZA4800_v4-0-0.sav") # Seems to have the missing countries
+
 #EVS_Long <- read_spss("Data/EVS_Long.sav") #Einlesen der EVS 1981-2008 aus .sav-Format
 #EVS_2008 <- filter(EVS_Long, S002EVS == 4) #Auswählen der 4.Welle Jahr 2008
 #write_rds(EVS_2008, "Data/EVS_2008.rds")
+
+PN <- read_spss("Data/Democracy Cross-National Data V4.1 09092015.sav")
 
 EVS_2008 <- read_rds("Data/EVS_2008.rds")
 
@@ -16,7 +20,7 @@ EVS <- select(EVS_2008, #Pre-selection of variables
               S003, A170, S009, A008, X048A, X048B, #base
               A165, A168_01, A168A, C029, X036A, #non-pecuniary
               C033, X047B, X047C, X047D, X036B, #pecuniary
-              X001, X002, X007, X025A, X049, X028, X035_2) #demographics
+              X001, X002, X007, X025A, x049a, X028, X035_2) #demographics
 
 EVS %<>% within({ #base variables
   sat <- A170 #Life satisfaction (10 point)
@@ -28,6 +32,7 @@ EVS %<>% within({ #base variables
   happ <- as.numeric(happ)
   
   cntry <- S003 #Country
+  cntry[S003 %in% c(-5, -4, -3, -2, -1)] <- NA
   cntry <- as_factor(cntry, ordered = F)
   
   cntry_code <- S009 #Country code abbreviation
@@ -96,8 +101,8 @@ EVS %<>% within({ #demographics
   edu[X025A %in% c(-5, -4, -3, -2, -1)] <- NA
   edu <- as.numeric(edu)
   
-  town <- X049 #size of town
-  town[X049 %in% c(-5, -4, -3, -2, -1)] <- NA
+  town <- x049a #size of town
+  town[x049a %in% c(-5, -4, -3, -2, -1)] <- NA
   town <- as.numeric(town)
   
   employ <- X028
@@ -109,3 +114,30 @@ EVS %<>% within({ #demographics
   prof <- as_factor(prof, ordered = F)
 }) #demographics
 
+EVS %<>% na.omit()
+
+
+
+#Work in progress on cntry variable
+#cntry[S003 %in% c(124, 352, 578, 840)] <- NA
+
+#124 Canada  
+#352 Iceland
+#578 Norway
+#792 Turkey
+#840 USA
+# Turkey, Iceland & Norway can be found in the online-Catalogue,
+#    but not in the data
+
+  #c(8, 40, 51, 56, 70, 100, 112, 124, 191, 196, 197, 203, 208, 233, 246, 250,
+   # 268, 276, 300, 348, 352, 372, 380, 428, 440, 442, 470, 498, 499, 528, 578,
+   #616, 629, 642, 643, 688, 703, 705, 724, 752, 756, 792, 804, 807, 826, 840,
+   #909, 915)
+  #c("Albania", "Austria", "Armenia", "Belgium", "Bosnia Herzegovina", 
+    #"Bulgaria", "Belarus", "Canada", "Croatia", "Cyprus", "Northern Cyprus",
+    #"Czech Republic", "Denmark", "Estonia", "Finland", "France", "Georgia",
+    #"Germany", "Greece", "Hungary", "Iceland", "Ireland", "Italy", "Latvia", 
+    #"Lithuania", "Luxembourg", "Malta", "Moldova", "Montenegro", "Netherlands", 
+    #"Norway", "Poland", "Portugal", "Romania", "Russian Federation", "Serbia", 
+    #"Slovak Republic", "Slovenia", "Spain", "Sweden", "Switzerland", "Turkey", 
+    #"Ukraine", "Macedonia", "Great Britain", "USA", "Northern Ireland", "Kosovo")
