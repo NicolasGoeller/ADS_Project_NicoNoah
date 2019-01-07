@@ -131,10 +131,12 @@ nat <- c("Albania", "Austria", "Armenia", "Belgium", "Bosnia Herzegovina",
     "Moldova", "Montenegro", "Netherlands", "Norway", "Poland", "Portugal", 
     "Romania", "Serbia", "Slovak Republic", "Slovenia", "Spain", "Sweden", 
     "Switzerland", "Turkey", "Ukraine", "Macedonia", "Great Britain", "Kosovo")
-### Level-2-variables 
-#-----------------------------------------------------------------------------------------------------------------------------------------------
 
-#1. Read data from Pipa Norris
+
+#-----------------------------------------------------------------------------------------------------------------------------------------------
+### Level-2-variables 
+
+##1. Read data from Pipa Norris
 PN <- read_spss("Data/Democracy Cross-National Data V4.1 09092015.sav")
 
 PN %<>% within({ #select necessary variables
@@ -159,3 +161,28 @@ PN %<>% within({ #select necessary variables
 PN_selected <- select(PN, Nation, fhrate, fhcat, voice_acc, press_free, hdi)
 #Build new subset with necessary variables and country names
 PN_selected %<>% na.omit()
+
+
+## 2. Read World Bank data
+
+gdp_per_cap <- read.csv("Data/GDP_per_capita_current_USD_data.csv", header = F)
+
+#omit first two rows (dataset description)
+gdp_per_cap <- gdp_per_cap[3:267,]
+
+#unlist rows to make first row as header
+colnames(gdp_per_cap) <- as.character(unlist(gdp_per_cap[1,]))
+gdp_per_cap = gdp_per_cap[-1, ]
+
+# omit (new) first row 
+#gdp_per_cap <- gdp_per_cap[4:265,]
+
+colnames(gdp_per_cap)[colnames(gdp_per_cap)=="52"] <- "Country_Names"
+colnames(gdp_per_cap)[colnames(gdp_per_cap)=="47"] <- "Country_Code"
+
+# new data set
+gdp_per_cap_new <- select(gdp_per_cap, Country_Names, Country_Code, "2008")
+
+
+
+
