@@ -131,3 +131,31 @@ nat <- c("Albania", "Austria", "Armenia", "Belgium", "Bosnia Herzegovina",
     "Moldova", "Montenegro", "Netherlands", "Norway", "Poland", "Portugal", 
     "Romania", "Serbia", "Slovak Republic", "Slovenia", "Spain", "Sweden", 
     "Switzerland", "Turkey", "Ukraine", "Macedonia", "Great Britain", "Kosovo")
+### Level-2-variables 
+#-----------------------------------------------------------------------------------------------------------------------------------------------
+
+#1. Read data from Pipa Norris
+PN <- read_spss("Data/Democracy Cross-National Data V4.1 09092015.sav")
+
+PN %<>% within({ #select necessary variables
+  
+  fhrate <- fhrate08 #Freedom House: Political Rights and Civil Liberties (1=highest, 7=lowest)
+  fhrate <- as.numeric(fhrate)
+  
+  fhcat <- fhcat08 #Freedom House: Status of Freedom (1=free, 2=partly free, 3=not free)
+  fhcat <- as.factor(fhcat)
+  
+  voice_acc <- WGI_voice2008 #Voice and Accountability (WGI 2014)
+  voice_acc <- as.numeric(voice_acc)
+  
+  press_free <- FreePress2008 #Freedom House: Freedom of Press (low=free)
+  
+  press_free <- as.numeric(press_free)
+  hdi <- UNDP_HDI2008 #Human Development Index
+  hdi <- as.numeric(hdi)
+  
+})
+
+PN_selected <- select(PN, Nation, fhrate, fhcat, voice_acc, press_free, hdi)
+#Build new subset with necessary variables and country names
+PN_selected %<>% na.omit()
