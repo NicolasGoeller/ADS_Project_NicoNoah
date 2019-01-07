@@ -12,8 +12,6 @@ EVS_new <- read_spss("Data/ZA4800_v4-0-0.sav") # Seems to have the missing count
 #EVS_2008 <- filter(EVS_Long, S002EVS == 4) #Auswählen der 4.Welle Jahr 2008
 #write_rds(EVS_2008, "Data/EVS_2008.rds")
 
-PN <- read_spss("Data/Democracy Cross-National Data V4.1 09092015.sav")
-
 EVS_2008 <- read_rds("Data/EVS_2008.rds")
 
 EVS <- select(EVS_2008, #Pre-selection of variables
@@ -151,3 +149,33 @@ EVS %<>% na.omit()
     #"Norway", "Poland", "Portugal", "Romania", "Russian Federation", "Serbia", 
     #"Slovak Republic", "Slovenia", "Spain", "Sweden", "Switzerland", "Turkey", 
     #"Ukraine", "Macedonia", "Great Britain", "USA", "Northern Ireland", "Kosovo")
+
+#-----------------------------------------------------------------------------------------------------------------------------------------------
+### Level-2-variables 
+
+#1. Read data from Pipa Norris
+PN <- read_spss("Data/Democracy Cross-National Data V4.1 09092015.sav")
+
+PN %<>% within({ #select necessary variables
+  
+  fhrate <- fhrate08 #Freedom House: Political Rights and Civil Liberties (1=highest, 7=lowest)
+  fhrate <- as.numeric(fhrate)
+  
+  fhcat <- fhcat08 #Freedom House: Status of Freedom (1=free, 2=partly free, 3=not free)
+  fhcat <- as.factor(fhcat)
+  
+  voice_acc <- WGI_voice2008 #Voice and Accountability (WGI 2014)
+  voice_acc <- as.numeric(voice_acc)
+  
+  press_free <- FreePress2008 #Freedom House: Freedom of Press (low=free)
+  press_free <- as.numeric(press_free)
+  
+  hdi <- UNDP_HDI2008 #Human Development Index
+  hdi <- as.numeric(hdi)
+  
+})
+
+#Build new subset with necessary variables and country names
+PN_selected <- select(PN, Nation, fhrate, fhcat, voice_acc, press_free, hdi)
+PN_selected %<>% na.omit()
+
