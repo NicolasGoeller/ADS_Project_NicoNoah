@@ -61,8 +61,8 @@ EVS %<>% within({ #non-pecuniary factors
   siops <- v339SIOPS #Standard Index of Occupational Prestige Scala (1-100)
   siops <- as.numeric(siops)
   
-  less_money <- E014 #less emphasis on money and material possession 
-  less_money[E104 %in% c(-5, -4, -3, -2, -1)] <- NA 
+  less_money <- v203 #less emphasis on money and material possession 
+  less_money[v203 %in% c(-5, -4, -3, -2, -1)] <- NA 
   less_money <- as.numeric(less_money)
   
 }) #non-pecuniary factors
@@ -86,8 +86,8 @@ EVS %<>% within({ #pecuniary factors
   isei <- v339ISEI #International Socio-Economic Index of Occupational Status
   isei <- as.numeric(isei)
   
-  inc_eq <- E035 #Income equality from 1 to 10 (1 indicating more equality)
-  inc_eq[E035 %in% c(-5, -4, -3, -2, -1)] <- NA 
+  inc_eq <- v198 #Income equality from 1 to 10 (1 indicating more equality)
+  inc_eq[v198 %in% c(-5, -4, -3, -2, -1)] <- NA 
   inc_eq <- as.numeric(inc_eq)
   
 }) #pecuniary factors
@@ -124,13 +124,13 @@ EVS %<>% within({ #demographics
 
 EVS %<>% na.omit()
 
-nat <- c("Albania", "Austria", "Armenia", "Belgium", "Bosnia Herzegovina", 
-    "Bulgaria", "Belarus", "Croatia", "Cyprus", "Czech Republic", "Denmark", 
-    "Estonia", "Finland", "France", "Georgia", "Germany", "Greece", "Hungary", 
-    "Iceland", "Ireland", "Italy", "Latvia", "Lithuania", "Luxembourg", "Malta",
-    "Moldova", "Montenegro", "Netherlands", "Norway", "Poland", "Portugal", 
-    "Romania", "Serbia", "Slovak Republic", "Slovenia", "Spain", "Sweden", 
-    "Switzerland", "Turkey", "Ukraine", "Macedonia", "Great Britain", "Kosovo")
+nat <- c("Albania"(30.0), "Austria"y, "Armenia"y, "Belgium"y, "Bosnia Herzegovina"x, 
+    "Bulgaria"y, "Belarus"y, "Croatia"x, "Cyprus"y, "Czech Republic"y, "Denmark"y, 
+    "Estonia"y, "Finland"y, "France"y, "Georgia"y, "Germany"(30.2), "Greece"y, "Hungary"y, 
+    "Iceland"y, "Ireland"y, "Italy"y, "Latvia"y, "Lithuania"y, "Luxembourg"y, "Malta"y,
+    "Moldova"y, "Montenegro"y, "Netherlands"y, "Norway"y, "Poland"(27.7), "Portugal"y, 
+    "Romania"y, "Serbia"x, "Slovak Republic"y, "Slovenia"y, "Spain"y, "Sweden"y, 
+    "Switzerland"y, "Turkey"y, "Ukraine"y, "Macedonia"x, "Great Britain"y, "Kosovo"x)
 ### Level-2-variables 
 #-----------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -159,3 +159,14 @@ PN %<>% within({ #select necessary variables
 PN_selected <- select(PN, Nation, fhrate, fhcat, voice_acc, press_free, hdi)
 #Build new subset with necessary variables and country names
 PN_selected %<>% na.omit()
+
+Gini <- read.csv("Data/Gini_WB.csv", header = F)
+Gini <- Gini[3:267,]
+names <- colnames(Gini[1,])
+write.csv(Gini, file = "WB_Gini.csv" ) 
+Gini_new <- read.csv("Data/WB_Gini.csv", header =  T)
+
+Gini_final <- select(Gini_new, V1, V51:V55)
+?colnames()
+glimpse(Gini_final)
+ ?read.csv
