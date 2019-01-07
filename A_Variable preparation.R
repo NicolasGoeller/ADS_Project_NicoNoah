@@ -62,6 +62,11 @@ EVS %<>% within({ #non-pecuniary factors
   
   siops <- X036A #Standard Index of Occupational Prestige Scala (1-100)
   siops <- as.numeric(siops)
+  
+  less_money <- E014 #less emphasis on money and material possession 
+  less_money[E104 %in% c(-5, -4, -3, -2, -1)] <- NA 
+  less_money <- as.numeric(less_money)
+  
 }) #non-pecuniary factors
 
 EVS %<>% within({ #pecuniary factors 
@@ -82,6 +87,11 @@ EVS %<>% within({ #pecuniary factors
   
   isei <- X036B #International Socio-Economic Index of Occupational Status
   isei <- as.numeric(isei)
+  
+  inc_eq <- E035 #Income equality from 1 to 10 (1 indicating more equality)
+  inc_eq[E035 %in% c(-5, -4, -3, -2, -1)] <- NA 
+  inc_eq <- as.numeric(inc_eq)
+  
 }) #pecuniary factors
 
 EVS %<>% within({ #demographics 
