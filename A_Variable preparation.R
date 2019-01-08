@@ -6,7 +6,7 @@ library(haven)
 library(plyr)
 library(tidyverse)
 library(magrittr)
-install.packages("psych")
+#install.packages("psych")
 library(psych)
 
 
@@ -23,7 +23,7 @@ EVS <- EVS_2008 %>%
           country, c_abrv, v371b_N1, v66, v8, #base
           v62, v63, v64, v90, v339SIOPS, v203, #non-pecuniary
           v89, v353YR, v353MM, v353M_ppp, v339ISEI, v198, #pecuniary
-          v205:v218, v222, #indices
+          v205:v218, v222, v233, v234, v235, v237, v239, v245, v247, #indices
           v302, v303, v313, v336, v336_2, v370a, v337) #demographic
 
 EVS %<>% within({ #base variables
@@ -212,6 +212,76 @@ inst_trust <- select(EVS,
 inst_trust %<>% na.omit()
 cor_inst_trust <- cor(inst_trust) %>% round(2) #get correlation matrix
 inst_trust %>% as.matrix() %>% alpha(check.keys = T) #compute Cronbach's alpha 
+
+# Constructing institutional trust index and trimming scale
+EVS %<>% within({
+  inst_trust <- (conf_press + conf_tu + conf_police +
+                 conf_parl + conf_cs + conf_eu + 
+                 conf_socs + conf_nato + conf_un + 
+                 conf_hs + conf_just + conf_gov)
+  
+  inst_trust <- inst_trust/4  
+  
+})
+#scale from 0 to 9 i.e., from low trust in inst. to high trust in inst. 
+
+# index trustworthiness
+
+EVS %<>% within({
+  cl_sb <- v233 #state benefits
+  cl_sb[v233 %in% c(-5, -4, -3, -2, -1)] <- NA
+  cl_sb <- (cl_sb-10)*-1
+  cl_sb <- as.numeric(cl_sb)
+  
+  ch_tax <- v234 #cheating on tax
+  ch_tax[v234 %in% c(-5, -4, -3, -2, -1)] <- NA
+  ch_tax <- (ch_tax-10)*-1
+  ch_tax <- as.numeric(ch_tax) 
+  
+  joy <- v235 #joyriding
+  joy[v235 %in% c(-5, -4, -3, -2, -1)] <- NA
+  joy <- (joy-10)*-1
+  joy <- as.numeric(joy) 
+  
+  lying <- v237 #lying in own interest
+  lying[v237 %in% c(-5, -4, -3, -2, -1)] <- NA
+  lying <- (lying-10)*-1
+  lying <- as.numeric(lying) 
+  
+  bribe <- v239 #bribe
+  bribe[v239 %in% c(-5, -4, -3, -2, -1)] <- NA
+  bribe <- (bribe-10)*-1
+  bribe <- as.numeric(bribe) 
+  
+  av_tax <- v245 #paying cash to avoid taxes
+  av_tax[v245 %in% c(-5, -4, -3, -2, -1)] <- NA
+  av_tax <- (av_tax-10)*-1
+  av_tax <- as.numeric(av_tax) 
+  
+  av_pub_f <- v234 #avoid public transfer fair
+  av_pub_f[v234 %in% c(-5, -4, -3, -2, -1)] <- NA
+  av_pub_f <- (av_pub_f-10)*-1
+  av_pub_f <- as.numeric(av_pub_f) 
+  
+})
+
+trst_wrth <- select(EVS, av_pub_f, av_tax, bribe,
+                    lying, joy, ch_tax, cl_sb)
+
+trst_wrth %<>% na.omit()
+
+trst_wrth_cor <- cor(trst_wrth) %>% round(2) #get correlation matrix
+trst_wrth_cor %>% as.matrix() %>% alpha(check.keys = T) #compute Cronbach's alpha 
+
+EVS %<>% within({
+  trst_wrth <- (av_pub_f + av_tax + bribe +
+                lying + joy + ch_tax + cl_sb)
+  
+  trst_wrth <- trst_wrth/7
+})
+#scale from 0 to 9 i.e., from low trust in inst. to high trust in inst. 
+
+
 
 EVS %<>% within({ #demographics 
   sex <- v302 #Sex
