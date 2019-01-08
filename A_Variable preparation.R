@@ -3,20 +3,26 @@
 # for further analyses. 
 
 library(haven)
+library(plyr)
 library(tidyverse)
 library(magrittr)
 
+
+###  Level-1-variables
+
+## European Value Survey 2008
 EVS_2008 <- read_spss("Data/ZA4800_v4-0-0.sav") # Seems to have the missing countries
 
-#Preliminary exclusions
-EVS_2008 <- EVS_2008 %>% 
-              filter(country != 643 | 31) #Russian Federation, Azerbaijan
-
-EVS <- select(EVS_2008, #Pre-selection of variables
-              country, c_abrv, v371b_N1, v66, v8, #base
-              v62, v63, v64, v90, v339SIOPS, #non-pecuniary
-              v89, v353YR, v353MM, v353M_ppp, v339ISEI, #pecuniary
-              v302, v303, v313, v336, v336_2, v370a, v337) #demographics
+#Preliminary exclusions and selection
+EVS <- EVS_2008 %>% 
+              filter(country != 643) %>% #Exclude Russian Federation
+              filter(country != 31) %>%  #Exclude Azerbaijan
+      select( #Pre-selection of variables
+          country, c_abrv, v371b_N1, v66, v8, #base
+          v62, v63, v64, v90, v339SIOPS, v203, #non-pecuniary
+          v89, v353YR, v353MM, v353M_ppp, v339ISEI, v198, #pecuniary
+          v205:v218, v222, #indices
+          v302, v303, v313, v336, v336_2, v370a, v337) #demographic
 
 EVS %<>% within({ #base variables
   cntry <- country #Country
@@ -28,7 +34,7 @@ EVS %<>% within({ #base variables
   c_code <- c_abrv #Country code abbreviation
   
   reg <- v371b_N1 #Region on federal state level
-  reg[v371b_N1 %in% c(90923)] <- "GB-GBN: Northern Ireland"
+  reg[v371b_N1 %in% c(-5, -4, -3, -2, -1)] <- NA
   reg[country %in% c(197)]  <- "CY: Northern Cyprus"
   reg[country %in% c(792)] <- "TK: Turkey"
   reg <- as_factor(reg, ordered = F)
@@ -36,11 +42,27 @@ EVS %<>% within({ #base variables
   sat <- v66 #Life satisfaction (10 point)
   sat[v66 %in% c(-5, -4, -3, -2, -1)] <- NA
   sat <- as.numeric(sat)
+  sat_c <- sat - mean(sat, na.rm = T)
   
   happ <- v8 #Feeling of happiness (4 point)
   happ[v8 %in% c(-5, -4, -3, -2, -1)] <- NA
   happ <- as.numeric(happ)
+  happ_c <- happ - mean(happ, na.rm = T)
 }) #base variables
+
+#Adapting geo-variables on factor level: Renaming and exclusion of unused factor 
+ #levels in variables "reg" and "cntry"
+EVS$cntry <- mapvalues(EVS$cntry, from = c("Great Britain"),
+                             to = c("United Kingdom")) 
+EVS$cntry <- droplevels(EVS$cntry, exclude = c(as.character(c("Northern Cyprus", 
+                                  "Russian Federation", "Northern Ireland")))) 
+EVS$reg <- mapvalues(EVS$reg, from = c("GB-NIR: Northern Ireland"), 
+      to = c("GB-GBN: Northern Ireland"))
+EVS$reg <- droplevels(EVS$reg, 
+                exclude = c(as.character(c("RU: Central Federal District", 
+                      "RU: North West federal district", "RU: South Federal district",
+                      "RU: Privolzhsky federal district", "RU: Urals federal district", 
+                      "RU: Siberian federal district", "RU: Far East federal district"  )))) 
 
 EVS %<>% within({ #non-pecuniary factors
   trst_d <- v62 #Dummy: Do you think you can trust other people
@@ -49,19 +71,23 @@ EVS %<>% within({ #non-pecuniary factors
   help <- v64 #Most people are helpful or look out for themselves (10 point)
   help[v64 %in% c(-5, -4, -3, -2, -1)] <- NA
   help <- as.numeric(help)
+  help_c <- help - mean(help, na.rm = T)
   
   fair <- v63 #Will people be fair or make their advantage with you (10 point)
   fair[v63 %in% c(-5, -4, -3, -2, -1)] <- NA
   fair <- as.numeric(fair)
+  fair_c <- fair - mean(fair, na.rm = T)
   
   job_sat <- v90 #Job satisfaction (10 point)
   job_sat[v90 %in% c(-5, -4, -3, -2, -1)] <- NA
   job_sat <- as.numeric(job_sat)
+  job_sat_c <- job_sat - mean(job_sat, na.rm = T)
   
   siops <- v339SIOPS #Standard Index of Occupational Prestige Scala (1-100)
   siops <- as.numeric(siops)
+  siops_c <- siops - mean(siops, na.rm = T)
   
-  less_money <- v203 #less emphasis on money and material possession 
+  less_money <- v203 #Less emphasis on money and material possession (3 point)
   less_money[v203 %in% c(-5, -4, -3, -2, -1)] <- NA 
   less_money <- as.numeric(less_money)
   
@@ -74,23 +100,32 @@ EVS %<>% within({ #pecuniary factors
   inc_an <- v353YR #Annual income in euros
   inc_an[v353YR %in% c(-5, -4, -3, -2, -1)] <- NA
   inc_an <- as.numeric(inc_an)
+  inc_an_c <- inc_an - mean(inc_an, na.rm = T)
   
   inc_mon <- v353MM #Monthly income in euros
   inc_mon[v353MM %in% c(-5, -4, -3, -2, -1)] <- NA
   inc_mon <- as.numeric(inc_mon)
+  inc_mon_c <- inc_mon - mean(inc_mon, na.rm = T)
   
   incppp_mon <- v353M_ppp #Monthly income after purchasing power parity
   incppp_mon[v353M_ppp %in% c(-5, -4, -3, -2, -1)] <- NA
   incppp_mon <- as.numeric(incppp_mon)
+  incppp_mon_c <- incppp_mon - mean(incppp_mon, na.rm = T)
   
   isei <- v339ISEI #International Socio-Economic Index of Occupational Status
   isei <- as.numeric(isei)
+  isei_c <- isei - mean(isei, na.rm = T)
   
   inc_eq <- v198 #Income equality from 1 to 10 (1 indicating more equality)
   inc_eq[v198 %in% c(-5, -4, -3, -2, -1)] <- NA 
   inc_eq <- as.numeric(inc_eq)
+  inc_eq_c <- inc_eq - mean(inc_eq, na.rm = T)
   
 }) #pecuniary factors
+
+EVS %<>% within({ #indices
+  
+}) #indices
 
 EVS %<>% within({ #demographics 
   sex <- v302 #Sex
@@ -100,6 +135,7 @@ EVS %<>% within({ #demographics
   age[v303 %in% c(-5, -4, -3, -2, -1)] <- NA
   age <- as.numeric(age)
   age <- 2008 - age
+  age_c <- age - mean(age, na.rm = T)
   
   mar_stat <- v313 #Current marital status
   mar_stat[v313 %in% c(-5, -4, -3, -2, -1)] <- NA
@@ -112,87 +148,140 @@ EVS %<>% within({ #demographics
   edu <- v336_2 #Education after ISCED 2-digit
   edu[v336_2 %in% c(-5, -4, -3, -2, -1)] <- NA
   edu <- as.numeric(edu)
+  edu_c <- edu - mean(edu, na.rm = T)
   
   town <- v370a #size of town
   town[v370a %in% c(-5, -4, -3, -2, -1)] <- NA
   town <- as.numeric(town)
+  town_c <- town - mean(town, na.rm = T)
   
   employ <- v337 #Employment status
   employ[v337 %in% c(-5, -4, -3, -2, -1)] <- NA
   employ <- as_factor(employ, ordered = F)
 }) #demographics
 
-EVS %<>% na.omit()
-
-nat <- c("Albania"(30.0), "Austria"y, "Armenia"y, "Belgium"y, "Bosnia Herzegovina"x, 
-    "Bulgaria"y, "Belarus"y, "Croatia"x, "Cyprus"y, "Czech Republic"y, "Denmark"y, 
-    "Estonia"y, "Finland"y, "France"y, "Georgia"y, "Germany"(30.2), "Greece"y, "Hungary"y, 
-    "Iceland"y, "Ireland"y, "Italy"y, "Latvia"y, "Lithuania"y, "Luxembourg"y, "Malta"y,
-    "Moldova"y, "Montenegro"y, "Netherlands"y, "Norway"y, "Poland"(27.7), "Portugal"y, 
-    "Romania"y, "Serbia"x, "Slovak Republic"y, "Slovenia"y, "Spain"y, "Sweden"y, 
-    "Switzerland"y, "Turkey"y, "Ukraine"y, "Macedonia"x, "Great Britain"y, "Kosovo"x)
-
 
 ### Level-2-variables 
 
-##1. Read data from Pipa Norris
+# Countries used in analysis
+nat <- c("Albania", "Austria", "Armenia", "Belgium", "Bosnia Herzegovina", 
+         "Bulgaria", "Belarus", "Croatia", "Cyprus", "Czech Republic", "Denmark", 
+         "Estonia", "Finland", "France", "Georgia", "Germany", "Greece", "Hungary", 
+         "Iceland", "Ireland", "Italy", "Latvia", "Lithuania", "Luxembourg", "Malta",
+         "Moldova", "Montenegro", "Netherlands", "Norway", "Poland", "Portugal", 
+         "Romania", "Serbia", "Slovak Republic", "Slovenia", "Spain", "Sweden", 
+         "Switzerland", "Turkey", "Ukraine", "Macedonia", "United Kingdom", "Kosovo")
+
+
+##  1. Country level data from Pippa Norris
 PN <- read_spss("Data/Democracy Cross-National Data V4.1 09092015.sav")
 
 PN %<>% within({ #select necessary variables
+  country <- Nation
+  country <- as_factor(country)
   
   fhrate <- fhrate08 #Freedom House: Political Rights and Civil Liberties (1=highest, 7=lowest)
   fhrate <- as.numeric(fhrate)
   
-  fhcat <- fhcat08 #Freedom House: Status of Freedom (1=free, 2=partly free, 3=not free)
-  fhcat <- as.factor(fhcat)
-  
   voice_acc <- WGI_voice2008 #Voice and Accountability (WGI 2014)
   voice_acc <- as.numeric(voice_acc)
   
-  press_free <- FreePress2008 #Freedom House: Freedom of Press (low=free)
-  
+  press_free <- FreePress2008 #Freedom House: Freedom of Press (low=free) (6 point)
   press_free <- as.numeric(press_free)
+  
   hdi <- UNDP_HDI2008 #Human Development Index
   hdi <- as.numeric(hdi)
-  
 })
 
-PN_selected <- select(PN, Nation, fhrate, fhcat, voice_acc, press_free, hdi)
-#Build new subset with necessary variables and country names
-PN_selected %<>% na.omit()
+#Adapting country names
+PN$country <- mapvalues(PN$country, from = c("Bosnia & Herzegovina","Moldova, Republic of", "Slovakia"), 
+                                 to = c("Bosnia Herzegovina", "Moldova", "Slovak Republic"))
+
+#New subset with necessary variables
+PN_selected <- select(PN, country, fhrate, voice_acc, press_free, hdi)
+
+#Filling up missing values
+PN_selected[91,2] <- 5.5 #Freedom House rating 2008 from Freedom House
+PN_selected[91,5] <- 0.743 #HDI value 2008 from Serbia
+PN_selected[118,2] <- 3.0 #Freedom House rating 2008 from Freedom House
 
 
-## 2. Read World Bank data
+## 2. World Bank data on GDP per capita and Gini-coefficent
 
+##  GDP per capita in 2018 USD
 gdp_per_cap <- read.csv("Data/GDP_per_capita_current_USD_data.csv", header = F)
 
-#omit first two rows (dataset description)
-gdp_per_cap <- gdp_per_cap[3:267,]
+#omit first two rows and last column (dataset description)
+gdp_per_cap <- gdp_per_cap[3:267,1:62]
 
-#unlist rows to make first row as header
+#Renaming header
 colnames(gdp_per_cap) <- as.character(unlist(gdp_per_cap[1,]))
 gdp_per_cap = gdp_per_cap[-1, ]
-
-# omit (new) first row 
-#gdp_per_cap <- gdp_per_cap[4:265,]
-
-colnames(gdp_per_cap)[colnames(gdp_per_cap)=="52"] <- "Country_Names"
+colnames(gdp_per_cap)[colnames(gdp_per_cap)=="52"] <- "country"
 colnames(gdp_per_cap)[colnames(gdp_per_cap)=="47"] <- "Country_Code"
 
-# new data set
-gdp_per_cap_new <- select(gdp_per_cap, Country_Names, Country_Code, "2008")
+#Adapting country names
+gdp_per_cap$country <- mapvalues(gdp_per_cap$country, from = c("Bosnia and Herzegovina", "Macedonia, FYR"), 
+                          to = c("Bosnia Herzegovina", "Macedonia"))
 
+#New dataset
+gdp_per_cap_new <- select(gdp_per_cap, country, Country_Code, "2008")
 
-
-
-
+##  Gini coefficient
 Gini <- read.csv("Data/Gini_WB.csv", header = F)
-Gini <- Gini[3:267,]
-names <- colnames(Gini[1,])
-write.csv(Gini, file = "WB_Gini.csv" ) 
-Gini_new <- read.csv("Data/WB_Gini.csv", header =  T)
 
-Gini_final <- select(Gini_new, V1, V51:V55)
-?colnames()
-glimpse(Gini_final)
- ?read.csv
+#omit first two rows and last column (dataset description)
+Gini <- Gini[3:267,1:62]
+
+#Renaming header
+colnames(Gini) <- as.character(unlist(Gini[1,]))
+Gini = Gini[-1, ]
+colnames(Gini)[colnames(Gini)=="52"] <- "country"
+colnames(Gini)[colnames(Gini)=="47"] <- "Country_Code"
+
+#Adapting country names
+Gini$country <- mapvalues(Gini$country, from = c("Bosnia and Herzegovina", "Macedonia, FYR"), 
+          to = c("Bosnia Herzegovina", "Macedonia"))
+
+#New dataset
+Gini_new <- select(Gini, country, "2008")
+
+## Create a combined dataset for World Bank data
+wb_mat <- as.matrix(nat, ncol = 1) #Create from vector of country names 
+colnames(wb_mat) <- c("country") #Name column "nation"
+wb_nat <- as_tibble(wb_mat) #Recreate it as a tibble (data frame)
+wb_data <- left_join(wb_nat, gdp_per_cap_new, by = "country") 
+wb_data <- left_join(wb_data, Gini_new, by = "country")
+colnames(wb_data) <- c("country", "Country_Code", "GDPpc", 
+                       "gini")
+#Adding missing data
+wb_data[8,4] <- 32.6 #Gini Croatia approximated from WB Gini 2009
+wb_data[16,4] <- 30.2 #Gini Germany from Eurostat
+wb_data[30,4] <- 32.0 #Gini Poland from Eurostat 
+wb_data[33,4] <- 28.2 #Gini Serbia 2008 from CIA Factbook
+wb_data[43,4] <- 31.8 #Gini Kosovo from WB Gini 2009
+wb_data[5,4] <- 33.1 #Gini Bosnia Herzogewina from WB Gini 2007
+wb_data[41,4] <- 42.8 #Gini Macedonia from WB Gini 2009
+
+
+## 3. European Value Survey 2008
+
+
+
+##  4. Joining the complete Level-2 data file
+macrodata <- left_join(wb_data, PN_selected, by = "country")
+macrodata$country <- as_factor(macrodata$country)
+
+macrodata %<>% within({ #Creating centered macro variables
+  gini_c <- gini - mean(gini, na.rm = T)
+  
+  gdppc_c <- GDPpc - mean(GDPpc, na.rm =T)
+  
+  hdi_c <- hdi - mean(hdi, na.rm = T)
+  
+  press_free_c <- press_free - mean(press_free, na.rm = T)
+  
+  voice_acc_c <- voice_acc - mean(voice_acc, na.rm = T)
+  
+  fhrate_c <- fhrate - mean(fhrate, na.rm = T)
+})
