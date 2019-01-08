@@ -6,7 +6,6 @@ library(haven)
 library(plyr)
 library(tidyverse)
 library(magrittr)
-install.packages("psych")
 library(psych)
 
 
