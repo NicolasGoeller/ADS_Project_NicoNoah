@@ -22,8 +22,9 @@ EVS <- EVS_2008 %>%
           country, c_abrv, v371b_N1, v66, v8, #base
           v62, v63, v64, v90, v339SIOPS, v203, #non-pecuniary
           v89, v353YR, v353MM, v353M_ppp, v339ISEI, v198, #pecuniary
-          v205:v218, v222, #indices
-          v302, v303, v313, v336, v336_2, v370a, v337) #demographic
+          v205:v218, v222, #index institutional trust
+          v233, v234, v235, v237, v239, v245, v247, #index justification
+          v302, v303, v313, v336, v336_2, v370a, v337) #demographics
 
 EVS %<>% within({ #base variables
   cntry <- country #Country
@@ -124,7 +125,7 @@ EVS %<>% within({ #pecuniary factors
   
 }) #pecuniary factors
 
-EVS %<>% within({ #index institutional trust
+EVS %<>% within({ #index variables institutional trust
   conf_church <- v205 #church
   conf_church[v205 %in% c(-5, -4, -3, -2, -1)] <- NA
   conf_church <- (conf_church-4)*-1
@@ -200,7 +201,7 @@ EVS %<>% within({ #index institutional trust
   conf_gov <- (conf_gov-4)*-1
   conf_gov <- as.numeric(conf_gov)
 
-}) #index institutional trust
+}) #index variables institutional trust
 
 #Checking for intercorrelatedness
 inst_trust <- select(EVS,
@@ -211,6 +212,68 @@ inst_trust <- select(EVS,
 inst_trust %<>% na.omit()
 cor_inst_trust <- cor(inst_trust) %>% round(2) #get correlation matrix
 inst_trust %>% as.matrix() %>% alpha(check.keys = T) #compute Cronbach's alpha 
+
+# Constructing institutional trust index and trimming scale
+EVS %<>% within({ #index institutional trust
+  inst_trust <- (conf_press + conf_tu + conf_police +
+                 conf_parl + conf_cs + conf_eu + 
+                 conf_socs + conf_nato + conf_un + 
+                 conf_hs + conf_just + conf_gov)
+  
+  inst_trust <- inst_trust/4  
+}) #index institutional trust: scale from 0 to 9 i.e., from low trust in inst. to high trust in inst. 
+
+EVS %<>% within({ #index variables trustworthiness
+  cl_sb <- v233 #state benefits
+  cl_sb[v233 %in% c(-5, -4, -3, -2, -1)] <- NA
+  cl_sb <- (cl_sb-10)*-1
+  cl_sb <- as.numeric(cl_sb)
+  
+  ch_tax <- v234 #cheating on tax
+  ch_tax[v234 %in% c(-5, -4, -3, -2, -1)] <- NA
+  ch_tax <- (ch_tax-10)*-1
+  ch_tax <- as.numeric(ch_tax) 
+  
+  joy <- v235 #joyriding
+  joy[v235 %in% c(-5, -4, -3, -2, -1)] <- NA
+  joy <- (joy-10)*-1
+  joy <- as.numeric(joy) 
+  
+  lying <- v237 #lying in own interest
+  lying[v237 %in% c(-5, -4, -3, -2, -1)] <- NA
+  lying <- (lying-10)*-1
+  lying <- as.numeric(lying) 
+  
+  bribe <- v239 #bribe
+  bribe[v239 %in% c(-5, -4, -3, -2, -1)] <- NA
+  bribe <- (bribe-10)*-1
+  bribe <- as.numeric(bribe) 
+  
+  av_tax <- v245 #paying cash to avoid taxes
+  av_tax[v245 %in% c(-5, -4, -3, -2, -1)] <- NA
+  av_tax <- (av_tax-10)*-1
+  av_tax <- as.numeric(av_tax) 
+  
+  av_pub_f <- v234 #avoid public transfer fair
+  av_pub_f[v234 %in% c(-5, -4, -3, -2, -1)] <- NA
+  av_pub_f <- (av_pub_f-10)*-1
+  av_pub_f <- as.numeric(av_pub_f) 
+}) #index variables trustworthiness
+
+#Checking for intercorrelatedness
+trst_wrth <- select(EVS, av_pub_f, av_tax, bribe,
+                    lying, joy, ch_tax, cl_sb)
+trst_wrth %<>% na.omit()
+trst_wrth_cor <- cor(trst_wrth) %>% round(2) #get correlation matrix
+trst_wrth_cor %>% as.matrix() %>% alpha(check.keys = T) #compute Cronbach's alpha 
+
+# Constructing trustworthiness index and trimming scale
+EVS %<>% within({ #index trustworthiness
+  trst_wrth <- (av_pub_f + av_tax + bribe +
+                lying + joy + ch_tax + cl_sb)
+  
+  trst_wrth <- trst_wrth/7
+}) #index trustworthiness: scale from 0 to 9 i.e., from low trust in inst. to high trust in inst. 
 
 EVS %<>% within({ #demographics 
   sex <- v302 #Sex
@@ -351,6 +414,24 @@ wb_data[41,4] <- 42.8 #Gini Macedonia from WB Gini 2009
 
 ## 3. European Value Survey 2008
 
+# Creating a subsetted dataset for variable to be aggregated
+EVS_macro <- select(EVS, country, reg,  inst_trust,  trst_wrth)
+#trst_d,
+
+
+#EVS_macro$trst_d_agg <- EVS_macro %>% 
+  #group_by(country) %>% 
+  #mutate(mean(trst_d, na.rm = T))
+
+EVS_macro$trst_wrth_agg <- EVS_macro %>% 
+  group_by(reg) %>% 
+  mutate(mean(trst_wrth, na.rm = T))
+
+EVS_macro %<>% within( { #Aggegating variables
+  inst_trust_agg <- EVS_macro %>% 
+  group_by(country) %>% 
+  mutate(mean(inst_trust, na.rm = T))
+})
 
 
 ##  4. Joining the complete Level-2 data file
