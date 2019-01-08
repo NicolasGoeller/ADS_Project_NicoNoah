@@ -5,6 +5,8 @@
 library(haven)
 library(tidyverse)
 library(magrittr)
+install.packages("psych")
+library(psych)
 
 EVS_2008 <- read_spss("Data/ZA4800_v4-0-0.sav") # Seems to have the missing countries
 
@@ -158,6 +160,7 @@ PN %<>% within({ #select necessary variables
 })
 
 PN_selected <- select(PN, Nation, fhrate, fhcat, voice_acc, press_free, hdi)
+
 #Build new subset with necessary variables and country names
 PN_selected %<>% na.omit()
 
@@ -196,3 +199,181 @@ Gini_final <- select(Gini_new, V1, V51:V55)
 ?colnames()
 glimpse(Gini_final)
  ?read.csv
+
+
+## 4. Construct index for social capial
+## Draw on initial EVS_2008 to obtain proxies for social capital 
+
+# Our own social capital index with questionable intercorrelatedness:
+
+EVS_2008 %<>% within({
+  
+  imp_fam <- v2 #importnace of family (=very important; 4=not at all)
+  imp_fam[v2 %in% c(-5, -4, -3, -2, -1)] <- NA
+  imp_fam <- (imp_fam-4)*-1
+  imp_fam <- as.numeric(imp_fam)
+  
+  imp_frds <- v3 #importance of friends and acquaintances (=very important; 4=not at all) 
+  imp_frds[v3 %in% c(-5, -4, -3, -2, -1)] <- NA
+  imp_frds <- (imp_frds-4)*-1
+  imp_frds <- as.numeric(imp_frds)
+  
+  trust <- v62 #people can be trusted/cant be too careful (dummy: 1=trusted; 2=be careful)
+  trust[v62 %in% c(-5, -4, -3, -2, -1)] <- NA
+  
+  fair <- v63 #people try to take advantage or are fair (1=advantage; 10=fair)
+  fair[v63 %in% c(-5, -4, -3, -2, -1)] <- NA
+  fair <- as.numeric(fair)
+  
+  helpful <- v64 #people are helpful or look after themselves (1=look out for themselves; 10=helpful)
+  helpful[v64 %in% c(-5, -4, -3, -2, -1)] <- NA
+  helpful <- as.numeric(helpful)
+  
+  met_pep <- v97 #meeting nice people (1=very important; 4=not important at all)
+  met_pep[v97 %in% c(-5, -4, -3, -2, -1)] <- NA
+  met_pep <- (met_pep-4)*-1
+  met_pep <- as.numeric(met_pep)
+  
+  conc_fam <- v284 #concerned with familiy (1=very much; 5 not at all)
+  conc_fam[v284 %in% c(-5, -4, -3, -2, -1)] <- NA
+  conc_fam <- (conc_fam-5)*-1
+  conc_fam <- as.numeric(conc_fam)
+
+  conc_neigh <- v285 #concerned with people in neighbourhood (1=very much; 5 not at all)
+  conc_neigh[v285 %in% c(-5, -4, -3, -2, -1)] <- NA
+  conc_neigh <- (conc_neigh-5)*-1
+  conc_neigh <- as.numeric(conc_neigh)
+  
+  conc_region <- v286 #concerned with people in region (1=very much; 5 not at all)
+  conc_region[v286 %in% c(-5, -4, -3, -2, -1)] <- NA
+  conc_region <- (conc_region-5)*-1
+  conc_region <- as.numeric(conc_region)
+  
+})
+
+#Construct social capital dataset
+soc_cap_data <- select(EVS_2008, imp_fam,
+                       imp_frds,
+                       #fair,
+                       #helpful,
+                       met_pep, 
+                       conc_fam,
+                       conc_neigh,
+                       conc_region)
+
+soc_cap_data %<>% na.omit()
+
+#Intercorrelations
+
+cor_mat <- cor(soc_cap_data) %>% round(2) #get correlation matrix
+
+soc_cap_data %>% as.matrix() %>% alpha(check.keys = T) #compute Cronbach's alpha 
+
+
+
+# Interpersonal trust as one dimension of social capital
+
+EVS_2008 %<>% within({
+  
+  trust <- v62 #people can be trusted/cant be too careful (dummy: 1=trusted; 2=be careful)
+  trust[v62 %in% c(-5, -4, -3, -2, -1)] <- NA
+
+  })
+
+
+# Institutional trust as one dimension of social capital (How much confidence in following institutions [1=great deal; 4=none at all])
+
+EVS_2008 %<>% within({
+  
+  conf_church <- v205 #church
+  conf_church[v205 %in% c(-5, -4, -3, -2, -1)] <- NA
+  conf_church <- (conf_church-4)*-1
+  conf_church <- as.numeric(conf_church)
+  
+  conf_armed <- v206 #armed forces
+  conf_armed[v206 %in% c(-5, -4, -3, -2, -1)] <- NA
+  conf_armed <- (conf_armed-4)*-1
+  conf_armed <- as.numeric(conf_armed)
+  
+  conf_educ <- v207 #educational system
+  conf_educ[v207 %in% c(-5, -4, -3, -2, -1)] <- NA
+  conf_educ <- (conf_educ-4)*-1
+  conf_educ <- as.numeric(conf_educ)
+  
+  conf_press <- v208 #press
+  conf_press[v208 %in% c(-5, -4, -3, -2, -1)] <- NA
+  conf_press <- (conf_press-4)*-1
+  conf_press <- as.numeric(conf_press)
+  
+  conf_tu <- v209 #trade unions
+  conf_tu[v209 %in% c(-5, -4, -3, -2, -1)] <- NA
+  conf_tu <- (conf_tu-4)*-1
+  conf_tu <- as.numeric(conf_tu)
+  
+  conf_police <- v210 #police
+  conf_police[v210 %in% c(-5, -4, -3, -2, -1)] <- NA
+  conf_police <- (conf_police-4)*-1
+  conf_police <- as.numeric(conf_police)
+  
+  conf_parl <- v211 #parliament
+  conf_parl[v211 %in% c(-5, -4, -3, -2, -1)] <- NA
+  conf_parl <- (conf_parl-4)*-1
+  conf_parl <- as.numeric(conf_parl)
+  
+  conf_cs <- v212 #civil service
+  conf_cs[v212 %in% c(-5, -4, -3, -2, -1)] <- NA
+  conf_cs <- (conf_cs-4)*-1
+  conf_cs <- as.numeric(conf_cs)
+  
+  conf_socs <- v213 #social security system
+  conf_socs[v213 %in% c(-5, -4, -3, -2, -1)] <- NA
+  conf_socs <- (conf_socs-4)*-1
+  conf_socs <- as.numeric(conf_socs)
+  
+  conf_eu <- v214 #European Union
+  conf_eu[v214 %in% c(-5, -4, -3, -2, -1)] <- NA
+  conf_eu <- (conf_eu-4)*-1
+  conf_eu <- as.numeric(conf_eu)
+  
+  conf_nato <- v215 #NATO
+  conf_nato[v215 %in% c(-5, -4, -3, -2, -1)] <- NA
+  conf_nato <- (conf_nato-4)*-1
+  conf_nato <- as.numeric(conf_nato)
+  
+  conf_un <- v216 #United Nations
+  conf_un[v216 %in% c(-5, -4, -3, -2, -1)] <- NA
+  conf_un <- (conf_un-4)*-1
+  conf_un <- as.numeric(conf_un)
+  
+  conf_hs <- v217 #health care system
+  conf_hs[v217 %in% c(-5, -4, -3, -2, -1)] <- NA
+  conf_hs <- (conf_hs-4)*-1
+  conf_hs <- as.numeric(conf_hs)
+  
+  conf_just <- v218 #justice system
+  conf_just[v218 %in% c(-5, -4, -3, -2, -1)] <- NA
+  conf_just <- (conf_just-4)*-1
+  conf_just <- as.numeric(conf_just)
+  
+  conf_gov <- v222 #government
+  conf_gov[v222 %in% c(-5, -4, -3, -2, -1)] <- NA
+  conf_gov <- (conf_gov-4)*-1
+  conf_gov <- as.numeric(conf_gov)
+  
+})
+
+inst_trust <- select(EVS_2008, conf_church, conf_armed, conf_educ,
+                     conf_press, conf_tu, conf_police,
+                     conf_parl, conf_cs, conf_eu, 
+                     conf_socs, conf_nato, conf_un, 
+                     conf_hs, conf_just, conf_gov)
+
+inst_trust %<>% na.omit()
+
+#Intercorrelations
+
+cor_inst_trust <- cor(inst_trust) %>% round(2) #get correlation matrix
+
+inst_trust %>% as.matrix() %>% alpha(check.keys = T) #compute Cronbach's alpha 
+
+
