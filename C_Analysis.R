@@ -1,25 +1,35 @@
-### Nil models for later multi-level analysis 
+### In this file, we create analyses for our project
 
+library(haven)
+library(tidyverse)
 library(lme4)
 library(sjstats)
-install.packages("lmertest")
+install.packages("lmerTest")
 install.packages("sjPlot")
-library(lmertest)
+library(lmerTest)
 library(sjPlot)
 
-#Read in dataset
+#---------------------------------------------------------------------------------------
+
+#Read in dataset from B_Variable Preparation
 EVS_final <- read_rds("Data/EVS_final.rds")
 
+#----------------------------------------------------------------------------------------
 
-m01 <- lmer(sat ~ 1 + (1|cntry), EVS)
+## Null models for later multi-level analysis
+
+#Country-level (level 3)
+m01 <- lmer(sat ~ 1 + (1|nation), EVS_final)
 summary(m01)
 icc(m01)
 
-m02 <- lmer(sat ~ 1 + (1|state), EVS)
+#Region-level (level 2)
+m02 <- lmer(sat ~ 1 + (1|reg), EVS_final)
 summary(m02)
 icc(m02)
 
-m03 <- lmer(sat ~ 1 + (1|reg), EVS)
+#Intergrated analysis
+m03 <- lmer(sat ~ 1 + (1|reg) + (1|nation), EVS_final)
 summary(m03)
 icc(m03)
 
