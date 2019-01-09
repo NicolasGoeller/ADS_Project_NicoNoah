@@ -33,7 +33,8 @@ vignettes/*.pdf
 *.knit.md
 
 # Files
-
+Data/
+*.csv
 *.pdf
 *.sav
 *.rds
