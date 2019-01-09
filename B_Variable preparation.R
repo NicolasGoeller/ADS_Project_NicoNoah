@@ -115,6 +115,44 @@ EVS %<>% within({ #pecuniary factors
   
 }) #pecuniary factors
 
+EVS %<>% within({ #work variables
+  work_impo <- v1 #How important is work in your life (4 point)
+  work_impo[v1 %in% c(-5, -4, -3, -2, -1)] <- NA
+  work_impo <- as.numeric(work_impo)
+  work_impo_c <- work_impo - mean(work_impo, na.rm = T)
+  
+  free_job <- v91 #How free are you to make decisions in your job (10 point)
+  free_job[v91 %in% c(-5, -4, -3, -2, -1)] <- NA
+  free_job <- as.numeric(free_job)
+  free_job_c <- free_job - mean(free_job, na.rm = T)
+  
+  talent <- v92 #Need job to develop your talents (5 point)
+  talent[v92 %in% c(-5, -4, -3, -2, -1)] <- NA
+  talent <- as.numeric(talent)
+  talent <- (talent - 5) * -1
+  talent_c <- talent - mean(talent, na.rm = T)
+  
+  duty <- v95 #Work is a duty towards society (5 point)
+  duty[v95 %in% c(-5, -4, -3, -2, -1)] <- NA
+  duty <- as.numeric(duty)
+  duty <- (duty - 5) * -1
+  duty_c <- duty - mean(duty, na.rm = T)
+  
+  work_first <- v96 #Work comes always first (5 point)
+  work_first[v96 %in% c(-5, -4, -3, -2, -1)] <- NA
+  work_first <- as.numeric(work_first)
+  work_first <- (work_first - 5) * -1
+  work_first_c <- work_first - mean(work_first, na.rm = T)
+  
+  sup <- v341 #are you supervising someone
+  sup[v341 %in% c(-5, -4, -3, -2, -1)] <- NA
+  sup <- (sup - 2) * -1 #0 = No, 1 = Yes
+  
+  entre <- v338 #Are you self employed
+  entre[v338 %in% c(-5, -4, -3, -2, -1)] <- NA
+  entre <- entre - 1 #0 = No, 1 = Yes
+}) #work variables
+
 EVS %<>% within({ #index variables institutional trust
   conf_church <- v205 #church
   conf_church[v205 %in% c(-5, -4, -3, -2, -1)] <- NA

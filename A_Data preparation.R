@@ -21,6 +21,7 @@ EVS <- EVS_2008 %>%
     country, c_abrv, v371b_N1, v66, v8, #base
     v62, v63, v64, v90, v339SIOPS, v203, #non-pecuniary
     v89, v353YR, v353MM, v353M_ppp, v339ISEI, v198, #pecuniary
+    v1, v91, v92, v95, v96, v341, v338, #work variables
     v205:v218, v222, #index institutional trust
     v233, v234, v235, v237, v239, v245, v247, #index justification
     v302, v303, v313, v336, v336_2, v370a, v337) #demographics
