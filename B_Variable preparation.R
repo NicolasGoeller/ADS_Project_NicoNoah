@@ -29,6 +29,18 @@ EVS %<>% within({ #base variables
   reg[country %in% c(792)] <- "TK: Turkey"
   reg <- as_factor(reg, ordered = F)
   
+  eureg <- nation
+  eureg <- as.numeric(country)
+  eureg[country %in% c(752, 578, 208, 372, 246, 352, 428, 233, 440, 
+                       909, 826)]  <- 1 #Northern Europe
+  eureg[country %in% c(276, 250, 56, 442, 528, 40, 756)]  <- 2 #Western Europe
+  eureg[country %in% c(724, 380, 300, 792, 620, 196, 470, 705, 8, 499, 70, 191, 
+                      688, 807, 915, 51, 197)]  <- 3 #Southern Europe
+  eureg[country %in% c(100, 703, 112, 348, 616, 268, 498, 642, 804, 
+                      203)]  <- 4 #Eastern Europe
+  eureg <- as.character(eureg)
+  eureg <- as_factor(eureg, ordered = F, levels = "values")
+  
   sat <- v66 #Life satisfaction (10 point)
   sat[v66 %in% c(-5, -4, -3, -2, -1)] <- NA
   sat <- as.numeric(sat)
@@ -41,7 +53,7 @@ EVS %<>% within({ #base variables
 }) #base variables
 
 #Adapting geo-variables on factor level: Renaming and exclusion of unused factor 
- #levels in variables "reg" and "cntry"
+ #levels in variables "reg", "nation" and "eureg"
 EVS$nation <- mapvalues(EVS$nation, from = c("Great Britain"),
                              to = c("United Kingdom")) 
 EVS$nation <- droplevels(EVS$nation, exclude = c(as.character(c("Northern Cyprus", 
@@ -53,7 +65,10 @@ EVS$reg <- droplevels(EVS$reg,
                       "RU: North West federal district", "RU: South Federal district",
                       "RU: Privolzhsky federal district", "RU: Urals federal district", 
                       "RU: Siberian federal district", "RU: Far East federal district"  )))) 
-
+EVS$eureg <- mapvalues(EVS$eureg, from = c("1", "2", "3", "4"), 
+                       to = c("Northern Europe", "Western Europe", 
+                              "Southern Europe", "Eastern Europe"))
+                     
 EVS %<>% within({ #non-pecuniary factors
   intp_trust <- v62 #Dummy: Do you think you can trust other people
   intp_trust[v62 %in% c(-5, -4, -3, -2, -1)] <- NA
