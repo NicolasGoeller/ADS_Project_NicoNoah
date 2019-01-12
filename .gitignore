@@ -34,3 +34,8 @@ vignettes/*.pdf
 
 #Everything in Data
 Data/
+
+#Everything in LaTex
+LaTex/
+##Except the following files
+!/LaTex/*ADSNicoNoah.tex
