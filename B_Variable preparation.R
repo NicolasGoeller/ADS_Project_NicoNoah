@@ -29,7 +29,7 @@ EVS %<>% within({ #base variables
   reg[country %in% c(792)] <- "TK: Turkey"
   reg <- as_factor(reg, ordered = F)
   
-  eureg <- nation
+  eureg <- country
   eureg <- as.numeric(country)
   eureg[country %in% c(752, 578, 208, 372, 246, 352, 428, 233, 440, 
                        909, 826)]  <- 1 #Northern Europe
