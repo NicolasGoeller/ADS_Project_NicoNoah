@@ -2,11 +2,10 @@ library(ggplot2); library(ggmap); library(stargazer); library(hrbrthemes)
 library(extrafont)
 
 #Plots: theme_ipsum() produces warnings, but nothing serious
-ggplot(EVS, aes(y = sat))+
-  geom_boxplot()+
-  facet_grid(.~ edu)+   #from next line, publication ready & nice
-  labs(x = "Educational level", 
-       y = "Life satisfaction",
+ggplot(EVS_final, aes(x = sat))+
+  geom_bar()+
+     #from next line, publication ready & nice
+  labs(x = "Life satisfaction",
        title = "Titel",
        subtitle = "Untertitel",
        caption = "Credits to us") + 
