@@ -1,4 +1,4 @@
-library(ggplot2); library(ggmap); library(stargazer); library(hrbrthemes) 
+library(ggplot2); library(stargazer); library(hrbrthemes) 
 library(extrafont)
 
 #Plots: theme_ipsum() produces warnings, but nothing serious
@@ -33,3 +33,61 @@ EVS %>%
   ggplot(aes(y = sat, x = siops))+
   geom_jitter()+
   geom_smooth(method = "lm")
+
+
+
+##--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## 2. Building ggmap
+
+#install.packages(c("sf", "rnaturalearth", "rnaturalearthdata", "rgeos"))
+library(sf)         
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(rgeos)
+
+# World dataset
+world <- ne_countries(scale = "medium", returnclass = "sf")
+class(world)
+
+# filter for Europe dataset (best strategy still to be found!)
+eur <- 
+  world %>%
+  filter(continent == "Europe") %>%
+  filter(admin != "Russia") %>%
+  filter(type == "Sovereign country")
+
+# plot Europe 
+ggplot(data = eur) +
+  geom_sf()
+
+
+# Basic map with country codes
+
+world_points <- st_centroid(world)
+world_points <- cbind(world, st_coordinates(st_centroid(world$geometry)))
+
+ggplot(data = world) +
+  geom_sf()+
+  xlab("Longitude") + ylab("Latitude") +
+  ggtitle("Europe map", 
+          subtitle = "Life satisfaction across countries")+
+  coord_sf(xlim = c(-20, 59), ylim = c(35, 71), expand = FALSE)+
+  geom_text(data= world_points,aes(x=X, y=Y, label=brk_a3),
+            color = "darkblue", fontface = "bold" , size = 2, check_overlap = FALSE)
+
+# Countries and Income Group
+
+ggplot(data = world) +
+  geom_sf(aes(fill = income_grp))+
+  labs(fill = "Income Group")+
+  xlab("Longitude") + 
+  ylab("Latitude") +
+  ggtitle("Europe map", 
+          subtitle = "Countries and OECD Income Group")+
+  coord_sf(xlim = c(-20, 59), ylim = c(35, 71), expand = FALSE)+
+  geom_text(data= world_points,aes(x=X, y=Y, label=brk_a3),
+            color = "black", fontface = "bold" , size = 3, check_overlap = FALSE)
+
+  
+
+
