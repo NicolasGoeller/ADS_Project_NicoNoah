@@ -52,9 +52,18 @@ library(rnaturalearthdata)
 library(rgeos)
 library(rworldmap)
 
+nat <- c("Albania", "Austria", "Armenia", "Belgium", "Bosnia Herzegovina", 
+         "Bulgaria", "Belarus", "Croatia", "Cyprus", "Czech Republic", "Denmark", 
+         "Estonia", "Finland", "France", "Georgia", "Germany", "Greece", "Hungary", 
+         "Iceland", "Ireland", "Italy", "Latvia", "Lithuania", "Luxembourg", "Malta",
+         "Moldova", "Montenegro", "Netherlands", "Norway", "Poland", "Portugal", 
+         "Romania", "Serbia", "Slovak Republic", "Slovenia", "Spain", "Sweden", 
+         "Switzerland", "Turkey", "Ukraine", "Macedonia", "United Kingdom", "Kosovo")
+
 # World dataset
 world <- ne_countries(scale = "medium", returnclass = "sf")
-class(world)
+euro <- ne_countries(scale = "medium", country = nat, returnclass = "sf")
+class(world)#Bosnia Herzegovina (Bosnia and Herzegovina), Slovak Republic (Slovakia) and Serbia (Republic of Serbia) are missing
 
 # filter for Europe dataset (best strategy still to be found!)
 eur <- 
@@ -62,6 +71,8 @@ eur <-
   filter(continent == "Europe") %>%
   filter(admin != "Russia") %>%
   filter(type == "Sovereign country")
+
+?join
 
 # plot Europe 
 ggplot(data = eur) +
