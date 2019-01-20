@@ -45,10 +45,12 @@ EVS %>%
 ## 2. Building ggmap
 
 #install.packages(c("sf", "rnaturalearth", "rnaturalearthdata", "rgeos"))
+install.packages("rworldmap") #useful package to solve the geodata problem
 library(sf)         
 library(rnaturalearth)
 library(rnaturalearthdata)
 library(rgeos)
+library(rworldmap)
 
 # World dataset
 world <- ne_countries(scale = "medium", returnclass = "sf")
