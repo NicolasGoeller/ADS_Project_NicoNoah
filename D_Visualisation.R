@@ -1,7 +1,12 @@
-library(ggplot2); library(stargazer); library(hrbrthemes) 
+library(tidyverse)
+library(stargazer)
+library(hrbrthemes) 
 library(extrafont)
+library(memisc)
 
 #Plots: theme_ipsum() produces warnings, but nothing serious
+EVS_final <- read_rds("Data/EVS_final.rds")
+
 ggplot(EVS_final, aes(x = sat))+
   geom_bar()+
      #from next line, publication ready & nice
