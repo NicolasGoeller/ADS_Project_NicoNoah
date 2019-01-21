@@ -4,6 +4,28 @@ library(hrbrthemes)
 library(extrafont)
 library(memisc)
 
+#Codebook
+?`codebook,factor-method`
+
+EVS_final <- within(EVS_final,{
+  description(eureg) <- "Geographical region"
+  measurement(eureg) <- "nominal"
+  missing.values(eureg) <- NA
+})
+description(Data)
+codebook(Data)
+
+
+EVS_final <- within(EVS_final,{
+  description(EVS_final$sat) <- "Life satisfaction"
+  wording(EVS_final$sat) <- "All things taken into account, how satisfied are you with your 
+  life right now?"
+  measurement(EVS_final$sat) <- "interval"
+  missing.values(EVS_final$sat) <- NA
+})
+description(Data)
+codebook(Data)
+?measurement
 #Plots: theme_ipsum() produces warnings, but nothing serious
 EVS_final <- read_rds("Data/EVS_final.rds")
 
