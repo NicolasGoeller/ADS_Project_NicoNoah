@@ -77,12 +77,12 @@ ui <- dashboardPage(
       tabItem(tabName = "regress", h1("Linear, mixed-effects models to customize"),
               fluidRow(
                 box(title = "Regression table", status = "primary", solidHeader = T, width = 8,
-                    plotOutput("regtab")),
+                    verbatimTextOutput("regtab")),
                 box(title = "Controls for regression", status = "warning", solidHeader = T, 
                     width = 4,
                     "Choose your variables for modeling, for singular countries or regions select from 'Country:' or 'Geographical region:'", br(),br(),
                     varSelectInput("DV", "Dependent variable:", shiny_data),
-                    varSelectInput("IDV", "Independent variable:", multiple = T, shiny_data),
+                    varSelectInput("IDV", "Independent variable:", shiny_data),
                     selectInput("country3", "Country:", nat),
                     selectInput("eureg3", "Geographical region:", eureg))
               )),
@@ -147,49 +147,56 @@ server <- function(input, output) {
     }
   })
   
-  output$regtab <- renderImage({
-    if(!!input$country3 == "None" & !!input$eureg3 == "None"){
-      lm(!!input$DV ~ !!!input$IDV) %>% 
-        stargazer(#regression models 
-          type = "html", # character vector (eg. "text" / "html" / "latex")
-          title = "Linear regression model",  # header
-          style = "default",  # style (choice see below)
-          summary = NULL,  # logical vector: output summary statistics when given data.frame
-          out = "table1.html", # path and output of file
-          out.header = FALSE, # logical vector: should output file contain code-header?
-          column.labels = c("Linear model"), # column labels for mod1/mod2
-          column.separate = c(1,1),  # how column labels should be assigned (label over sev. columns possible)
-          dep.var.caption = "Dependent variable", # Caption (Top) of dependent variable
-          star.cutoffs = c(0.05,0.01,0.001),
-          dep.var.labels = c(paste(input$DV)))
-    }else if(!!input$country3 == "None" & !!input$eureg3 == "None"){
-      shiny_data %>% 
-        filter(Geographical_region == input$eureg3) %>%
-        
-        stargazer
-    }else if(!!input$country3 == "None" & !!input$eureg3 == "None"){
-      shiny_data %>% 
-        filter(Country_of_residence == input$country3) %>% 
-        stargazer
-    }
+  output$regtab <- renderTable({
+   lm(input$DV ~ input$IDV) %>% 
+      summary()
+    
   })
 }
 
 shinyApp(ui, server)
 
-shiny_data
-lm(Life_satisfaction ~ SIOPS_Index, shiny_data) %>% 
-  stargazer(#regression models 
-            type = "html", # character vector (eg. "text" / "html" / "latex")
-            title = "Hier steht die Überschrift",  # header
-            style = "default",  # style (choice see below)
-            summary = NULL,  # logical vector: output summary statistics when given data.frame
-            out = "table1.html", # path and output of file
-            out.header = FALSE, # logical vector: should output file contain code-header?
-            column.labels = c("Linear model"), # column labels for mod1/mod2
-            column.separate = c(1,1),  # how column labels should be assigned (label over sev. columns possible)
-            dep.var.caption = "Dependent variable", # Caption (Top) of dependent variable
-            star.cutoffs = c(0.05,0.01,0.001),
-            dep.var.labels = c("Sympathie Jamaika"))
 
-?stargazer()
+#renderPrint({
+#  if(!!input$country3 == "None" & !!input$eureg3 == "None"){
+#    lm(!!input$DV ~ !!!input$IDV) %>% 
+#      stargazer(#regression models 
+#        type = "text", # character vector (eg. "text" / "html" / "latex")
+#        title = "Linear regression model",  # header
+#        style = "default",  # style (choice see below)
+#        summary = NULL,  # logical vector: output summary statistics when given data.frame
+#        out = "table1.html", # path and output of file
+#        out.header = FALSE, # logical vector: should output file contain code-header?
+#        column.labels = c("Linear model"), # column labels for mod1/mod2
+#        column.separate = c(1,1),  # how column labels should be assigned (label over sev. columns possible)
+#        dep.var.caption = "Dependent variable", # Caption (Top) of dependent variable
+#        star.cutoffs = c(0.05,0.01,0.001),
+#        dep.var.labels = c(paste(input$DV)))
+#  }else if(!!input$country3 == "None" & !!input$eureg3 == "None"){
+#    shiny_data %>% 
+#      filter(Geographical_region == input$eureg3) %>%
+#      
+#      stargazer
+#  }else if(!!input$country3 == "None" & !!input$eureg3 == "None"){
+#    shiny_data %>% 
+#      filter(Country_of_residence == input$country3) %>% 
+#      stargazer
+#  }
+#})
+
+
+stargazer(#regression models 
+  type = "text", # character vector (eg. "text" / "html" / "latex")
+  title = "Linear regression model",  # header
+  style = "default",  # style (choice see below)
+  summary = NULL,  # logical vector: output summary statistics when given data.frame
+  out = "table1.html", # path and output of file
+  out.header = FALSE, # logical vector: should output file contain code-header?
+  column.labels = c("Linear model"), # column labels for mod1/mod2
+  column.separate = c(1,1),  # how column labels should be assigned (label over sev. columns possible)
+  dep.var.caption = "Dependent variable", # Caption (Top) of dependent variable
+  star.cutoffs = c(0.05,0.01,0.001),
+  dep.var.labels = c(paste(input$DV)))
+
+
+
