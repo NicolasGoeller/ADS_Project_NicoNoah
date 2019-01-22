@@ -78,7 +78,7 @@ ui <- dashboardPage(
       tabItem(tabName = "regress", h1("Linear, mixed-effects models to customize"),
               fluidRow(
                 box(title = "Regression table", status = "primary", solidHeader = T, width = 8,
-                    tableOutput("regtab")),
+                    imageOutput("regtab")),
                 box(title = "Controls for regression", status = "warning", solidHeader = T, 
                     width = 4,
                     "Choose your variables for modeling, for singular countries or regions select from 'Country:' or 'Geographical region:'", br(),br(),
@@ -90,7 +90,7 @@ ui <- dashboardPage(
       
       tabItem(tabName = "data", h1("Raw data table"), 
               fluidRow(
-                box(title = "Raw data table", status = "primary", solidHeader = T,
+                box(title = "Raw data table", status = "primary", solidHeader = T, width = 12,
                   dataTableOutput("data"))
               ))
                 
@@ -152,9 +152,28 @@ server <- function(input, output) {
     }
   })
   
+  
   output$regtab <- renderTable({
-   lm(Life_satisfaction ~ SIOPS_Index, shiny_data) %>% 
-      summary()#P1 Get reactive variables in the frame; P2 get nice output on shiny
+      lm(Life_satisfaction ~ SIOPS_Index, shiny_data) %>%
+      stargazer(mod, #regression models 
+              type = "html", # character vector (eg. "text" / "html" / "latex")
+              title = "Linear regression model",  # header
+              style = "default",  # style (choice see below)
+              summary = NULL,  # logical vector: output summary statistics when given data.frame
+              out = "table1.html", # path and output of file
+              out.header = FALSE, # logical vector: should output file contain code-header?
+              column.labels = c("Linear model"), # column labels for mod1/mod2
+              column.separate = c(1,1),  # how column labels should be assigned (label over sev. columns possible)
+              dep.var.caption = "Dependent variable", # Caption (Top) of dependent variable
+              star.cutoffs = c(0.05,0.01,0.001),
+              dep.var.labels = c("Test"))
+    
+    list(src = tab,
+         contentType = 'html',
+         width = 300,
+         height = 350,
+         alt = "This is a test")
+    #P1 Get reactive variables in the frame; P2 get nice output on shiny
     #sollte möglich sein mit renderImage den table1.html output von stargazer aus dem 
     #EHO file einzulesen
   })
@@ -163,9 +182,8 @@ server <- function(input, output) {
 }
 
 shinyApp(ui, server)
-?renderTable
-?renderDataTable
 ?renderImage
+?renderTable
 #renderPrint({
 #  if(!!input$country3 == "None" & !!input$eureg3 == "None"){
 #    lm(!!input$DV ~ !!!input$IDV) %>% 
@@ -193,19 +211,19 @@ shinyApp(ui, server)
 #  }
 #})
 
-mod <- lm(Life_satisfaction ~ SIOPS_Index, shiny_data)
-stargazer(mod, #regression models 
-  type = "html", # character vector (eg. "text" / "html" / "latex")
-  title = "Linear regression model",  # header
-  style = "default",  # style (choice see below)
-  summary = NULL,  # logical vector: output summary statistics when given data.frame
-  out = "European_Happiness_Observer/table1.html", # path and output of file
-  out.header = FALSE, # logical vector: should output file contain code-header?
-  column.labels = c("Linear model"), # column labels for mod1/mod2
-  column.separate = c(1,1),  # how column labels should be assigned (label over sev. columns possible)
-  dep.var.caption = "Dependent variable", # Caption (Top) of dependent variable
-  star.cutoffs = c(0.05,0.01,0.001),
-  dep.var.labels = c("Test"))
+#mod <- lm(Life_satisfaction ~ SIOPS_Index, shiny_data)
+#stargazer(mod, #regression models 
+#  type = "html", # character vector (eg. "text" / "html" / "latex")
+#  title = "Linear regression model",  # header
+#  style = "default",  # style (choice see below)
+#  summary = NULL,  # logical vector: output summary statistics when given data.frame
+#  out = "European_Happiness_Observer/table1.html", # path and output of file
+#  out.header = FALSE, # logical vector: should output file contain code-header?
+#  column.labels = c("Linear model"), # column labels for mod1/mod2
+#  column.separate = c(1,1),  # how column labels should be assigned (label over sev. columns possible)
+#  dep.var.caption = "Dependent variable", # Caption (Top) of dependent variable
+#  star.cutoffs = c(0.05,0.01,0.001),
+#  dep.var.labels = c("Test"))
 
 
 
