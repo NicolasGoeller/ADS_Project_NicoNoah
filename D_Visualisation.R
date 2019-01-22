@@ -13,6 +13,32 @@ library(rnaturalearthdata)
 library(rgeos)
 #library(rworldmap)
 
+<<<<<<< HEAD
+=======
+#Codebook
+?`codebook,factor-method`
+
+EVS_final <- within(EVS_final,{
+  description(eureg) <- "Geographical region"
+  measurement(eureg) <- "nominal"
+  missing.values(eureg) <- NA
+})
+description(Data)
+codebook(Data)
+
+
+EVS_final <- within(EVS_final,{
+  description(EVS_final$sat) <- "Life satisfaction"
+  wording(EVS_final$sat) <- "All things taken into account, how satisfied are you with your 
+  life right now?"
+  measurement(EVS_final$sat) <- "interval"
+  missing.values(EVS_final$sat) <- NA
+})
+description(Data)
+codebook(Data)
+?measurement
+#Plots: theme_ipsum() produces warnings, but nothing serious
+>>>>>>> master
 EVS_final <- read_rds("Data/EVS_final.rds")
 
 
@@ -67,14 +93,35 @@ EVS %>%
 
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+<<<<<<< HEAD
 ##    2.1 World dataset
+=======
+nat <- c("Albania", "Austria", "Armenia", "Belgium", "Bosnia Herzegovina", 
+         "Bulgaria", "Belarus", "Croatia", "Cyprus", "Czech Republic", "Denmark", 
+         "Estonia", "Finland", "France", "Georgia", "Germany", "Greece", "Hungary", 
+         "Iceland", "Ireland", "Italy", "Latvia", "Lithuania", "Luxembourg", "Malta",
+         "Moldova", "Montenegro", "Netherlands", "Norway", "Poland", "Portugal", 
+         "Romania", "Serbia", "Slovak Republic", "Slovenia", "Spain", "Sweden", 
+         "Switzerland", "Turkey", "Ukraine", "Macedonia", "United Kingdom", "Kosovo")
+
+# World dataset
+>>>>>>> master
 world <- ne_countries(scale = "medium", returnclass = "sf")
-class(world)
+euro <- ne_countries(scale = "medium", country = nat, returnclass = "sf")
+class(world)#Bosnia Herzegovina (Bosnia and Herzegovina), Slovak Republic (Slovakia) and Serbia (Republic of Serbia) are missing
 
 # add centroids
 world <- st_centroid(world)
 world <- cbind(world, st_coordinates(st_centroid(world$geometry)))
 
+<<<<<<< HEAD
+=======
+?join
+
+# plot Europe 
+ggplot(data = eur) +
+  geom_sf()
+>>>>>>> master
 
 #------------------------------------------------------------------------------------------------------------
 
