@@ -8,7 +8,7 @@ library(stargazer)
 
 #Reading in data and subsetting it for better handling
 EVS_final <- read_rds("Data/EVS_final.rds")
-shiny_data <- select(EVS_final, sat, edu_cat, nation, eureg, siops)
+shiny_data <- dplyr::select(EVS_final, sat, edu_cat, nation, eureg, siops)
 shiny_data %<>% within({
   Life_satisfaction <- sat
   Education_categories <- edu_cat
@@ -16,7 +16,7 @@ shiny_data %<>% within({
   Geographical_region <- eureg
   SIOPS_Index <- siops
 })
-shiny_data <- select(shiny_data, Life_satisfaction, Education_categories, Country_of_residence,
+shiny_data <- dplyr::select(shiny_data, Life_satisfaction, Education_categories, Country_of_residence,
                      Geographical_region, SIOPS_Index)
 shiny_data %<>% na.omit
 nat <- c("None", "Albania", "Austria", "Armenia", "Belgium", "Bosnia Herzegovina", 
@@ -26,7 +26,7 @@ nat <- c("None", "Albania", "Austria", "Armenia", "Belgium", "Bosnia Herzegovina
          "Moldova", "Montenegro", "Netherlands", "Norway", "Poland", "Portugal", 
          "Romania", "Serbia", "Slovakia", "Slovenia", "Spain", "Sweden", 
          "Switzerland", "Turkey", "Ukraine", "Macedonia", "United Kingdom", "Kosovo")
-at <- as.list(nat)
+nat <- as.list(nat)
 
 eureg <- c("None", "Northern Europe", "Western Europe", "Southern Europe", "Eastern Europe")
 eureg <- as.list(eureg)
@@ -78,7 +78,7 @@ ui <- dashboardPage(
       tabItem(tabName = "regress", h1("Linear, mixed-effects models to customize"),
               fluidRow(
                 box(title = "Regression table", status = "primary", solidHeader = T, width = 8,
-                    verbatimTextOutput("regtab")),
+                    tableOutput("regtab")),
                 box(title = "Controls for regression", status = "warning", solidHeader = T, 
                     width = 4,
                     "Choose your variables for modeling, for singular countries or regions select from 'Country:' or 'Geographical region:'", br(),br(),
@@ -88,10 +88,14 @@ ui <- dashboardPage(
                     selectInput("eureg3", "Geographical region:", eureg))
               )),
       
-      tabItem(tabName = "data", h1("Raw data table"))
-      
-    )#Closing tabItems
-   )#Closing dashboardBody
+      tabItem(tabName = "data", h1("Raw data table"), 
+              fluidRow(
+                box(title = "Raw data table", status = "primary", solidHeader = T,
+                  dataTableOutput("data"))
+              ))
+                
+      )#Closing tabItems
+    )#Closing dashboardBody
   )
 
 server <- function(input, output) {
@@ -149,15 +153,19 @@ server <- function(input, output) {
   })
   
   output$regtab <- renderTable({
-   lm(input$DV ~ input$IDV) %>% 
-      summary()
-    
+   lm(Life_satisfaction ~ SIOPS_Index, shiny_data) %>% 
+      summary()#P1 Get reactive variables in the frame; P2 get nice output on shiny
+    #sollte möglich sein mit renderImage den table1.html output von stargazer aus dem 
+    #EHO file einzulesen
   })
+  
+  output$data <- renderDataTable(shiny_data, escape = T, searchDelay = 20)
 }
 
 shinyApp(ui, server)
-
-
+?renderTable
+?renderDataTable
+?renderImage
 #renderPrint({
 #  if(!!input$country3 == "None" & !!input$eureg3 == "None"){
 #    lm(!!input$DV ~ !!!input$IDV) %>% 
@@ -185,19 +193,19 @@ shinyApp(ui, server)
 #  }
 #})
 
-
-stargazer(#regression models 
-  type = "text", # character vector (eg. "text" / "html" / "latex")
+mod <- lm(Life_satisfaction ~ SIOPS_Index, shiny_data)
+stargazer(mod, #regression models 
+  type = "html", # character vector (eg. "text" / "html" / "latex")
   title = "Linear regression model",  # header
   style = "default",  # style (choice see below)
   summary = NULL,  # logical vector: output summary statistics when given data.frame
-  out = "table1.html", # path and output of file
+  out = "European_Happiness_Observer/table1.html", # path and output of file
   out.header = FALSE, # logical vector: should output file contain code-header?
   column.labels = c("Linear model"), # column labels for mod1/mod2
   column.separate = c(1,1),  # how column labels should be assigned (label over sev. columns possible)
   dep.var.caption = "Dependent variable", # Caption (Top) of dependent variable
   star.cutoffs = c(0.05,0.01,0.001),
-  dep.var.labels = c(paste(input$DV)))
+  dep.var.labels = c("Test"))
 
 
 
