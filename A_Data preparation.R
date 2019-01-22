@@ -2,10 +2,10 @@
 #This script is used to make necessary preparation for treatment of variables in the 
 #ongoing project
 
-#Packages used
 library(haven)
 library(plyr)
 library(tidyverse)
+library(dplyr)
 library(magrittr)
 
 #-----------------------------------------------------------------------------------------
@@ -26,26 +26,30 @@ EVS <- EVS_2008 %>%
     v233, v234, v235, v237, v239, v245, v247, #index justification
     v302, v303, v313, v336, v336_2, v370a, v337) #demographics
 
-#Export new dataset
-write_rds(EVS, path = "Data/EVS.rds")
+#---------------------------------------#
+#Export new dataset EVS                 #
+write_rds(EVS, path = "Data/EVS.rds")   #
+#---------------------------------------#
 
 #----------------------------------------------------------------------------------------------
 
-#Countries used in analysis
+### 2. Countries used in analysis
 nat <- c("Albania", "Austria", "Armenia", "Belgium", "Bosnia Herzegovina", 
          "Bulgaria", "Belarus", "Croatia", "Cyprus", "Czech Republic", "Denmark", 
          "Estonia", "Finland", "France", "Georgia", "Germany", "Greece", "Hungary", 
          "Iceland", "Ireland", "Italy", "Latvia", "Lithuania", "Luxembourg", "Malta",
          "Moldova", "Montenegro", "Netherlands", "Norway", "Poland", "Portugal", 
-         "Romania", "Serbia", "Slovak Republic", "Slovenia", "Spain", "Sweden", 
+         "Romania", "Serbia", "Slovakia", "Slovenia", "Spain", "Sweden", 
          "Switzerland", "Turkey", "Ukraine", "Macedonia", "United Kingdom", "Kosovo")
 
-###  2. Level-2-variables: Democracy Cross-National Data from Pippa Norris
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+###  3. Level-2-variables: Democracy Cross-National Data from Pippa Norris
 
 PN <- read_spss("Data/Democracy Cross-National Data V4.1 09092015.sav")
 
 #Selection of relevant variables
-PN_select <- select(PN, Nation, fhrate08, WGI_voice2008, FreePress2008, UNDP_HDI2008)
+PN_select <- dplyr::select(PN, Nation, fhrate08, WGI_voice2008, FreePress2008, UNDP_HDI2008)
 
 #Filling up missing values
 PN_select[91,2] <- 5.5 #Freedom House rating 2008 from Freedom House
@@ -53,17 +57,20 @@ PN_select[91,5] <- 0.743 #HDI value 2008 from Serbia
 PN_select[118,2] <- 3.0 #Freedom House rating 2008 from Freedom House
 
 #Adapting country names
-PN_select$Nation <- mapvalues(PN_select$Nation, from = c("Bosnia & Herzegovina","Moldova, Republic of", "Slovakia"), 
-                               to = c("Bosnia Herzegovina", "Moldova", "Slovak Republic"))
+PN_select$Nation <- mapvalues(PN_select$Nation, from = c("Bosnia & Herzegovina","Moldova, Republic of"), 
+                               to = c("Bosnia Herzegovina", "Moldova"))
 
-#Export new dataset
-write_rds(PN_select, path = "Data/PN_select.rds")
+#----------------------------------------------------#
+#Export new dataset PN_select                        #
+write_rds(PN_select, path = "Data/PN_select.rds")    #
+#----------------------------------------------------#
 
 #---------------------------------------------------------------------------------------
 
-### 3. Level-2-variables: World Bank Data for GDP per capita and Gini-coefficient
+### 4. Level-2-variables: World Bank Data for GDP per capita and Gini-coefficient
 
-##  GDP per capita in 2018 USD
+##  4.1 GDP per capita in 2018 USD
+
 gdp_per_cap <- read.csv("Data/GDP_per_capita_current_USD_data.csv", header = F)
 
 #omit first two rows and last column (dataset description)
@@ -76,13 +83,15 @@ colnames(gdp_per_cap)[colnames(gdp_per_cap)=="52"] <- "country"
 colnames(gdp_per_cap)[colnames(gdp_per_cap)=="47"] <- "Country_Code"
 
 #Adapting country names
-gdp_per_cap$country <- mapvalues(gdp_per_cap$country, from = c("Bosnia and Herzegovina", "Macedonia, FYR"), 
-                                 to = c("Bosnia Herzegovina", "Macedonia"))
+gdp_per_cap$country <- mapvalues(gdp_per_cap$country, from = c("Bosnia and Herzegovina", "Macedonia, FYR", "Slovak Republic"), 
+                                 to = c("Bosnia Herzegovina", "Macedonia", "Slovakia"))
 
 #New dataset
-gdp_per_cap_new <- select(gdp_per_cap, country, Country_Code, "2008")
+gdp_per_cap_new <- dplyr::select(gdp_per_cap, country, Country_Code, "2008")
 
-##  Gini coefficient for 2008
+
+##  4.2 Gini coefficient for 2008
+
 Gini <- read.csv("Data/Gini_WB.csv", header = F)
 
 #omit first two rows and last column (dataset description)
@@ -95,13 +104,15 @@ colnames(Gini)[colnames(Gini)=="52"] <- "country"
 colnames(Gini)[colnames(Gini)=="47"] <- "Country_Code"
 
 #Adapting country names
-Gini$country <- mapvalues(Gini$country, from = c("Bosnia and Herzegovina", "Macedonia, FYR"), 
-                          to = c("Bosnia Herzegovina", "Macedonia"))
+Gini$country <- mapvalues(Gini$country, from = c("Bosnia and Herzegovina", "Macedonia, FYR", "Slovak Republic"), 
+                          to = c("Bosnia Herzegovina", "Macedonia", "Slovakia"))
 
 #New dataset
-Gini_new <- select(Gini, country, "2008")
+Gini_new <- dplyr::select(Gini, country, "2008")
 
-## Create a combined dataset for World Bank data
+
+## 4.3 Create a combined dataset for World Bank data
+
 wb_mat <- as.matrix(nat, ncol = 1) #Create from vector of country names 
 colnames(wb_mat) <- c("country") #Name column "nation"
 wb_nat <- as_tibble(wb_mat) #Recreate it as a tibble (data frame)
@@ -118,5 +129,8 @@ wb_data[43,4] <- 31.8 #Gini Kosovo from WB Gini 2009
 wb_data[5,4] <- 33.1 #Gini Bosnia Herzogewina from WB Gini 2007
 wb_data[41,4] <- 42.8 #Gini Macedonia from WB Gini 2009
 
-#Export new dataset
-write_rds(wb_data, path = "Data/WB_Data.rds")
+#-------------------------------------------------#
+#Export new World Bank dataset                    #
+write_rds(wb_data, path = "Data/WB_Data.rds")     #
+#-------------------------------------------------#
+

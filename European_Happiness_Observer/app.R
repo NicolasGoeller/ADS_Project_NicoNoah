@@ -1,6 +1,8 @@
+install.packages(c("shiny", "shinydashboard"))
 library(shiny)
 library(shinydashboard)
 library(tidyverse)
+install.packages("hrbrthemes")
 library(hrbrthemes)
 
 #Reading in data and subsetting it for better handling
@@ -12,9 +14,9 @@ nat <- c("None", "Albania", "Austria", "Armenia", "Belgium", "Bosnia Herzegovina
          "Estonia", "Finland", "France", "Georgia", "Germany", "Greece", "Hungary", 
          "Iceland", "Ireland", "Italy", "Latvia", "Lithuania", "Luxembourg", "Malta",
          "Moldova", "Montenegro", "Netherlands", "Norway", "Poland", "Portugal", 
-         "Romania", "Serbia", "Slovak Republic", "Slovenia", "Spain", "Sweden", 
+         "Romania", "Serbia", "Slovakia", "Slovenia", "Spain", "Sweden", 
          "Switzerland", "Turkey", "Ukraine", "Macedonia", "United Kingdom", "Kosovo")
-nat <- as.list(nat)
+at <- as.list(nat)
 
 ui <- dashboardPage(
   dashboardHeader(title = "European Happiness Observer", titleWidth = "300"),

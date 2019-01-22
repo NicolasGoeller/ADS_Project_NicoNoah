@@ -9,11 +9,16 @@ library(magrittr)
 library(psych)
 
 
-###   Read European Values Survey 2008
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+###   1. European Values Survey
 
+##    1.1 Read European Values Survey 2008
 EVS <- read_rds("Data/EVS.rds")
 
-## Level-1-variables: Data formatting
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+##    1.2 Level-1-variables: Data formatting
 EVS %<>% within({ #base variables
   nation <- country #Country
   nation[country %in% c(-5, -4, -3, -2, -1)] <- NA
@@ -52,10 +57,12 @@ EVS %<>% within({ #base variables
   happ_c <- happ - mean(happ, na.rm = T)
 }) #base variables
 
-#Adapting geo-variables on factor level: Renaming and exclusion of unused factor 
- #levels in variables "reg", "nation" and "eureg"
-EVS$nation <- mapvalues(EVS$nation, from = c("Great Britain"),
-                             to = c("United Kingdom")) 
+
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+##    1.3 Adapting geo-variables on factor level: Renaming and exclusion of unused factor 
+          #levels in variables "reg", "nation" and "eureg"
+EVS$nation <- mapvalues(EVS$nation, from = c("Great Britain", "Slovak Republic"),
+                             to = c("United Kingdom", "Slovakia")) 
 EVS$nation <- droplevels(EVS$nation, exclude = c(as.character(c("Northern Cyprus", 
                                   "Russian Federation", "Northern Ireland")))) 
 EVS$reg <- mapvalues(EVS$reg, from = c("GB-NIR: Northern Ireland"), 
@@ -68,7 +75,10 @@ EVS$reg <- droplevels(EVS$reg,
 EVS$eureg <- mapvalues(EVS$eureg, from = c("1", "2", "3", "4"), 
                        to = c("Northern Europe", "Western Europe", 
                               "Southern Europe", "Eastern Europe"))
-                     
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+##    1.4 Format non-pecuniary factors variables                     
 EVS %<>% within({ #non-pecuniary factors
   intp_trust <- v62 #Dummy: Do you think you can trust other people
   intp_trust[v62 %in% c(-5, -4, -3, -2, -1)] <- NA
@@ -99,6 +109,9 @@ EVS %<>% within({ #non-pecuniary factors
   
 }) #non-pecuniary factors
 
+
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+##    1.5 Format pecuniary factors variables 
 EVS %<>% within({ #pecuniary factors 
   nowork <- v89 #Are yourself employed
   nowork[v89 %in% c(-5, -4, -3, -2, -1)] <- NA
@@ -130,6 +143,9 @@ EVS %<>% within({ #pecuniary factors
   
 }) #pecuniary factors
 
+
+#--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+##    1.6 Format work variables 
 EVS %<>% within({ #work variables
   work_impo <- v1 #How important is work in your life (4 point)
   work_impo[v1 %in% c(-5, -4, -3, -2, -1)] <- NA
@@ -168,6 +184,9 @@ EVS %<>% within({ #work variables
   entre <- entre - 1 #0 = No, 1 = Yes
 }) #work variables
 
+
+#--------------------------------------------------------------------------------------------------------------------------
+##    1.7 Format institutional trust index
 EVS %<>% within({ #index variables institutional trust
   conf_church <- v205 #church
   conf_church[v205 %in% c(-5, -4, -3, -2, -1)] <- NA
@@ -247,7 +266,7 @@ EVS %<>% within({ #index variables institutional trust
 }) #index variables institutional trust
 
 #Checking for intercorrelatedness
-inst_trust <- select(EVS,
+inst_trust <- dplyr::select(EVS,
                      conf_press, conf_tu, conf_police,
                      conf_parl, conf_cs, conf_eu, 
                      conf_socs, conf_nato, conf_un, 
@@ -266,6 +285,9 @@ EVS %<>% within({ #index institutional trust
   inst_trust <- inst_trust/4  
 }) #index institutional trust: scale from 0 to 9 i.e., from low trust in inst. to high trust in inst. 
 
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+##    1.8 Format trustworthiness index 
 EVS %<>% within({ #index variables trustworthiness
   cl_sb <- v233 #state benefits
   cl_sb[v233 %in% c(-5, -4, -3, -2, -1)] <- NA
@@ -304,7 +326,7 @@ EVS %<>% within({ #index variables trustworthiness
 }) #index variables trustworthiness
 
 #Checking for intercorrelatedness
-trust_wrth <- select(EVS, av_pub_f, av_tax, bribe,
+trust_wrth <- dplyr::select(EVS, av_pub_f, av_tax, bribe,
                     lying, joy, ch_tax, cl_sb)
 trust_wrth %<>% na.omit()
 trust_wrth_cor <- cor(trust_wrth) %>% round(2) #get correlation matrix
@@ -318,7 +340,9 @@ EVS %<>% within({ #index trustworthiness
   trust_wrth <- trust_wrth/7
 }) #index trustworthiness: scale from 0 to 9 i.e., from low trust in inst. to high trust in inst. 
 
-#Demograhics variables
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+##    1.9 Format demograhics variables
 EVS %<>% within({ #demographics 
   sex <- v302 #Sex
   sex[v302 %in% c(-5, -4, -3, -2, -1)] <- NA
@@ -352,23 +376,22 @@ EVS %<>% within({ #demographics
   employ <- as_factor(employ, ordered = F)
 }) #demographics
 
+
+#----------------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------------
 
-### Level-2-variables 
+###   2. Level-2-variables 
 
-# Countries used in analysis
+##    2.1 Countries used in analysis
 nat <- c("Albania", "Austria", "Armenia", "Belgium", "Bosnia Herzegovina", 
          "Bulgaria", "Belarus", "Croatia", "Cyprus", "Czech Republic", "Denmark", 
          "Estonia", "Finland", "France", "Georgia", "Germany", "Greece", "Hungary", 
          "Iceland", "Ireland", "Italy", "Latvia", "Lithuania", "Luxembourg", "Malta",
          "Moldova", "Montenegro", "Netherlands", "Norway", "Poland", "Portugal", 
-         "Romania", "Serbia", "Slovak Republic", "Slovenia", "Spain", "Sweden", 
+         "Romania", "Serbia", "Slovakia", "Slovenia", "Spain", "Sweden", 
          "Switzerland", "Turkey", "Ukraine", "Macedonia", "United Kingdom", "Kosovo")
 
-#----------------------------------------------------------------------------------------
-
-##  1. Read country level data from Pippa Norris
-
+##    2.2 Read country level data from Pippa Norris
 PN_select <- read_rds("Data/PN_select.rds")
 
 PN_select %<>% within({ #Variable treatment
@@ -388,27 +411,30 @@ PN_select %<>% within({ #Variable treatment
   hdi <- as.numeric(hdi)
 })
 
+
 #--------------------------------------------------------------------------------------------
 
-## 2. Read World Bank data on GDP per capita and Gini-coefficent
+##    2.3 Read World Bank data with GDP per capita and Gini-coefficent
 
 wb_data <- read_rds("Data/WB_Data.rds")
 
 #Renaming of country variable
 wb_data$nation <- wb_data$country
 
+
 #----------------------------------------------------------------------------------------
 
-## 3. European Value Survey 2008: Level-2-variables
+##    2.4 European Value Survey 2008: Level-2-variables
 
 # Creating a subsetted dataset for variable to be aggregated
-EVS_nat <- select(EVS, nation, nowork) # backup: intp_trust
-EVS_reg <- select(EVS, nation, reg, intp_trust, inst_trust, trust_wrth)
+EVS_nat <- dplyr::select(EVS, nation, nowork, sat) # backup: intp_trust
+EVS_reg <- dplyr::select(EVS, nation, reg, intp_trust, inst_trust, trust_wrth)
 
 #Creating 
 EVS_nat <- EVS_nat %>% 
   group_by(nation) %>% 
-  summarise(unemployment = mean(nowork, na.rm = T))
+  summarise(unemployment = mean(nowork, na.rm = T),
+            life_sat = mean(sat, na.rm = T))
 
 EVS_reg <- EVS_reg %>% 
   group_by(reg) %>% 
@@ -416,17 +442,18 @@ EVS_reg <- EVS_reg %>%
             intp_trust_reg = mean(intp_trust, na.rm = T),
             inst_trust_reg = mean(inst_trust, na.rm = T))
 
+
 #----------------------------------------------------------------------------------------
 
-##  4. Joining the complete Level-2 and Level-3 data files
+##    2.5 Joining the complete Level-2 and Level-3 data files
 
 #National Data File (Level-3)
 nat_data <- left_join(wb_data, PN_select, by = "nation")
 nat_data <- left_join(nat_data, EVS_nat, by = "nation")
 nat_data$nation <- as_factor(nat_data$nation)
 
-nat_data <- select(nat_data, nation, unemployment, GDPpc, gini, hdi, press_free, 
-                   voice_acc, fhrate)
+nat_data <- dplyr::select(nat_data, nation, unemployment, GDPpc, gini, hdi, press_free, 
+                   voice_acc, fhrate, life_sat)
 
 #Applying Grand Mean Centering to Macro-data
 nat_data %<>% within({ #Creating centered macro variables
@@ -445,6 +472,7 @@ nat_data %<>% within({ #Creating centered macro variables
   unemployment_c <- unemployment - mean(unemployment, na.rm = T)
 })  
 
+
 #Regional Data File (Level-2)
 
 EVS_reg %<>% within({ #Grand Mean Centering
@@ -455,11 +483,20 @@ EVS_reg %<>% within({ #Grand Mean Centering
   inst_trust_reg_c <- inst_trust_reg - mean(inst_trust_reg, na.rm = T)
 })  
 
+
+#---------------------------------------------------------------------------------
 #---------------------------------------------------------------------------------
 
-###  5. Combining variables of all 3 Levels
+###   3. Combining variables of all 3 Levels
 EVS_final <- full_join(EVS, nat_data, by = "nation")
 EVS_final <- full_join(EVS_final, EVS_reg, by = "reg")
 
-#Export final Data File
-write_rds(EVS_final, path = "Data/EVS_final.rds")
+
+
+# FINAL DATASET
+#--------------------------------------------------------------
+#------------------------------------------------------------##
+#Export final Data File                                      ##
+write_rds(EVS_final, path = "Data/EVS_final.rds")            ##
+#------------------------------------------------------------##
+#--------------------------------------------------------------
