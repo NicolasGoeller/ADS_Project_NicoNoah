@@ -149,6 +149,8 @@ server <- function(input, output) {
         geom_smooth(method = "lm", size = 1.1)+
         labs(x = paste(input$xvar), y = paste(input$yvar))+
         theme_ipsum(grid = "Y")
+    }else{
+     
     }
   })
   
@@ -182,6 +184,12 @@ server <- function(input, output) {
 }
 
 shinyApp(ui, server)
+
+#End of app code##------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------
+ print("You chose from both 'Country:' and 'Geographical region:'. 
+      Please do only select from one of those at a time. 
+      To deselect, put the dropdown on 'None'.")
 ?renderImage
 ?renderTable
 #renderPrint({

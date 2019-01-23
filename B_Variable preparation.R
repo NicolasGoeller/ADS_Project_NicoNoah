@@ -7,7 +7,10 @@ library(plyr)
 library(tidyverse)
 library(magrittr)
 library(psych)
-
+library(sf)         
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(rgeos)
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -491,12 +494,46 @@ EVS_reg %<>% within({ #Grand Mean Centering
 EVS_final <- full_join(EVS, nat_data, by = "nation")
 EVS_final <- full_join(EVS_final, EVS_reg, by = "reg")
 
+#-----------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------
 
+###   4. Integrating Geodata into the national data set
+nat_geo <- c("Albania", "Austria", "Armenia", "Belgium", "Bosnia and Herzegovina", 
+             "Bulgaria", "Belarus", "Croatia", "Cyprus", "Czech Republic", "Denmark", 
+             "Estonia", "Finland", "France", "Georgia", "Germany", "Greece", "Hungary", 
+             "Iceland", "Ireland", "Italy", "Latvia", "Lithuania", "Luxembourg", "Malta",
+             "Moldova", "Montenegro", "Netherlands", "Norway", "Poland", "Portugal", 
+             "Romania", "Republic of Serbia", "Slovakia", "Slovenia", "Spain", "Sweden", 
+             "Switzerland", "Turkey", "Ukraine", "Macedonia", "United Kingdom", "Kosovo")
 
-# FINAL DATASET
+eur <- ne_countries(country = nat_geo, scale = "medium", returnclass = "sf")
+
+# rename countries (1) Bosnia and Herzegovina, (2) Serbia (which variables to rename (admin, geounit, subunit, format_en)?)
+eur$sovereignt <- mapvalues(eur$sovereignt, from = c("Bosnia and Herzegovina", "Republic of Serbia"), 
+                            to = c("Bosnia Herzegovina", "Serbia"))
+
+# add centroids with coordinates X and Y
+eur <- cbind(eur, st_coordinates(st_centroid(eur$geometry)))
+
+# select necessary variables
+eur_s <- dplyr::select(eur, sovereignt, geometry, adm0_a3, X, Y)
+
+# Adding nation variable
+eur_s$nation <- eur_s$sovereignt
+
+# Joining nat_data and European geo_data to obtain new nat_geodata
+nat_geodata <- left_join(nat_data, eur_s, by = "nation")
+
+#---------------------------------------------------------------------------------------------
+
+# FINAL DATASETS
 #--------------------------------------------------------------
 #------------------------------------------------------------##
 #Export final Data File                                      ##
 write_rds(EVS_final, path = "Data/EVS_final.rds")            ##
+#------------------------------------------------------------##
+#--------------------------------------------------------------
+#Export nation Data File                                     ##
+write_rds(nat_geodata, path = "Data/Nation_geoData.rds")           ##
 #------------------------------------------------------------##
 #--------------------------------------------------------------
