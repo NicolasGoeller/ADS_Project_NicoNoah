@@ -5,9 +5,13 @@ library(tidyverse)
 library(magrittr)
 library(hrbrthemes)
 library(stargazer)
+install.packages("htmltools")
+
+#------------------------------------------------------------------------------------
 
 #Reading in data and subsetting it for better handling
 EVS_final <- read_rds("Data/EVS_final.rds")
+
 shiny_data <- dplyr::select(EVS_final, sat, edu_cat, nation, eureg, siops)
 shiny_data %<>% within({
   Life_satisfaction <- sat
@@ -17,8 +21,28 @@ shiny_data %<>% within({
   SIOPS_Index <- siops
 })
 shiny_data <- dplyr::select(shiny_data, Life_satisfaction, Education_categories, Country_of_residence,
-                     Geographical_region, SIOPS_Index)
+                            Geographical_region, SIOPS_Index)
 shiny_data %<>% na.omit
+
+nat_geodata <- read_rds("Data/Nation_geoData.rds")
+shiny_nat <- dplyr::select(nat_geodata, life_sat, unemployment, GDPpc, gini, hdi, fhrate, nation, geometry, X, Y)
+shiny_nat %<>% within({
+  Aggregated_life_satisfaction <- life_sat
+  Human_Development_Index <- hdi
+  Unemployment_rate <- unemployment
+  Gini_coefficient <- gini
+  GDP_per_capita <- GDPpc
+  Freedom_House_Democracy <- fhrate
+  Country_of_residence <- nation
+})
+shiny_nat <- dplyr::select(shiny_nat, Aggregated_life_satisfaction, Human_Development_Index,
+                           Unemployment_rate, Gini_coefficient, GDP_per_capita,
+                           Freedom_House_Democracy, Country_of_residence, geometry, X, Y)
+
+#----------------------------------------------------------------------------
+
+#Creating list objects necessary for nice variable selection
+
 nat <- c("None", "Albania", "Austria", "Armenia", "Belgium", "Bosnia Herzegovina", 
          "Bulgaria", "Belarus", "Croatia", "Cyprus", "Czech Republic", "Denmark", 
          "Estonia", "Finland", "France", "Georgia", "Germany", "Greece", "Hungary", 
@@ -31,13 +55,14 @@ nat <- as.list(nat)
 eureg <- c("None", "Northern Europe", "Western Europe", "Southern Europe", "Eastern Europe")
 eureg <- as.list(eureg)
 
+#-----------------------------------------------------------------------------------------
+
 ui <- dashboardPage(
   dashboardHeader(title = "European Happiness Observer", titleWidth = "300"),
   dashboardSidebar(width = "300",
     sidebarMenu(
+      menuItem("Introduction", tabName = "intro", icon = icon("info-sign", lib = "glyphicon")),
       menuItem("Mapped dashboards", tabName = "map", icon = icon("globe europe", lib = "font-awesome")),
-        #menuSubItem("National dashboard"),
-        #menuSubItem("Regional dashboard"),
       menuItem("Graphics for detailed analysis", tabName = "graphics", icon = icon("stats", lib = "glyphicon")),
         menuSubItem("Univariate bar charts", tabName = "bar"),
         menuSubItem("Bivariate line plots", tabName = "plots"),
@@ -46,7 +71,16 @@ ui <- dashboardPage(
   ),
   dashboardBody(
     tabItems(
-      tabItem(tabName = "map", h1("Geographical overview")),
+      tabItem(tabName = "intro", h1("Introduction to the European Happiness Observer")),
+      tabItem(tabName = "map", h1("Geographical overview"),
+              fluidRow(
+                box(title = "Europe map plot", status = "primary", solidHeader = T, width = 9,
+                    plotOutput("map")),
+                box(title = "Controls for map plot", status = "warning", solidHeader = T, 
+                    width = 3,
+                    "Choose your variable for plotting",br(), br(),
+                    varSelectInput("macro", "Variable:", shiny_nat[,1:7]))
+              )),
       
       tabItem(tabName = "graphics", h1("Graphics for detailed analysis")),
       
@@ -57,9 +91,9 @@ ui <- dashboardPage(
                 box(title = "Controls for bar chart", status = "warning", solidHeader = T, 
                     width = 4,
                     "Choose your variable for plotting, for singular countries or regions select from 'Country:' or 'Geographical region:'", br(),br(),
-                    varSelectInput("variable", label = "Variable:", shiny_data), 
-                    selectInput("country", "Country:", nat),
-                    selectInput("eureg", "Geographical region:", eureg))
+                    varSelectInput(inputId = "variable", label = "Variable:", shiny_data), 
+                    selectInput(inputId = "country", label = "Country:", nat),
+                    selectInput(inputId = "eureg", label = "Geographical region:", eureg))
                 )),
       
       tabItem(tabName = "plots", h1("Bivariate line plot to customize"),
@@ -78,7 +112,7 @@ ui <- dashboardPage(
       tabItem(tabName = "regress", h1("Linear, mixed-effects models to customize"),
               fluidRow(
                 box(title = "Regression table", status = "primary", solidHeader = T, width = 8,
-                    imageOutput("regtab")),
+                    htmlOutput("regtab")),
                 box(title = "Controls for regression", status = "warning", solidHeader = T, 
                     width = 4,
                     "Choose your variables for modeling, for singular countries or regions select from 'Country:' or 'Geographical region:'", br(),br(),
@@ -99,6 +133,13 @@ ui <- dashboardPage(
   )
 
 server <- function(input, output) {
+  
+  output$map <- renderPlot({
+    ggplot(data = shiny_nat)+
+      geom_sf(aes(fill = !!input$macro))+
+      labs(fill = paste(input$macro))+
+      coord_sf(xlim = c(-24, 50), ylim = c(33, 71), expand = FALSE)
+  })
   
   output$barchart <- renderPlot({
     if(!!input$country == "None" & !!input$eureg == "None"){
@@ -154,15 +195,14 @@ server <- function(input, output) {
     }
   })
   
-  
-  output$regtab <- renderTable({
+  output$regtab <- renderDocument({
       lm(Life_satisfaction ~ SIOPS_Index, shiny_data) %>%
-      stargazer(mod, #regression models 
+      stargazer( #regression models 
               type = "html", # character vector (eg. "text" / "html" / "latex")
               title = "Linear regression model",  # header
               style = "default",  # style (choice see below)
               summary = NULL,  # logical vector: output summary statistics when given data.frame
-              out = "table1.html", # path and output of file
+              out = "European_Happiness_Observer/table1.html", # path and output of file
               out.header = FALSE, # logical vector: should output file contain code-header?
               column.labels = c("Linear model"), # column labels for mod1/mod2
               column.separate = c(1,1),  # how column labels should be assigned (label over sev. columns possible)
@@ -170,21 +210,16 @@ server <- function(input, output) {
               star.cutoffs = c(0.05,0.01,0.001),
               dep.var.labels = c("Test"))
     
-    list(src = tab,
-         contentType = 'html',
-         width = 300,
-         height = 350,
-         alt = "This is a test")
     #P1 Get reactive variables in the frame; P2 get nice output on shiny
     #sollte möglich sein mit renderImage den table1.html output von stargazer aus dem 
     #EHO file einzulesen
-  })
+  }) #Work in progress
   
   output$data <- renderDataTable(shiny_data, escape = T, searchDelay = 20)
 }
 
 shinyApp(ui, server)
-
+?htmlOutput
 #End of app code##------------------------------------------------------------------------------------
 #------------------------------------------------------------------------------------------
  print("You chose from both 'Country:' and 'Geographical region:'. 
@@ -192,6 +227,13 @@ shinyApp(ui, server)
       To deselect, put the dropdown on 'None'.")
 ?renderImage
 ?renderTable
+?htmlTemplate
+
+list(src = tab,
+     contentType = 'html',
+     width = 300,
+     height = 350,
+     alt = "This is a test")
 #renderPrint({
 #  if(!!input$country3 == "None" & !!input$eureg3 == "None"){
 #    lm(!!input$DV ~ !!!input$IDV) %>% 

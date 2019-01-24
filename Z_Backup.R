@@ -103,30 +103,8 @@ shinyUI(fluidPage(
   )
 ))
 
-menuItem("Introduction", tabName = "intro", icon = icon("info-sign", lib = "glyphicon")),
 
-vis_data <- dplyr::select(EVS_final, sat, edu_cat, nation, eureg, siops)
-vis_data %<>% na.omit
 
-shiny_data <- list(
-  "Life satisfaction" = vis_data$sat,
-  "Educational categories" = vis_data$edu_cat,
-  "Country of residence" = vis_data$nation,
-  "Geographical region" = vis_data$eureg,
-  "SIOPS-index" = vis_data$siops
-)
 
-nat_geodata <- read_rds("Data/Nation_geoData.rds")
-
-output$map <- renderPlot({
-  ggplot(data = nat_geodata)+
-    geom_sf(aes(fill = !!input$macro))+
-    labs(fill = paste(input$macro))+
-    coord_sf(xlim = c(-24, 50), ylim = c(33, 71), expand = FALSE)
   
-  box(title = "Europe map plot", status = "primary", solidHeader = T, width = 8,
-      plotOutput("map")),
-  box(title = "Controls for map plot", status = "warning", solidHeader = T, 
-      width = 4,
-      "Choose your variable for plotting",br(), br(),
-      varSelectInput("macro", label = "Variable:", nat_geodata))
+ 
