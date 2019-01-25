@@ -2,10 +2,11 @@
 #This script is used to make necessary preparation for treatment of variables in the 
 #ongoing project
 
+#install.packages(c("haven", "plyr", "tidyverse", "magrittr"))
+
 library(haven)
 library(plyr)
 library(tidyverse)
-library(dplyr)
 library(magrittr)
 
 #-----------------------------------------------------------------------------------------

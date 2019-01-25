@@ -2,6 +2,9 @@
 # This script provides basic preparation of variables used
 # for further analyses. 
 
+#install.packages(c("haven", "plyr", "tidyverse", "magrittr", "psych", "sf", "naturalearth", 
+#                   "rnaturalearthdata", "rgeos"))
+
 library(haven)
 library(plyr)
 library(tidyverse)

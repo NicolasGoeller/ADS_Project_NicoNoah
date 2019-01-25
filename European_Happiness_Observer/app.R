@@ -1,11 +1,15 @@
-install.packages(c("shiny", "shinydashboard"))
+#install.packages(c("shiny", "shinydashboard", "tidyverse", "magrittr", "hrbrthemes", 
+#                    "stargazer", ))
+#install.packages(c("htmltools", "htmlwidgets"))
+
 library(shiny)
 library(shinydashboard)
 library(tidyverse)
 library(magrittr)
 library(hrbrthemes)
 library(stargazer)
-install.packages("htmltools")
+library(htmltools)
+library(htmlwidgets)
 
 #------------------------------------------------------------------------------------
 
@@ -195,8 +199,7 @@ server <- function(input, output) {
     }
   })
   
-  output$regtab <- renderDocument({
-      lm(Life_satisfaction ~ SIOPS_Index, shiny_data) %>%
+  lm(Life_satisfaction ~ SIOPS_Index, shiny_data) %>%
       stargazer( #regression models 
               type = "html", # character vector (eg. "text" / "html" / "latex")
               title = "Linear regression model",  # header
@@ -209,17 +212,24 @@ server <- function(input, output) {
               dep.var.caption = "Dependent variable", # Caption (Top) of dependent variable
               star.cutoffs = c(0.05,0.01,0.001),
               dep.var.labels = c("Test"))
+    tab <- htmlTemplate(filename = "European_Happiness_Observer/table1.html")
+   
+  output$regtab <- renderDocument(tab)
+      
     
     #P1 Get reactive variables in the frame; P2 get nice output on shiny
     #sollte möglich sein mit renderImage den table1.html output von stargazer aus dem 
     #EHO file einzulesen
-  }) #Work in progress
+   #Work in progress
   
   output$data <- renderDataTable(shiny_data, escape = T, searchDelay = 20)
 }
 
 shinyApp(ui, server)
 ?htmlOutput
+?htmlTemplate
+?renderDocument
+?renderImage
 #End of app code##------------------------------------------------------------------------------------
 #------------------------------------------------------------------------------------------
  print("You chose from both 'Country:' and 'Geographical region:'. 

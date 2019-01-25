@@ -1,18 +1,17 @@
-## This script puts everything nicely together by constructiing plots
+## This script puts everything nicely together by constructing plots
+#install.packages(c("tidyverse", "stargazer", "hrbrthemes", "extrafont", "memisc", "sf", 
+#                   "rnaturalearth", "rnaturalearthdata", "rgeos"))
 
-library(plyr)
 library(tidyverse)
 library(stargazer)
 library(hrbrthemes) 
 library(extrafont)
 library(memisc)
-#install.packages(c("sf", "rnaturalearth", "rnaturalearthdata", "rgeos"))
-#install.packages("rworldmap") #useful package to solve the geodata problem
 library(sf)         
 library(rnaturalearth)
 library(rnaturalearthdata)
 library(rgeos)
-#library(rworldmap)
+
 
 #Read in data sets
 EVS_final <- read_rds("Data/EVS_final.rds")
@@ -133,7 +132,35 @@ ggplot(data = nat_data_vis)+
   geom_text(data= nat_data_vis, aes(x = X, y = Y, label = adm0_a3),
             color = "black", fontface = "bold" , size = 3, check_overlap = FALSE) #label for FRA is dis-orientated
 
+#----------------------------------------------------------------------------------------------------------
 
+##  4. Codebook
 
+?data.set
+?codebook
+
+EVS_book <- dplyr::select(EVS_final,
+                   eureg, siops)
+EVS_book <- as.data.set(EVS_book)
+
+EVS_book <- within(EVS_book,{
+  
+  description(eureg) <- "Geopgraphical region in Europe"
+  measurement(eureg) <- "nominal"
+  missing.values(eureg) <- c(NA)
+  annotation(eureg)["Remark"] <- "Item was recoded after the UN classification from the variable 'nation'"
+})
+
+EVS_book <- within(EVS_book,{
+  
+  description(siops) <- "SIOPS-Index"
+  wording(siops) <- "Standard Index of Occupational Prestige Scala"
+  measurement(siops) <- "ratio"
+  missing.values(siops) <- c(NA)
+})
+
+codebook(EVS_book)
+description(EVS_book)
+Write(codebook(EVS_book), file = "EVS_final_cdbk.")
 
 
