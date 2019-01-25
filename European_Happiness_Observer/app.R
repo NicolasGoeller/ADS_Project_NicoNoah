@@ -1,15 +1,13 @@
 #install.packages(c("shiny", "shinydashboard", "tidyverse", "magrittr", "hrbrthemes", 
 #                    "stargazer", ))
-#install.packages(c("htmltools", "htmlwidgets"))
 
+install.packages("viridis")
 library(shiny)
 library(shinydashboard)
 library(tidyverse)
 library(magrittr)
 library(hrbrthemes)
 library(stargazer)
-library(htmltools)
-library(htmlwidgets)
 
 #------------------------------------------------------------------------------------
 
@@ -116,7 +114,7 @@ ui <- dashboardPage(
       tabItem(tabName = "regress", h1("Linear, mixed-effects models to customize"),
               fluidRow(
                 box(title = "Regression table", status = "primary", solidHeader = T, width = 8,
-                    htmlOutput("regtab")),
+                    uiOutput("regtab")),
                 box(title = "Controls for regression", status = "warning", solidHeader = T, 
                     width = 4,
                     "Choose your variables for modeling, for singular countries or regions select from 'Country:' or 'Geographical region:'", br(),br(),
@@ -139,10 +137,19 @@ ui <- dashboardPage(
 server <- function(input, output) {
   
   output$map <- renderPlot({
-    ggplot(data = shiny_nat)+
+    if(!!input$macro != "Country_of_residence"){
+      ggplot(data = shiny_nat)+
       geom_sf(aes(fill = !!input$macro))+
       labs(fill = paste(input$macro))+
+      scale_fill_viridis_c()+
       coord_sf(xlim = c(-24, 50), ylim = c(33, 71), expand = FALSE)
+    } else {
+      ggplot(data = shiny_nat)+
+        geom_sf(aes(fill = !!input$macro))+
+        labs(fill = paste(input$macro))+
+        scale_fill_viridis_d()+
+        coord_sf(xlim = c(-24, 50), ylim = c(33, 71), expand = FALSE)
+    }
   })
   
   output$barchart <- renderPlot({
@@ -168,6 +175,15 @@ server <- function(input, output) {
       labs(x = paste(input$variable))+
       theme_ipsum(grid = "Y") +
       coord_flip()
+    }else{
+      text = paste("\n   You chose from both 'Country:' and 'Geographical region:'.\n",
+                   "       Please do only select from one of those at a time.\n",
+                   "       To deselect, put the dropdown on 'None'.")
+      ggplot() + 
+        annotate("text", x = 4, y = 25, size=8, label = text) + 
+        theme_void() +
+        theme(panel.grid.major=element_blank(),
+              panel.grid.minor=element_blank())
     }
   })
   
@@ -195,12 +211,21 @@ server <- function(input, output) {
         labs(x = paste(input$xvar), y = paste(input$yvar))+
         theme_ipsum(grid = "Y")
     }else{
-     
+      text = paste("\n   You chose from both 'Country:' and 'Geographical region:'.\n",
+                   "       Please do only select from one of those at a time.\n",
+                   "       To deselect, put the dropdown on 'None'.")
+      ggplot() + 
+        annotate("text", x = 4, y = 25, size=8, label = text) + 
+        theme_void() +
+        theme(panel.grid.major=element_blank(),
+              panel.grid.minor=element_blank())
     }
   })
   
-  lm(Life_satisfaction ~ SIOPS_Index, shiny_data) %>%
-      stargazer( #regression models 
+  output$regtab <- renderUI({
+    reg <- paste(paste(input$DV), paste(input$IDV), sep = "~")
+    lm(as.formula(reg), shiny_data) %>%
+       stargazer( #regression models 
               type = "html", # character vector (eg. "text" / "html" / "latex")
               title = "Linear regression model",  # header
               style = "default",  # style (choice see below)
@@ -211,79 +236,20 @@ server <- function(input, output) {
               column.separate = c(1,1),  # how column labels should be assigned (label over sev. columns possible)
               dep.var.caption = "Dependent variable", # Caption (Top) of dependent variable
               star.cutoffs = c(0.05,0.01,0.001),
-              dep.var.labels = c("Test"))
+              dep.var.labels = c("Test")) 
     tab <- htmlTemplate(filename = "European_Happiness_Observer/table1.html")
-   
-  output$regtab <- renderDocument(tab)
+  })
       
-    
-    #P1 Get reactive variables in the frame; P2 get nice output on shiny
-    #sollte möglich sein mit renderImage den table1.html output von stargazer aus dem 
-    #EHO file einzulesen
-   #Work in progress
-  
   output$data <- renderDataTable(shiny_data, escape = T, searchDelay = 20)
 }
 
 shinyApp(ui, server)
-?htmlOutput
-?htmlTemplate
-?renderDocument
-?renderImage
+
 #End of app code##------------------------------------------------------------------------------------
 #------------------------------------------------------------------------------------------
- print("You chose from both 'Country:' and 'Geographical region:'. 
-      Please do only select from one of those at a time. 
-      To deselect, put the dropdown on 'None'.")
-?renderImage
-?renderTable
-?htmlTemplate
+??caret
+?paste
 
-list(src = tab,
-     contentType = 'html',
-     width = 300,
-     height = 350,
-     alt = "This is a test")
-#renderPrint({
-#  if(!!input$country3 == "None" & !!input$eureg3 == "None"){
-#    lm(!!input$DV ~ !!!input$IDV) %>% 
-#      stargazer(#regression models 
-#        type = "text", # character vector (eg. "text" / "html" / "latex")
-#        title = "Linear regression model",  # header
-#        style = "default",  # style (choice see below)
-#        summary = NULL,  # logical vector: output summary statistics when given data.frame
-#        out = "table1.html", # path and output of file
-#        out.header = FALSE, # logical vector: should output file contain code-header?
-#        column.labels = c("Linear model"), # column labels for mod1/mod2
-#        column.separate = c(1,1),  # how column labels should be assigned (label over sev. columns possible)
-#        dep.var.caption = "Dependent variable", # Caption (Top) of dependent variable
-#        star.cutoffs = c(0.05,0.01,0.001),
-#        dep.var.labels = c(paste(input$DV)))
-#  }else if(!!input$country3 == "None" & !!input$eureg3 == "None"){
-#    shiny_data %>% 
-#      filter(Geographical_region == input$eureg3) %>%
-#      
-#      stargazer
-#  }else if(!!input$country3 == "None" & !!input$eureg3 == "None"){
-#    shiny_data %>% 
-#      filter(Country_of_residence == input$country3) %>% 
-#      stargazer
-#  }
-#})
-
-#mod <- lm(Life_satisfaction ~ SIOPS_Index, shiny_data)
-#stargazer(mod, #regression models 
-#  type = "html", # character vector (eg. "text" / "html" / "latex")
-#  title = "Linear regression model",  # header
-#  style = "default",  # style (choice see below)
-#  summary = NULL,  # logical vector: output summary statistics when given data.frame
-#  out = "European_Happiness_Observer/table1.html", # path and output of file
-#  out.header = FALSE, # logical vector: should output file contain code-header?
-#  column.labels = c("Linear model"), # column labels for mod1/mod2
-#  column.separate = c(1,1),  # how column labels should be assigned (label over sev. columns possible)
-#  dep.var.caption = "Dependent variable", # Caption (Top) of dependent variable
-#  star.cutoffs = c(0.05,0.01,0.001),
-#  dep.var.labels = c("Test"))
-
-
-
+x <- "Life"
+y <- "satisfaction"
+paste(x, y, collapse = " ~ ")
