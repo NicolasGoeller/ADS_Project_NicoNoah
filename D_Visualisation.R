@@ -1,4 +1,5 @@
 ## This script puts everything nicely together by constructing plots
+
 #install.packages(c("tidyverse", "stargazer", "hrbrthemes", "extrafont", "memisc", "sf", 
 #                   "rnaturalearth", "rnaturalearthdata", "rgeos"))
 
@@ -62,28 +63,12 @@ EVS %>%
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-###   2. Creating map
+###   2. Maps 
 
-#--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+##    2.1 Create some plots
 
-## 2.1 Plot Europe
-
-# basic plot of Europe  
-ggplot(data = eur) +
-  geom_sf() # need to zoom in 
-
-# second plot of Europe (zoomed in properly)
-ggplot(data = eur) +
-  geom_sf() +
-  ggtitle("Europe map")+
-  coord_sf(xlim = c(-24, 50), ylim = c(33, 71), expand = FALSE)
-
-#----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-##    2.2 Create some plots
-
-#   Countries and GDP per capita 
-ggplot(data = nat_data_vis)+
+#     2.1.1 Countries and GDP per capita 
+ggplot(data = nat_geodata)+
   geom_sf(aes(fill = GDPpc))+
   labs(fill = "GDP per capita 2008")+
   ggtitle("Europe Map", 
@@ -91,9 +76,9 @@ ggplot(data = nat_data_vis)+
   coord_sf(xlim = c(-24, 50), ylim = c(33, 71), expand = FALSE)
   
 
-#   Countries and Freedom House rating 2008 
+#     2.1.2 Countries and Freedom House rating 2008 
 #Issue titles replace the rendering of the plot
-ggplot(data = nat_data_vis)+
+ggplot(data = nat_geodata)+
   geom_sf(aes(fill = fhrate))+
   labs(fill = "Freedom House Democracy Rating 2008")+
   ggtitle("Europe Map", 
@@ -101,16 +86,16 @@ ggplot(data = nat_data_vis)+
   coord_sf(xlim = c(-24, 50), ylim = c(33, 71), expand = FALSE)
 
 
-#   Countries and UNHDP HDI rating 2008 
-ggplot(data = nat_data_vis)+
+#     2.1.3 Countries and UNHDP HDI rating 2008 
+ggplot(data = nat_geodata)+
   geom_sf(aes(fill = hdi))+
   labs(fill = "HDI Index 2008")+
   ggtitle("Europe Map", 
           subtitle = "Countries and HDI Index")+
   coord_sf(xlim = c(-24, 50), ylim = c(33, 71), expand = FALSE)
 
-#     2.2.4 Countries and life_sat
-ggplot(data = nat_data_vis)+
+#     2.1.4 Countries and life_sat
+ggplot(data = nat_geodata)+
   geom_sf(aes(fill = life_sat))+
   labs(fill = "Life satisfaction (from low to high) 2008")+
   ggtitle("Europe Map", 
@@ -120,10 +105,10 @@ ggplot(data = nat_data_vis)+
 
 #---------------------------------------------------------------------------------------------------------------------------------
 
-##    2.3 Create plots with country indication 
+##    2.2 Create plots with country indication 
 
-# Countries and GDP per capita 
-ggplot(data = nat_data_vis)+
+#     2.2.1 Countries and GDP per capita 
+ggplot(data = nat_geodata)+
   geom_sf(aes(fill = GDPpc))+
   labs(fill = "GDP per capita")+
   ggtitle("Europe Map", 
@@ -134,7 +119,16 @@ ggplot(data = nat_data_vis)+
 
 #----------------------------------------------------------------------------------------------------------
 
-##  4. Codebook
+###   3. Regional maps
+
+
+
+
+#----------------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------
+
+
+###  4. Codebook
 
 ?data.set
 ?codebook

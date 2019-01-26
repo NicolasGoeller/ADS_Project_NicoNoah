@@ -7,6 +7,7 @@
 
 library(haven)
 library(plyr)
+library(dplyr)
 library(tidyverse)
 library(magrittr)
 library(psych)
@@ -434,17 +435,17 @@ wb_data$nation <- wb_data$country
 
 # Creating a subsetted dataset for variable to be aggregated
 EVS_nat <- dplyr::select(EVS, nation, nowork, sat) # backup: intp_trust
-EVS_reg <- dplyr::select(EVS, nation, reg, intp_trust, inst_trust, trust_wrth)
+EVS_reg <- dplyr::select(EVS, nation, c_code, reg, intp_trust, inst_trust, trust_wrth)
 
 #Creating 
 EVS_nat <- EVS_nat %>% 
-  group_by(nation) %>% 
-  summarise(unemployment = mean(nowork, na.rm = T),
+  dplyr::group_by(nation) %>% 
+  dplyr::summarise(unemployment = mean(nowork, na.rm = T),
             life_sat = mean(sat, na.rm = T))
 
 EVS_reg <- EVS_reg %>% 
-  group_by(reg) %>% 
-  summarise(trust_wrth_reg = mean(trust_wrth, na.rm = T), 
+  dplyr::group_by(reg, c_code) %>% 
+  dplyr::summarise(trust_wrth_reg = mean(trust_wrth, na.rm = T), 
             intp_trust_reg = mean(intp_trust, na.rm = T),
             inst_trust_reg = mean(inst_trust, na.rm = T))
 
@@ -501,6 +502,9 @@ EVS_final <- full_join(EVS_final, EVS_reg, by = "reg")
 #-----------------------------------------------------------------------------------
 
 ###   4. Integrating Geodata into the national data set
+
+##    4.1 Create subset of only European geo_data
+
 nat_geo <- c("Albania", "Austria", "Armenia", "Belgium", "Bosnia and Herzegovina", 
              "Bulgaria", "Belarus", "Croatia", "Cyprus", "Czech Republic", "Denmark", 
              "Estonia", "Finland", "France", "Georgia", "Germany", "Greece", "Hungary", 
@@ -511,12 +515,24 @@ nat_geo <- c("Albania", "Austria", "Armenia", "Belgium", "Bosnia and Herzegovina
 
 eur <- ne_countries(country = nat_geo, scale = "medium", returnclass = "sf")
 
-# rename countries (1) Bosnia and Herzegovina, (2) Serbia (which variables to rename (admin, geounit, subunit, format_en)?)
-eur$sovereignt <- mapvalues(eur$sovereignt, from = c("Bosnia and Herzegovina", "Republic of Serbia"), 
+# rename countries (1) Bosnia and Herzegovina, (2) Serbia 
+eur$sovereignt <- plyr::mapvalues(eur$sovereignt, from = c("Bosnia and Herzegovina", "Republic of Serbia"), 
                             to = c("Bosnia Herzegovina", "Serbia"))
 
 # add centroids with coordinates X and Y
 eur <- cbind(eur, st_coordinates(st_centroid(eur$geometry)))
+
+# basic plot of Europe to see if everything worked
+#install.packages("ggplot")
+#library(ggplot)
+#ggplot(data = eur) +
+  #geom_sf() # need to zoom in 
+
+# second plot of Europe (zoomed in properly)
+#ggplot(data = eur) +
+  #geom_sf() +
+  #ggtitle("Europe map")+
+  #coord_sf(xlim = c(-24, 50), ylim = c(33, 71), expand = FALSE)
 
 # select necessary variables
 eur_s <- dplyr::select(eur, sovereignt, geometry, adm0_a3, X, Y)
@@ -524,8 +540,73 @@ eur_s <- dplyr::select(eur, sovereignt, geometry, adm0_a3, X, Y)
 # Adding nation variable
 eur_s$nation <- eur_s$sovereignt
 
+##      4.2 Combine European geo_data with nat_data
+
 # Joining nat_data and European geo_data to obtain new nat_geodata
 nat_geodata <- left_join(nat_data, eur_s, by = "nation")
+
+#---------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------
+
+###     5. Integrating regional data 
+
+# We need EVS_reg to refer to regional EVS data that we grouped above
+
+# To obtain NUTS 1 data, we install and load the eurostat package
+#install.packages("eurostat")
+library(eurostat)
+
+# Obtain NUTS 1 geodata 
+nuts_data2 <- get_eurostat_geospatial(output_class = "sf", resolution = "60", nuts_level = "1") #no year
+nuts_data <- get_eurostat_geospatial(output_class = "sf", resolution = "60", nuts_level = "1", year = "2006")
+
+
+# Plot NUTS 1 regions and zoom in appropiately 
+ggplot(data = nuts_data) + 
+  geom_sf()+
+  coord_sf(xlim = c(-24, 50), ylim = c(33, 71), expand = FALSE)
+
+# Select necessary variables in nuts_data 
+nuts_data <- dplyr::select(nuts_data, CNTR_CODE, NUTS_NAME, geometry)
+
+# reorder EVS_reg data
+EVS_reg <- EVS_reg[c(2,1,3,4,5)]
+
+# Edit both datasets to obtain homogeneity 
+
+# omit empty Aland manually in nuts_data
+nuts_data <- nuts_data[-3, ]
+
+nuts_data <- nuts_data %>%
+  filter(CNTR_CODE != "TR") %>% # exclude turkey (not asked in EVS)
+  filter(NUTS_NAME != "ÅLAND") %>% # exclude ÅLAND because not in EVS
+  filter(NUTS_NAME != "Região Autónoma da Madeira") %>% # exclude Madeira because not in EVS
+  filter(NUTS_NAME != "Região Autónoma dos Açores") %>% # exclude Acores because not in EVS
+  filter(CNTR_CODE != "LI") %>% # exclude Liechtenstein because not in EVS
+  filter(CNTR_CODE != "CY") # exclude Cybrus to avoid issues
+  
+# omit empty row for Swedish region in EVS
+EVS_reg <- EVS_reg[-116, ]
+  
+EVS_reg <- EVS_reg %>%
+  filter(c_code != "TR") %>% # exclude turkey (not asked in EVS)
+  filter(c_code != "AL") %>% # exclude Albania because not in Eurostat
+  filter(c_code != "AM") %>% # exclude Armenia because not in Eurostat
+  filter(c_code != "UA") %>% # exclude Ukraine because not in Eurostat
+  filter(c_code != "RS") %>% # exclude Serbia because not in Eurostat
+  filter(c_code != "RS-KM") %>% # exclude Kosovo because not in Eurostat
+  filter(c_code != "GE") %>% # exclude Georgia because not in Eurostat
+  filter(c_code != "CY") %>% # exclude Cybrus to avoid issues
+  filter(c_code != "CY-TCC") %>% # exclude North Cyprus because not in Eurostat
+  filter(c_code != "BY") %>% # exclude Belarus to avoid issues
+  filter(c_code != "BA") # exclude Bosnia H. to avoid issues
+
+
+
+
+
+
+
 
 #---------------------------------------------------------------------------------------------
 
