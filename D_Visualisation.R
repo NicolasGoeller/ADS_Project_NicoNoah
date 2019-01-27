@@ -17,6 +17,7 @@ library(rgeos)
 #Read in data sets
 EVS_final <- read_rds("Data/EVS_final.rds")
 nat_geodata <- read_rds("Data/Nation_geoData.rds")
+reg_geodata <- read_rds("Data/Region_geoData.rds")
 
 #--------------------------------------------------------------------------------------------------------------------
 #--------------------------------------------------------------------------------------------------------------------
