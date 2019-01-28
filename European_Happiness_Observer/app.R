@@ -1,5 +1,7 @@
 #install.packages(c("shiny", "shinydashboard", "tidyverse", "magrittr", "hrbrthemes", 
 #                    "stargazer", "lme4", "viridis"))
+install.packages("readtext")
+library(readtext)
 
 library(shiny)
 library(shinydashboard)
@@ -100,15 +102,35 @@ ui <- dashboardPage(
       menuItem("Mapped dashboards", tabName = "map", icon = icon("globe europe", lib = "font-awesome")),
         menuSubItem("Regional dashboard", tabName = "regmap"),
       menuItem("Graphics for detailed analysis", tabName = "graphics", icon = icon("stats", lib = "glyphicon")),
-        menuSubItem("Univariate bar charts", tabName = "bar"),
-        menuSubItem("Bivariate line plots", tabName = "plots"),
+        menuSubItem("Bar charts", tabName = "bar"),
+        menuSubItem("Line graphs", tabName = "plots"),
         menuSubItem("Boxplots", tabName = "box"),
         menuSubItem("Regression tables", tabName = "regress"),
       menuItem("Raw data", tabName = "data", icon = icon("floppy-disk", lib = "glyphicon")))
   ),
   dashboardBody(
     tabItems(
-      tabItem(tabName = "intro", h1("Introduction to the European Happiness Observer")),
+      tabItem(tabName = "intro", h1("Introduction to the European Happiness Observer"),
+              fluidRow(
+                box(title = "Foreword", status = "primary", width = 12,
+                    "The ‘European Happiness Observer‘ is a project with the aim
+                    to provide an easy access to analysis and visualisation of 
+                    data on individual and structural determinants of life satisfaction
+                    for people in European countries. Data was acquired from different 
+                    sources to reflect pecuniary and non-pecuniary elements on both the
+                    individual level and the structural level of region and country
+                    of the individual’s residence. Interested users can employ
+                    geoplots on national and regional level for the respective 
+                    structural variables. Additionally, a range of visualisations
+                    consisting of bar charts, line graphs and boxplots are free to 
+                    customize through the user. Furthermore, raw data is accessible
+                    in table format for examination. Lastly, regression models of 
+                    regular linear and mixed-effects nature can be composed for more
+                    extensive analysis. All interfaces are designed to be workable 
+                    with minimal experience in data handling, however interpretation
+                    of results may require some knowledge of the topic, depending on
+                    the analysis tool in question.")
+              )),
       tabItem(tabName = "map", h1("Geographical overview"),
               fluidRow(
                 box(title = "Europe map plot for nations", status = "primary", solidHeader = T, width = 9,
@@ -130,21 +152,35 @@ ui <- dashboardPage(
                     varSelectInput("regio", "Variable:", shiny_nat[,1:7]))
               )),
       
-      tabItem(tabName = "graphics", h1("Graphics for detailed analysis")),
+      tabItem(tabName = "graphics", h1("Graphics for detailed analysis"),
+              fluidRow(
+                box(title = "Explanation", status = "primary", solidHeader = T, width = 4,
+                    "This section is dedicated for analysis of variables. The bar charts and
+                    line graphs are designed to be accessible for beginners, too. More 
+                    experienced users may also use the boxplots and regression tables to get
+                    deeper insights into the data. Regarding questions of coding and sourcing 
+                    of data, users are asked to use the codebook. Details for interpretation, 
+                    especially regarding the multilevel model in 'Regression tables'."),
+                box(title = "Codebook", status = "warning", solidHeader = T, width = 8,
+                    downloadButton("down", "Download the codebook as txt:"), br(),
+                    textOutput("cdb"))
+              )),
       
-      tabItem(tabName = "bar", h1("Univariate bar chart to customize"),
+      tabItem(tabName = "bar", h1("Bar chart to customize"),
               fluidRow(
                 box(title = "Bar chart", status = "primary", solidHeader = T, width = 8,
                     plotOutput("barchart")),
                 box(title = "Controls for bar chart", status = "warning", solidHeader = T, 
                     width = 4,
                     "Choose your variable for plotting, for singular countries or regions select from 'Country:' or 'Geographical region:'", br(),br(),
-                    varSelectInput(inputId = "variable", label = "Variable:", shiny_data[,1:12]), 
+                    varSelectInput(inputId = "variable", label = "Variable:", shiny_data[,1:12]),
+                    checkboxInput("check", "Allow for in-chart grouping"),
+                    varSelectInput(inputId = "fill", "Variable to group by:", shiny_data[,c(5,9)]),
                     selectInput(inputId = "country", label = "Country:", nat),
                     selectInput(inputId = "eureg", label = "Geographical region:", eureg))
                 )),
       
-      tabItem(tabName = "plots", h1("Bivariate line plot to customize"),
+      tabItem(tabName = "plots", h1("Bivariate line graph to customize"),
               fluidRow(
                 box(title = "Line plot", status = "primary", solidHeader = T, width = 8,
                     plotOutput("lineplot")),
@@ -163,8 +199,8 @@ ui <- dashboardPage(
                     plotOutput("boxplot")),
                 box(title = "Controls for boxplot", status = "warning", solidHeader = T, 
                     width = 4,
-                    varSelectInput("group", "Plot grouped by:", shiny_data[,13:15]),
-                    varSelectInput("observ", "Variable to observe:", shiny_data[,1:12]),
+                    varSelectInput("group", "Plot grouped by (x-Axis):", shiny_data[,13:15]),
+                    varSelectInput("observ", "Variable to observe (y-Axis):", shiny_data[,1:12]),
                     varSelectInput("order", "Variable to order groups:", shiny_data[,16:23]))
               )),
       
@@ -216,29 +252,76 @@ server <- function(input, output) {
   
   output$regiomap <- renderPlot({})
   
+  output$cdb <- renderText(includeText("EVS_final_cdbk"))
+  
+  output$down <- downloadHandler("EVS_final_cdbk.txt", "EVS_final_cdbk.txt")
+  
   output$barchart <- renderPlot({
     if(!!input$country == "None" & !!input$eureg == "None"){
-      ggplot(shiny_data, aes(!!input$variable))+
-        geom_bar(color = "grey58", fill = "grey58")+
-        labs(x = paste(input$variable))+
-        theme_ipsum(grid = "Y") +
-        coord_flip()
+      if(!!input$check != T){
+        ggplot(shiny_data, aes(x = !!input$variable))+
+          geom_bar(color = "grey58", fill = "grey58")+
+          #geom_text(x = paste(prop.table(input$variable)*100))+
+          labs(x = paste(input$variable), caption = paste("n =", paste(shiny_data %>%
+                                                                  summarise(n()))))+
+          theme_ipsum(grid = "Y") +
+          coord_flip()
+      } else {
+        ggplot(shiny_data, aes(x = !!input$variable, fill = !!input$fill))+
+          geom_bar()+
+          #geom_text(x = paste(prop.table(input$variable)*100))+
+          labs(x = paste(input$variable), caption = paste("n =", paste(shiny_data %>%
+                                                                         summarise(n()))))+
+          theme_ipsum(grid = "Y") +
+          coord_flip()
+      }
+      
     }else if(!!input$country == "None" & !!input$eureg != "None"){
-      shiny_data %>% 
-        filter(Geographical_region == input$eureg) %>% 
-        ggplot(aes(!!input$variable))+
-        geom_bar(color = "grey58", fill = "grey58")+
-        labs(x = paste(input$variable))+
-        theme_ipsum(grid = "Y") +
-        coord_flip()
+      if(!!input$check != T){
+        shiny_data %>% 
+          filter(Geographical_region == input$eureg) %>% 
+          ggplot(aes( x = !!input$variable))+
+          geom_bar(color = "grey58", fill = "grey58")+
+          labs(x = paste(input$variable), caption = paste("n =", paste(shiny_data %>%
+                                                                         filter(Geographical_region == input$eureg) %>%
+                                                                         summarise(n()))))+
+          theme_ipsum(grid = "Y") +
+          coord_flip()
+      } else {
+        shiny_data %>% 
+          filter(Geographical_region == input$eureg) %>% 
+          ggplot(aes(x = !!input$variable, fill = !!input$fill))+
+          geom_bar()+
+          labs(x = paste(input$variable), caption = paste("n =", paste(shiny_data %>%
+                                                                  filter(Geographical_region == input$eureg) %>%
+                                                                  summarise(n()))))+
+          theme_ipsum(grid = "Y") +
+          coord_flip()
+      }
+      
     }else if(!!input$country != "None" & !!input$eureg == "None"){
-      shiny_data %>% 
-      filter(Country_of_residence == input$country) %>% 
-    ggplot(aes(!!input$variable))+
-      geom_bar(color = "grey58", fill = "grey58")+
-      labs(x = paste(input$variable))+
-      theme_ipsum(grid = "Y") +
-      coord_flip()
+      if(!!input$check != T){
+        shiny_data %>% 
+          filter(Country_of_residence == input$country) %>% 
+          ggplot(aes(x = !!input$variable))+
+          geom_bar(color = "grey58", fill = "grey58")+
+          labs(x = paste(input$variable), caption = paste("n =", paste(shiny_data %>%
+                                                                  filter(Country_of_residence == input$country) %>% 
+                                                                  summarise(n()))))+
+          theme_ipsum(grid = "Y") +
+          coord_flip()
+      }else {
+        shiny_data %>% 
+          filter(Country_of_residence == input$country) %>% 
+          ggplot(aes(x = !!input$variable, fill = !!input$fill))+
+          geom_bar()+
+          labs(x = paste(input$variable), caption = paste("n =", paste(shiny_data %>%
+                                                                         filter(Country_of_residence == input$country) %>% 
+                                                                         summarise(n()))))+
+          theme_ipsum(grid = "Y") +
+          coord_flip()
+      }
+      
     }else{
       text = paste("\n   You chose from both 'Country:' and 'Geographical region:'.\n",
                    "       Please do only select from one of those at a time.\n",
@@ -256,7 +339,8 @@ server <- function(input, output) {
       ggplot(shiny_data, aes(x = !!input$xvar, y = !!input$yvar))+
         geom_jitter(alpha = 0.7, color = "grey58")+
         geom_smooth(method = "lm", size = 1.1)+
-        labs(x = paste(input$xvar), y = paste(input$yvar))+
+        labs(x = paste(input$xvar), y = paste(input$yvar), caption = paste("n =", 
+                  paste(shiny_data %>% summarise(n()))))+
         theme_ipsum(grid = "Y")
     }else if(!!input$country2 == "None" & !!input$eureg2 != "None"){
       shiny_data %>% 
@@ -264,7 +348,9 @@ server <- function(input, output) {
         ggplot(aes(x = !!input$xvar, y = !!input$yvar))+
         geom_jitter(alpha = 0.7, color = "grey58")+
         geom_smooth(method = "lm", size = 1.1)+
-        labs(x = paste(input$xvar), y = paste(input$yvar))+
+        labs(x = paste(input$xvar), y = paste(input$yvar), caption = paste("n =", 
+                  paste(shiny_data %>% filter(Geographical_region == input$eureg2) %>% 
+                      summarise(n()))))+
         theme_ipsum(grid = "Y")
     }else if(!!input$country2 != "None" & !!input$eureg2 == "None"){
       shiny_data %>% 
@@ -272,7 +358,9 @@ server <- function(input, output) {
         ggplot(aes(x = !!input$xvar, y = !!input$yvar))+
         geom_jitter(alpha = 0.7, color = "grey58")+
         geom_smooth(method = "lm", size = 1.1)+
-        labs(x = paste(input$xvar), y = paste(input$yvar))+
+        labs(x = paste(input$xvar), y = paste(input$yvar), caption = paste("n =", 
+                  paste(shiny_data %>% filter(Country_of_residence == input$country2) %>% 
+                      summarise(n()))))+
         theme_ipsum(grid = "Y")
     }else{
       text = paste("\n   You chose from both 'Country:' and 'Geographical region:'.\n",
@@ -290,7 +378,8 @@ server <- function(input, output) {
     ggplot(shiny_data, aes(x = reorder(!!input$group, !!input$order), y = !!input$observ))+
       geom_boxplot()+
       coord_flip() +
-      labs(x = paste(input$group, "after", input$order), y = paste(input$observ))
+      labs(x = paste(input$group, "ordered after", input$order), y = paste(input$observ),
+           caption = paste("n =", paste(shiny_data %>% summarise(n()))))
       #theme_ipsum(grid = "Y")
   })
   

@@ -92,6 +92,8 @@ EVS %<>% within({ #non-pecuniary factors
   intp_trust <- v62 #Dummy: Do you think you can trust other people
   intp_trust[v62 %in% c(-5, -4, -3, -2, -1)] <- NA
   intp_trust <- (intp_trust - 2) * -1 #0 = No, 1 = Yes
+  intp_trust <- factor(intp_trust, levels = c(0, 1), labels = c("Distrustful", "Trustful"), 
+                       ordered = F)
   
   help <- v64 #Most people are helpful or look out for themselves (10 point)
   help[v64 %in% c(-5, -4, -3, -2, -1)] <- NA
@@ -125,6 +127,8 @@ EVS %<>% within({ #pecuniary factors
   nowork <- v89 #Are yourself employed
   nowork[v89 %in% c(-5, -4, -3, -2, -1)] <- NA
   nowork <- nowork - 1 #0 = Yes, 1 = No
+  nowork <- factor(nowork, levels = c(0, 1), labels = c("Employed", "Unemployed"), 
+                       ordered = F)
   
   inc_an <- v353YR #Annual income in euros
   inc_an[v353YR %in% c(-5, -4, -3, -2, -1)] <- NA
@@ -349,12 +353,13 @@ EVS %<>% within({ #index trustworthiness
   trust_wrth <- trust_wrth/7
 }) #index trustworthiness: scale from 0 to 9 i.e., from low trust in inst. to high trust in inst. 
 
-
+?factor
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ##    1.9 Format demograhics variables
 EVS %<>% within({ #demographics 
   sex <- v302 #Sex
   sex[v302 %in% c(-5, -4, -3, -2, -1)] <- NA
+  sex <- factor(sex, levels = c(1, 2), labels = c("Male", "Female"), ordered = F)
   
   age <- v303 #Age recoded from birth year
   age[v303 %in% c(-5, -4, -3, -2, -1)] <- NA
@@ -442,13 +447,13 @@ EVS_reg <- dplyr::select(EVS, nation, c_code, reg, intp_trust, inst_trust, trust
 #Creating 
 EVS_nat <- EVS_nat %>% 
   dplyr::group_by(nation) %>% 
-  dplyr::summarise(unemployment = mean(nowork, na.rm = T),
+  dplyr::summarise(unemployment = mean(as.numeric(nowork), na.rm = T),
             life_sat = mean(sat, na.rm = T))
 
 EVS_reg <- EVS_reg %>% 
   dplyr::group_by(reg, c_code) %>% 
   dplyr::summarise(trust_wrth_reg = mean(trust_wrth, na.rm = T), 
-            intp_trust_reg = mean(intp_trust, na.rm = T),
+            intp_trust_reg = mean(as.numeric(intp_trust), na.rm = T),
             inst_trust_reg = mean(inst_trust, na.rm = T))
 
 
