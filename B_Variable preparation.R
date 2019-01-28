@@ -353,7 +353,7 @@ EVS %<>% within({ #index trustworthiness
   trust_wrth <- trust_wrth/7
 }) #index trustworthiness: scale from 0 to 9 i.e., from low trust in inst. to high trust in inst. 
 
-?factor
+
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ##    1.9 Format demograhics variables
 EVS %<>% within({ #demographics 

@@ -135,23 +135,142 @@ ggplot(data = nat_geodata)+
 ?codebook
 
 EVS_book <- dplyr::select(EVS_final,
-                   eureg, siops)
+                          nation, c_abrv, reg, eureg, sat,
+                          siops, intp_trust, job_sat, nowork, isei, inst_trust,
+                          trust_wrth, sex, age, mar_stat, edu_cat, edu, town)
+
 EVS_book <- as.data.set(EVS_book)
 
 EVS_book <- within(EVS_book,{
   
+  #description() <- ""
+  #wording() <- ""
+  #measurement() <- ""
+  #missing.values() <- c(NA)
+  #annotation()["Source"] <- "European Value Survey 2008"
+  #annotation()["Remark"] <- ""
+  
+  description(nation) <- "Country of residence"
+  measurement(nation) <- "nominal"
+  missing.values(nation) <- c(NA)
+  annotation(nation)["Source"] <- "European Value Survey 2008"
+  annotation(nation)["Remark"] <- "The Russian Federation was excluded for purposes of visualisation. Northern Ireland and Northern Cyprus were recoded to belong to their respective legal states. Azerbaijan was excluded as there were no respondents in the sample."
+  
+  description(c_abrv) <- "Country Code"
+  measurement(c_abrv) <- "nominal"
+  missing.values(c_abrv) <- c(NA)
+  annotation(c_abrv)["Source"] <- "European Value Survey 2008"
+  annotation(c_abrv)["Remark"] <- "Country codes were recoded to match changes in country selection (see 'Country of residence)."
+  
+  description(reg) <- "Region of residence"
+  measurement(reg) <- "nominal"
+  missing.values(reg) <- c(NA)
+  annotation(reg)["Source"] <- "European Value Survey 2008"
+  annotation(reg)["Remark"] <- "Based on NUTS-1 coding, region codes were recoded to match changes in country selection."
+  
   description(eureg) <- "Geopgraphical region in Europe"
   measurement(eureg) <- "nominal"
   missing.values(eureg) <- c(NA)
-  annotation(eureg)["Remark"] <- "Item was recoded after the UN classification from the variable 'nation'"
-})
-
-EVS_book <- within(EVS_book,{
+  annotation(eureg)["Source"] <- "European Value Survey 2008, UN geograhical region code"
+  annotation(eureg)["Remark"] <- "The item was recoded after the UN classification from the variable 'nation'. 'Armenia' was added to Southern Europe and 'Georgia' was added to Eastern Europe."
   
-  description(siops) <- "SIOPS-Index"
-  wording(siops) <- "Standard Index of Occupational Prestige Scala"
-  measurement(siops) <- "ratio"
+  description(sat) <- "Individual level: Life satisfaction"
+  wording(sat) <- "All things considered, how satisfied are you with your life as a whole these days? (1-dissatisfied, 10-satisfied)"
+  measurement(sat) <- "interval"
+  missing.values(sat) <- c(NA)
+  annotation(sat)["Source"] <- "European Value Survey 2008"
+  annotation(sat)["Remark"] <- "The assumption of quasi-metric variable was taken when recoding to numeric."
+  
+  description(siops) <- "Individual level: SIOPS-Index"
+  wording(siops) <- "Standard Index of Occupational Prestige Scala (Values: 0-100)"
+  measurement(siops) <- "interval"
   missing.values(siops) <- c(NA)
+  annotation(siops)["Source"] <- "European Value Survey 2008"
+  annotation(siops)["Remark"] <- "The SIOPS-Index is  a widely known measure for social prestige of different occupations."
+  
+  description(intp_trust) <- "Individual level: Interpersonal trust"
+  wording(intp_trust) <- "Generally speaking, would you say that most people can be trusted or that you can’t be too careful in dealing with people? (0-Distrustful, 1-Trustful)"
+  measurement(intp_trust) <- "nominal"
+  missing.values(intp_trust) <- c(NA)
+  annotation(intp_trust)["Source"] <- "European Value Survey 2008"
+  annotation(intp_trust)["Remark"] <- "The item was recoded and scales were switched."
+  
+  description(job_sat) <- "Individual level: Job satisfaction"
+  wording(job_sat) <- "Overall, how satisfied or dissatisfied are you with your job? (1-dissatisfied, 10-satisfied)"
+  measurement(job_sat) <- "interval"
+  missing.values(job_sat) <- c(NA)
+  annotation(job_sat)["Source"] <- "European Value Survey 2008"
+  annotation(job_sat)["Remark"] <- "The assumption of quasi-metric variable was taken when recoding to numeric."
+  
+  description(nowork) <- "Individual level: Employment"
+  wording(nowork) <- "Are you yourself employed or not? (0-Employed, 1-Unemployed)"
+  measurement(nowork) <- "nominal"
+  missing.values(nowork) <- c(NA)
+  annotation(nowork)["Source"] <- "European Value Survey 2008"
+  annotation(nowork)["Remark"] <- "Item was recoded as factor variable."
+  
+  description(isei) <- "Individual level: ISEI-Index"
+  wording(isei) <- "International Socio-Economic Index of Occupational Status (Values: 16-90)"
+  measurement(isei) <- "interval"
+  missing.values(isei) <- c(NA)
+  annotation(isei)["Source"] <- "European Value Survey 2008"
+  annotation(isei)["Remark"] <- "The ISEI-Index is  a widely known measure for socio-economic status of different occupations."
+ 
+  #------------------index inst_trust variables
+  
+  description(inst_trust) <- "Individual level: Index for institutional trust"
+  measurement(inst_trust) <- "interval"
+  missing.values(inst_trust) <- c(NA)
+  annotation(inst_trust)["Source"] <- "European Value Survey 2008"
+  annotation(inst_trust)["Remark"] <- "The index was calculated from 12 variables regarding trust in different institutions. All were coded after the same 10-scale. This procedure was based on research literature, refer to the theoretical paper for more detailed legitimation. The index variables have a high Cronbach's alpha of 0.89."
+  
+  #----------------index trustworthiness variables
+  
+  description(trust_wrth) <- "Individual level: Index for trustworthiness"
+  measurement(trust_wrth) <- "interval"
+  missing.values(trust_wrth) <- c(NA)
+  annotation(trust_wrth)["Source"] <- "European Value Survey 2008"
+  annotation(trust_wrth)["Remark"] <- "The index was calculated from 7 variables regarding the propensity to commit certain minor offenses for egoistic benefit. All were coded after the same 10-scale, that was switched. This procedure was based on research literature, refer to the theoretical paper for more detailed legitimation. The index variables have a high Cronbach's alpha of 0.84."
+
+  description(sex) <- "Individual level: Sex of the respondent"
+  measurement(sex) <- "nominal"
+  missing.values(sex) <- c(NA)
+  annotation(sex)["Source"] <- "European Value Survey 2008"
+  annotation(sex)["Remark"] <- "Item was recoded as nominal factors."
+  
+  description(age) <- "Individual level: Age of the respondent"
+  measurement(age) <- "ratio"
+  missing.values(age) <- c(NA)
+  annotation(age)["Source"] <- "European Value Survey 2008"
+  annotation(age)["Remark"] <- "Item was coded based on the original variable of the respondent's year of birth, subtracted from 2008, the year of surveying."
+  
+  description(mar_stat) <- "Individual level: Marital status of the respondent"
+  wording(mar_stat) <- "What is your current legal marital status?"
+  measurement(mar_stat) <- "nominal"
+  missing.values(mar_stat) <- c(NA)
+  annotation(mar_stat)["Source"] <- "European Value Survey 2008()"
+  annotation(mar_stat)["Remark"] <- "Item was recoded as nominal factors."
+  
+  description(edu_cat) <- "Individual level: Educational categories for respondent"
+  wording(edu_cat) <- "What is the highest level you have completed in your education?"
+  measurement(edu_cat) <- "ordinal"
+  missing.values(edu_cat) <- c(NA)
+  annotation(edu_cat)["Source"] <- "European Value Survey 2008"
+  annotation(edu_cat)["Remark"] <- "The item was asked based on the 'ISCED-one digit code'(6-scale)."
+  
+  description(edu) <- "Individual level: Education of respondent"
+  wording(edu) <- "What is the highest level you have completed in your education?"
+  measurement(edu) <- "interval"
+  missing.values(edu) <- c(NA)
+  annotation(edu)["Source"] <- "European Value Survey 2008"
+  annotation(edu)["Remark"] <- "The item was asked based on the 'ISCED-two digit code' (13-scale). The assumption of quasi-metric variable was taken when recoding to numeric."
+  
+  description(town) <- "Individual level: Size of town where interview was conducted"
+  measurement(town) <- "interval"
+  missing.values(town) <- c(NA)
+  annotation(town)["Source"] <- "European Value Survey 2008"
+  annotation(town)["Remark"] <- "The assumption of quasi-metric variable was taken when recoding to numeric."
+  
 })
 
 codebook(EVS_book)
