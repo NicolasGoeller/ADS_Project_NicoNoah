@@ -404,8 +404,8 @@ EVS %<>% within({ #index variables trustworthiness
   av_tax <- (av_tax-10)*-1
   av_tax <- as.numeric(av_tax) 
   
-  av_pub_f <- v234 #avoid public transfer fair
-  av_pub_f[v234 %in% c(-5, -4, -3, -2, -1)] <- NA
+  av_pub_f <- v247 #avoid public transfer fair
+  av_pub_f[v247 %in% c(-5, -4, -3, -2, -1)] <- NA
   av_pub_f <- (av_pub_f-10)*-1
   av_pub_f <- as.numeric(av_pub_f) 
 }) #index variables trustworthiness
@@ -511,7 +511,7 @@ EVS_reg <- dplyr::select(EVS, nation, c_code, reg, intp_trust, inst_trust, trust
 EVS_nat <- EVS_nat %>% 
   dplyr::group_by(nation) %>% 
   dplyr::summarise(unemployment = mean(as.numeric(nowork), na.rm = T),
-            life_sat = mean(sat, na.rm = T))
+                  life_sat = mean(sat, na.rm = T))
 
 EVS_reg <- EVS_reg %>% 
   dplyr::group_by(reg) %>% 
@@ -625,7 +625,7 @@ nuts_data <- dplyr::select(nuts_data, CNTR_CODE, NUTS_NAME, geometry)
 
 ##Create new regional data set from EVS
 
-EVS_reg2 <- dplyr::select(EVS, nation, reg, c_code,inst_trust, trust_wrth, intp_trust)
+EVS_reg2 <- dplyr::select(EVS, nation, reg, c_code,inst_trust, trust_wrth, intp_trust, fair)
 
 #Renaming regions that have no geodata and will be taken as national regions
 EVS_reg2$reg <- mapvalues(EVS_reg2$reg, from = c("West (UA)", "North (UA)", "Centre (UA)", 
@@ -637,16 +637,14 @@ EVS_reg2 <- EVS_reg2 %>%
   dplyr::group_by(reg, nation, c_code) %>% 
   dplyr::summarise(trust_wrth_reg = mean(trust_wrth, na.rm = T), 
                    intp_trust_reg = mean(as.numeric(intp_trust), na.rm = T),
-                   inst_trust_reg = mean(inst_trust, na.rm = T))
+                   inst_trust_reg = mean(inst_trust, na.rm = T),
+                   fair_reg = mean(fair, na.rm = T))
 
 # Exclude problematic regions fomr new data set
 EVS_reg2 <- EVS_reg2[-111, ] # exclude empty row for Swedish region in EVS
 EVS_reg2 <- EVS_reg2 %>% 
   filter(c_code != c("CY"))
      
-# reorder EVS_reg2 data
-EVS_reg2 <- EVS_reg2[c(2,1,3,4,5)]
-
 
 ##      5.2 Get nation data for regions that are not listed
 
@@ -673,8 +671,8 @@ nuts_data <- rbind(nuts_data, natreg_geo)
 colnames(nuts_data) <- c("CNTR_CODE", "reg", "geometry")
 
 # Merge datasets
-reg_geodata <- left_join(EVS_reg2, nuts_data, by = "reg") #problems with CZ and some Polish regions
-reg_geodata <- reg_geodata[,-6]
+reg_geodata <- left_join(EVS_reg2, nuts_data, by = "reg")
+reg_geodata <- reg_geodata[,-8]
 
 
 #---------------------------------------------------------------------------------------------

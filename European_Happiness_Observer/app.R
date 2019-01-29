@@ -1,7 +1,5 @@
 #install.packages(c("shiny", "shinydashboard", "tidyverse", "magrittr", "hrbrthemes", 
 #                    "stargazer", "lme4", "viridis"))
-install.packages("readtext")
-library(readtext)
 
 library(shiny)
 library(shinydashboard)
@@ -17,23 +15,45 @@ library(stargazer)
 EVS_final <- read_rds("Data/EVS_final.rds")
 
 shiny_data <- dplyr::select(EVS_final, 
-                            sat, edu_cat, siops, job_sat, inc_mon, nowork, inst_trust,
-                            trust_wrth, sex, age, mar_stat, town, intp_trust,
+                            sat, happ, siops, job_sat, fair,
+                            intp_trust,inst_trust, trust_wrth,
+                            work_impo, free_job, talent, duty, work_first, sup, 
+                            entre, nowork,
+                            isei, inc_mon, inc_an, incppp_mon, inc_eq,
+                            sex, age, mar_stat, edu_cat, edu, town, 
                             nation, eureg, reg, 
-                            hdi, gini, fhrate, unemployment, GDPpc,
-                            trust_wrth_reg, intp_trust_reg, inst_trust_reg)
+                            hdi, gini, fhrate, unemployment, GDPpc, life_sat,
+                            trust_wrth_reg, intp_trust_reg, inst_trust_reg, fair_reg)
 shiny_data %<>% within({
   Life_satisfaction <- sat
-  Education_categories <- edu_cat
+  Happiness <- happ
   SIOPS_Index <- siops
   Job_satisfaction <- job_sat
-  Monthly_income <- inc_mon
-  Unemployed <- nowork
+  Fairness_of_other_people <- fair
+  
   Institutional_trust <- inst_trust
   Trustworthiness <- trust_wrth
   Trust_interpersonal <- intp_trust
+  
+  Importance_of_work <- work_impo
+  Freedom_in_job_decisions <- free_job
+  Job_talent_development <- talent
+  Work_as_societal_duty <- duty
+  Work_devotion <- work_first
+  Supervisory_work <- sup
+  Entrepreneurial_work <- entre
+  Unemployed <- nowork
+  
+  ISEI_Index <- isei
+  Monthly_income <- inc_mon
+  Annual_income <- inc_an
+  Monthly_income_ppp <- incppp_mon
+  Equality_of_income_incentives <- inc_eq
+  
   Sex <- sex
   Age <- age
+  Education_categories <- edu_cat
+  Education <- edu
   Marital_status <- mar_stat
   Town_size <- town
   
@@ -46,22 +66,32 @@ shiny_data %<>% within({
   Gini_coefficient <- gini
   GDP_per_capita <- GDPpc
   Freedom_House_Democracy <- fhrate
+  Aggregated_life_satisfaction <- life_sat
   
   Regional_institutional_trust <- inst_trust_reg
   Regional_norm_salience <- trust_wrth_reg
   Regional_interpersonal_trust <- intp_trust_reg
+  Regional_expected_fairness <- fair_reg
 })
-shiny_data <- dplyr::select(shiny_data, 
-                            Life_satisfaction, Education_categories, SIOPS_Index, Job_satisfaction,
-                            Unemployed, Institutional_trust, Trustworthiness, 
-                            Trust_interpersonal, Sex, Age, Marital_status, Town_size, #12
-                            Country_of_residence, Region_of_residence, Geographical_region, #15
-                            Human_Development_Index, Unemployment_rate, Gini_coefficient, 
-                            GDP_per_capita, Freedom_House_Democracy, #20
-                            Regional_institutional_trust, Regional_norm_salience, Regional_interpersonal_trust)#23
+shiny_data <- dplyr::select(shiny_data, #from now: 1:27
+                            Life_satisfaction, Happiness, SIOPS_Index, Job_satisfaction, 
+                            Fairness_of_other_people, Institutional_trust, Trustworthiness, 
+                            Trust_interpersonal, Importance_of_work, Freedom_in_job_decisions,
+                            Job_talent_development, Work_as_societal_duty, Work_devotion,
+                            Supervisory_work, Entrepreneurial_work, Unemployed, 
+                            ISEI_Index, Monthly_income, Annual_income, Monthly_income_ppp,
+                            Equality_of_income_incentives, Sex, Age, Education_categories,
+                            Education, Marital_status, Town_size, #from now: 28:30
+                            Country_of_residence, Region_of_residence, 
+                            Geographical_region, #from now: 31:36
+                            Human_Development_Index, Unemployment_rate, Gini_coefficient,
+                            GDP_per_capita, Freedom_House_Democracy, 
+                            Aggregated_life_satisfaction, #from now: 37:40
+                            Regional_institutional_trust, Regional_norm_salience,
+                            Regional_interpersonal_trust, Regional_expected_fairness)
 #shiny_data %<>% na.omit
 
-nat_geodata <- read_rds("Data/Nation_geoData.rds")
+shiny_nat <- read_rds("Data/Nation_geoData.rds")
 shiny_nat <- dplyr::select(nat_geodata, life_sat, unemployment, GDPpc, gini, hdi, fhrate, nation, geometry, X, Y)
 shiny_nat %<>% within({
   Aggregated_life_satisfaction <- life_sat
@@ -71,10 +101,33 @@ shiny_nat %<>% within({
   GDP_per_capita <- GDPpc
   Freedom_House_Democracy <- fhrate
   Country_of_residence <- nation
+  #Geographical_region <- eureg
 })
 shiny_nat <- dplyr::select(shiny_nat, Aggregated_life_satisfaction, Human_Development_Index,
                            Unemployment_rate, Gini_coefficient, GDP_per_capita,
-                           Freedom_House_Democracy, Country_of_residence, geometry, X, Y)
+                           Freedom_House_Democracy, Country_of_residence, #Geographical_region, 
+                           geometry, X, Y)
+
+shiny_reg <- read_rds("Data/Region_geoData.rds")
+shiny_reg <- dplyr::select(shiny_reg, trust_wrth_reg, intp_trust_reg, 
+                           inst_trust_reg, fair_reg, reg, nation, #eureg,
+                           geometry) #, X, Y
+
+shiny_reg %<>% within({
+  Regional_institutional_trust <- inst_trust_reg
+  Regional_norm_salience <- trust_wrth_reg
+  Regional_interpersonal_trust <- intp_trust_reg
+  Regional_expected_fairness <- fair_reg
+  Region_of_residence <- reg
+  Country_of_residence <- nation
+  #Geographical_region <- eureg
+})
+
+shiny_reg <- dplyr::select(shiny_reg, 
+                           Regional_institutional_trust, Regional_norm_salience,
+                           Regional_interpersonal_trust, Regional_expected_fairness,
+                           Region_of_residence, Country_of_residence, #Geographical_region,
+                           geometry) #, X, Y
 
 #----------------------------------------------------------------------------
 
@@ -173,9 +226,9 @@ ui <- dashboardPage(
                 box(title = "Controls for bar chart", status = "warning", solidHeader = T, 
                     width = 4,
                     "Choose your variable for plotting, for singular countries or regions select from 'Country:' or 'Geographical region:'", br(),br(),
-                    varSelectInput(inputId = "variable", label = "Variable:", shiny_data[,1:12]),
+                    varSelectInput(inputId = "variable", label = "Variable:", shiny_data[,1:27]),
                     checkboxInput("check", "Allow for in-chart grouping"),
-                    varSelectInput(inputId = "fill", "Variable to group by:", shiny_data[,c(5,9)]),
+                    varSelectInput(inputId = "fill", "Variable to group by:", shiny_data[,c(8, 14:16, 22)]),
                     selectInput(inputId = "country", label = "Country:", nat),
                     selectInput(inputId = "eureg", label = "Geographical region:", eureg))
                 )),
@@ -187,8 +240,8 @@ ui <- dashboardPage(
                 box(title = "Controls for line plot", status = "warning", solidHeader = T, 
                     width = 4,
                     "Choose your variables for plotting, for singular countries or regions select from 'Country:' or 'Geographical region:'", br(),br(),
-                    varSelectInput("xvar", "Variable on x-axis:", shiny_data[,1:12]),
-                    varSelectInput("yvar", "Variable on y-axis:", shiny_data[,1:12]),
+                    varSelectInput("xvar", "Variable on x-axis:", shiny_data[,1:27]),
+                    varSelectInput("yvar", "Variable on y-axis:", shiny_data[,1:27]),
                     selectInput("country2", "Country:", nat),
                     selectInput("eureg2", "Geographical region:", eureg))
               )),
@@ -199,9 +252,9 @@ ui <- dashboardPage(
                     plotOutput("boxplot")),
                 box(title = "Controls for boxplot", status = "warning", solidHeader = T, 
                     width = 4,
-                    varSelectInput("group", "Plot grouped by (x-Axis):", shiny_data[,13:15]),
-                    varSelectInput("observ", "Variable to observe (y-Axis):", shiny_data[,1:12]),
-                    varSelectInput("order", "Variable to order groups:", shiny_data[,16:23]))
+                    varSelectInput("group", "Plot grouped by (x-Axis):", shiny_data[,c(28:30)]),
+                    varSelectInput("observ", "Variable to observe (y-Axis):", shiny_data[,1:27]),
+                    varSelectInput("order", "Variable to order groups:", shiny_data[,31:36]))
               )),
       
       tabItem(tabName = "regress", h1("Linear, mixed-effects models to customize"),
@@ -210,12 +263,12 @@ ui <- dashboardPage(
                     uiOutput("regtab")),
                 box(title = "Controls for regression", status = "warning", solidHeader = T, 
                     width = 4,
-                    varSelectInput("DV", "Dependent variable:", shiny_data[,1:12]),
-                    varSelectInput("IDV", "Independent variable:", shiny_data[,1:12]),
+                    varSelectInput("DV", "Dependent variable:", shiny_data[,1:27]),
+                    varSelectInput("IDV", "Independent variable:", shiny_data[,1:27]),
                     checkboxGroupInput("mixreg", "Multilevel features:", selected = "None", 
                                        choices = c("None", "National level", "Regional level", "Both levels")),
-                    varSelectInput("natvar", "Variables on national level:", shiny_data[,16:20]),
-                    varSelectInput("regvar", "Variables on regional level:", shiny_data[,21:23]))
+                    varSelectInput("natvar", "Variables on national level:", shiny_data[,31:36]),
+                    varSelectInput("regvar", "Variables on regional level:", shiny_data[,37:40]))
               )),
       
       tabItem(tabName = "data", h1("Raw data table"), 
@@ -467,3 +520,5 @@ shinyApp(ui, server)
 
 #End of app code##------------------------------------------------------------------------------------
 #------------------------------------------------------------------------------------------
+?stargazer
+?`stargazer models`
