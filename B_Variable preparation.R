@@ -445,7 +445,7 @@ wb_data$nation <- wb_data$country
 
 # Creating a subsetted dataset for variable to be aggregated
 EVS_nat <- dplyr::select(EVS, nation, nowork, sat) # backup: intp_trust
-EVS_reg <- dplyr::select(EVS, nation, c_code, reg, intp_trust, inst_trust, trust_wrth)
+EVS_reg <- dplyr::select(EVS, nation, c_code, reg, intp_trust, inst_trust, trust_wrth, fair)
 
 #Creating 
 EVS_nat <- EVS_nat %>% 
@@ -457,7 +457,8 @@ EVS_reg <- EVS_reg %>%
   dplyr::group_by(reg, c_code) %>% 
   dplyr::summarise(trust_wrth_reg = mean(trust_wrth, na.rm = T), 
             intp_trust_reg = mean(as.numeric(intp_trust), na.rm = T),
-            inst_trust_reg = mean(inst_trust, na.rm = T))
+            inst_trust_reg = mean(as.numeric(inst_trust), na.rm = T),
+            fair_reg = mean(as.numeric(fair), na.rm = T))
 
 
 #----------------------------------------------------------------------------------------
@@ -558,7 +559,7 @@ nuts_data <- get_eurostat_geospatial(output_class = "sf", resolution = "60", nut
 nuts_data <- dplyr::select(nuts_data, CNTR_CODE, NUTS_NAME, geometry)
 
 # reorder EVS_reg data
-EVS_reg <- EVS_reg[c(2,1,3,4,5)]
+EVS_reg <- EVS_reg[c(2,1,3,4,5,6)]
 
 ##      5.2 Exclude countries/regions in both datasets 
 
@@ -590,7 +591,7 @@ EVS_reg <- EVS_reg %>%
   filter(c_code != "GE") %>% # exclude Georgia because not in Eurostat
   filter(c_code != "CY") %>% # exclude Cybrus to avoid issues
   filter(c_code != "CY-TCC") %>% # exclude North Cyprus because not in Eurostat
-  filter(c_code != "BY") %>% # exclude Belarus to avoid issues
+  filter(c_code != "BY") %>% # exclude Belarus because not in Eurostat
   filter(c_code != "BA") %>%# exclude Bosnia H. to avoid issues
   filter(c_code != "MD") %>% # exclude Moldova because not in nuts_data
   filter(c_code != "BG") %>% #exclude Bulgaria because unknown regions in nuts_data
