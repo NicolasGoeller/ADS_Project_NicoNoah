@@ -137,18 +137,19 @@ ggplot(data = nat_geodata)+
 EVS_book <- dplyr::select(EVS_final,
                           nation, c_abrv, reg, eureg, sat,
                           siops, intp_trust, job_sat, nowork, isei, inst_trust,
-                          trust_wrth, sex, age, mar_stat, edu_cat, edu, town)
+                          trust_wrth, sex, age, mar_stat, edu_cat, edu, town,
+                          fhrate, hdi, gini, GDPpc)
 
 EVS_book <- as.data.set(EVS_book)
 
 EVS_book <- within(EVS_book,{
   
-  #description() <- ""
-  #wording() <- ""
-  #measurement() <- ""
-  #missing.values() <- c(NA)
-  #annotation()["Source"] <- "European Value Survey 2008"
-  #annotation()["Remark"] <- ""
+  description() <- ""
+  wording() <- ""
+  measurement() <- ""
+  missing.values() <- c(NA)
+  annotation()["Source"] <- "European Value Survey 2008"
+  annotation()["Remark"] <- ""
   
   description(nation) <- "Country of residence"
   measurement(nation) <- "nominal"
@@ -271,6 +272,68 @@ EVS_book <- within(EVS_book,{
   annotation(town)["Source"] <- "European Value Survey 2008"
   annotation(town)["Remark"] <- "The assumption of quasi-metric variable was taken when recoding to numeric."
   
+  description(fhrate) <- "National level: Freedom House Democracy rating for 2008"
+  wording() <- ""
+  measurement(fhrate) <- "interval"
+  missing.values(fhrate) <- c(NA)
+  annotation(fhrate)["Source"] <- "Democracy Cross National Data by Pippa Norris"
+  annotation(fhrate)["Remark"] <- "The assumption of quasi-metric variable was taken when recoding to numeric. Missing values for Kosovo and Montenegro were replace with data for 2008 from the Freedom House website."
+  
+  description(hdi) <- "National level: Human Development Index for 2008"
+  wording() <- ""
+  measurement(hdi) <- "interval"
+  missing.values(hdi) <- c(NA)
+  annotation(hdi)["Source"] <- "Democracy Cross National Data by Pippa Norris"
+  annotation(hdi)["Remark"] <- "The variable was multplied by 100 for better interpretaion. Kosovo had no HDI value for 2008, so the value of Serbia was taken as a proxy."
+  
+  description(GDPpc) <- "National level: Gross Domestic Product per capita for 2008 in Dollars/ inhabitant"
+  wording() <- ""
+  measurement(GDPpc) <- "ratio"
+  missing.values(GDPpc) <- c(NA)
+  annotation(GDPpc)["Source"] <- "World Bank Data"
+  annotation(GDPpc)["Remark"] <- ""
+  
+  description(gini) <- "National level: Gini-Coeffiecient for 2008"
+  wording() <- ""
+  measurement(gini) <- "interval"
+  missing.values(gini) <- c(NA)
+  annotation(gini)["Source"] <- "World Bank Data"
+  annotation(gini)["Remark"] <- "Missing values for Germany and Poland were taken from the Eurostat viewer, for Serbia from the cIA World Factbook, all three regarding the year 2008. The missing values for Croatia, Kosovo and Macedonia were approximated by their values from 2009, for Bosnia Herzegovina the 2007 value was"
+  
+  description(unemployment) <- "National level: Unemployment rate for 2008"
+  wording() <- ""
+  measurement(unemployment) <- ""
+  missing.values(unemployment) <- c(NA)
+  annotation(unemployment)["Source"] <- "European Value Survey 2008"
+  annotation(unemployment)["Remark"] <- ""
+  
+  description(life_sat) <- "National level: Aggregated average life satisfaction 2008"
+  wording() <- ""
+  measurement(life_sat) <- "ratio"
+  missing.values(life_sat) <- c(NA)
+  annotation(life_sat)["Source"] <- "European Value Survey 2008"
+  annotation(life_sat)["Remark"] <- ""
+  
+  description(inst_trust_reg) <- "Regional level level: Aggregated average institutional trust 2008"
+  wording() <- ""
+  measurement(inst_trust_reg) <- "interval"
+  missing.values(inst_trust_reg) <- c(NA)
+  annotation(inst_trust_reg)["Source"] <- "European Value Survey 2008"
+  annotation(inst_trust_reg)["Remark"] <- ""
+  
+  description(intp_trust_reg) <- "Regional level: Aggregated average interpersonal trust for 2008"
+  wording() <- ""
+  measurement(intp_trust_reg) <- "interval"
+  missing.values(intp_trust_reg) <- c(NA)
+  annotation(intp_trust_reg)["Source"] <- "Democracy Cross National Data by Pippa Norris"
+  annotation(intp_trust_reg)["Remark"] <- ""
+  
+  description(trust_wrth_reg) <- "Regional level: Aggregated avereage trustworthiness for 2008"
+  wording() <- ""
+  measurement(trust_wrth_reg) <- "interval"
+  missing.values(trust_wrth_reg) <- c(NA)
+  annotation(trust_wrth_reg)["Source"] <- "Democracy Cross National Data by Pippa Norris"
+  annotation(trust_wrth_reg)["Remark"] <- ""
 })
 
 codebook(EVS_book)

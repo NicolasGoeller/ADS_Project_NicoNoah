@@ -58,12 +58,10 @@ EVS %<>% within({ #base variables
   sat <- v66 #Life satisfaction (10 point)
   sat[v66 %in% c(-5, -4, -3, -2, -1)] <- NA
   sat <- as.numeric(sat)
-  sat_c <- sat - mean(sat, na.rm = T)
   
   happ <- v8 #Feeling of happiness (4 point)
   happ[v8 %in% c(-5, -4, -3, -2, -1)] <- NA
   happ <- as.numeric(happ)
-  happ_c <- happ - mean(happ, na.rm = T)
 }) #base variables
 
 
@@ -95,15 +93,9 @@ EVS %<>% within({ #non-pecuniary factors
   intp_trust <- factor(intp_trust, levels = c(0, 1), labels = c("Distrustful", "Trustful"), 
                        ordered = F)
   
-  help <- v64 #Most people are helpful or look out for themselves (10 point)
-  help[v64 %in% c(-5, -4, -3, -2, -1)] <- NA
-  help <- as.numeric(help)
-  help_c <- help - mean(help, na.rm = T)
-  
   fair <- v63 #Will people be fair or make their advantage with you (10 point)
   fair[v63 %in% c(-5, -4, -3, -2, -1)] <- NA
   fair <- as.numeric(fair)
-  fair_c <- fair - mean(fair, na.rm = T)
   
   job_sat <- v90 #Job satisfaction (10 point)
   job_sat[v90 %in% c(-5, -4, -3, -2, -1)] <- NA
@@ -113,10 +105,6 @@ EVS %<>% within({ #non-pecuniary factors
   siops <- v339SIOPS #Standard Index of Occupational Prestige Scala (1-100)
   siops <- as.numeric(siops)
   siops_c <- siops - mean(siops, na.rm = T)
-  
-  less_money <- v203 #Less emphasis on money and material possession (3 point)
-  less_money[v203 %in% c(-5, -4, -3, -2, -1)] <- NA 
-  less_money <- as.numeric(less_money)
   
 }) #non-pecuniary factors
 
@@ -385,9 +373,6 @@ EVS %<>% within({ #demographics
   town <- as.numeric(town)
   town_c <- town - mean(town, na.rm = T)
   
-  employ <- v337 #Employment status
-  employ[v337 %in% c(-5, -4, -3, -2, -1)] <- NA
-  employ <- as_factor(employ, ordered = F)
 }) #demographics
 
 

@@ -53,9 +53,9 @@ PN <- read_spss("Data/Democracy Cross-National Data V4.1 09092015.sav")
 PN_select <- dplyr::select(PN, Nation, fhrate08, WGI_voice2008, FreePress2008, UNDP_HDI2008)
 
 #Filling up missing values
-PN_select[91,2] <- 5.5 #Freedom House rating 2008 from Freedom House
-PN_select[91,5] <- 0.743 #HDI value 2008 from Serbia
-PN_select[118,2] <- 3.0 #Freedom House rating 2008 from Freedom House
+PN_select[91,2] <- 5.5 #Kosovo: Freedom House rating 2008 from Freedom House
+PN_select[91,5] <- 0.743 #Kosovo: HDI value 2008 from Serbia
+PN_select[118,2] <- 3.0 #Montenegro: Freedom House rating 2008 from Freedom House
 
 #Adapting country names
 PN_select$Nation <- mapvalues(PN_select$Nation, from = c("Bosnia & Herzegovina","Moldova, Republic of"), 
