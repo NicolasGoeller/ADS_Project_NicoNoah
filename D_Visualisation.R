@@ -122,8 +122,29 @@ ggplot(data = nat_geodata)+
 
 ###   3. Regional maps
 
+#     3.1.1 Regions and trustworthiness 
+ggplot(data = reg_geodata)+
+  geom_sf(aes(fill = trust_wrth_reg))+
+  labs(fill = "Trustworthiness (from low to high)")+
+  ggtitle("Regional Europe Map", 
+          subtitle = "NUTS 1 Regions and Trustworthiness")+
+  coord_sf(xlim = c(-24, 32), ylim = c(33, 71), expand = FALSE)
 
+#     3.1.2 Regions and interpersonal trust
+ggplot(data = reg_geodata)+
+  geom_sf(aes(fill = intp_trust_reg))+
+  labs(fill = "Interpersonal trust (from low to high)")+
+  ggtitle("Regional Europe Map", 
+          subtitle = "NUTS 1 Regions and Interpersonal Trust")+
+  coord_sf(xlim = c(-24, 32), ylim = c(33, 71), expand = FALSE)
 
+#     3.1.2 Regions and institutional trust
+ggplot(data = reg_geodata)+
+  geom_sf(aes(fill = inst_trust_reg))+
+  labs(fill = "Institutional trust (from low to high)")+
+  ggtitle("Regional Europe Map", 
+          subtitle = "NUTS 1 Regions and Institutional Trust")+
+  coord_sf(xlim = c(-24, 32), ylim = c(33, 71), expand = FALSE)
 
 #----------------------------------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------------------------------

@@ -514,18 +514,6 @@ eur$sovereignt <- plyr::mapvalues(eur$sovereignt, from = c("Bosnia and Herzegovi
 # add centroids with coordinates X and Y
 eur <- cbind(eur, st_coordinates(st_centroid(eur$geometry)))
 
-# basic plot of Europe to see if everything worked
-#install.packages("ggplot")
-#library(ggplot)
-#ggplot(data = eur) +
-  #geom_sf() # need to zoom in 
-
-# second plot of Europe (zoomed in properly)
-#ggplot(data = eur) +
-  #geom_sf() +
-  #ggtitle("Europe map")+
-  #coord_sf(xlim = c(-24, 50), ylim = c(33, 71), expand = FALSE)
-
 # select necessary variables
 eur_s <- dplyr::select(eur, sovereignt, geometry, adm0_a3, X, Y)
 
@@ -818,8 +806,48 @@ colnames(nuts_data)[colnames(nuts_data)=="NUTS_NAME"] <- "reg"
 # Merge datasets
 reg_geodata <- left_join(EVS_reg, nuts_data, by = "reg") #problems with CZ and some Polish regions
 
+##      5.5 Get nation data for regions that are not listed
+
+# Get nation data for relevant variables
+EVS_reg2 <- dplyr::select(EVS, nation, c_code, intp_trust, inst_trust, trust_wrth)
+
+# Group nation data 
+EVS_reg2 <- EVS_reg2 %>%
+  dplyr::group_by(nation, c_code) %>%
+  dplyr::summarise(trust_wrth_reg = mean(trust_wrth, na.rm = T), 
+                   intp_trust_reg = mean(intp_trust, na.rm = T),
+                   inst_trust_reg = mean(inst_trust, na.rm = T))
+
+# Select necessary countries (i.e., those that have no regions in reg_geodata)
+selec_nat <- c("TR", "AL", "AM", "UA", "RS", "RS-KM",
+               "GE", "CY", "BY", "BA", "MD", "BG", 
+               "GR", "ME", "MK")
+
+EVS_reg2 <- EVS_reg2 %>%
+  filter(c_code %in% selec_nat)
+
+# Get geodata for necessary countries
+eur_s2 <- dplyr::select(eur_s, geometry, nation)
+
+selec_nat2 <- c("Turkey", "Albania", "Armenia", 
+                "Ukraine", "Serbia", "Kosovo",
+               "Georgia", "Cyprus", "Belarus", 
+               "Bosnia Herzegovina", "Moldova", "Bulgaria", 
+               "Greece", "Montenegro", "Macedonia")
 
 
+eur_s2 <- eur_s2 %>%
+  filter(nation %in% selec_nat2)
+
+# Rename nation variable in both datasets
+colnames(EVS_reg2)[colnames(EVS_reg2)=="nation"] <- "reg"
+colnames(eur_s2)[colnames(eur_s2)=="nation"] <- "reg"
+
+# Merge geodata and country data for regional variables
+reg2_geodata <- left_join(EVS_reg2, eur_s2, by = "reg") #problems with CZ and some Polish regions
+
+# Merge reg_geodata and reg2_geodata
+reg_final_geo <- full_join(reg_geodata, reg2_geodata) #problems with CZ and some Polish regions
 
 
 #---------------------------------------------------------------------------------------------
