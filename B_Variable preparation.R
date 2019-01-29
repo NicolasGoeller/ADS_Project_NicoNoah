@@ -280,19 +280,22 @@ EVS %<>% within({ #index variables institutional trust
 
 #Checking for intercorrelatedness
 inst_trust <- dplyr::select(EVS,
+                     conf_church, conf_armed, conf_educ, 
                      conf_press, conf_tu, conf_police,
-                     conf_parl, conf_cs, conf_eu, 
-                     conf_socs, conf_nato, conf_un, 
+                     conf_parl, conf_cs, conf_socs, 
+                     conf_eu, conf_nato, conf_un, 
                      conf_hs, conf_just, conf_gov)
+
 inst_trust %<>% na.omit()
 cor_inst_trust <- cor(inst_trust) %>% round(2) #get correlation matrix
 inst_trust %>% as.matrix() %>% alpha(check.keys = T) #compute Cronbach's alpha 
 
 # Constructing institutional trust index and trimming scale
 EVS %<>% within({ #index institutional trust
-  inst_trust <- (conf_press + conf_tu + conf_police +
-                 conf_parl + conf_cs + conf_eu + 
-                 conf_socs + conf_nato + conf_un + 
+  inst_trust <- (conf_church + conf_armed + conf_educ + 
+                 conf_press + conf_tu + conf_police +
+                 conf_parl + conf_cs + conf_socs + 
+                 conf_eu + conf_nato + conf_un + 
                  conf_hs + conf_just + conf_gov)
   
   inst_trust <- inst_trust/4  
@@ -550,12 +553,6 @@ nat_geodata <- left_join(nat_data, eur_s, by = "nation")
 
 # Obtain NUTS 1 geodata 
 nuts_data <- get_eurostat_geospatial(output_class = "sf", resolution = "60", nuts_level = "1", year = "2006") #NUTS 2006
-nuts_data2 <- get_eurostat_geospatial(output_class = "sf", resolution = "60", nuts_level = "1") #no year
-
-# Plot NUTS 1 regions and zoom in appropiately 
-ggplot(data = nuts_data) + 
-  geom_sf()+
-  coord_sf(xlim = c(-24, 50), ylim = c(33, 71), expand = FALSE)
 
 # Select necessary variables in nuts_data 
 nuts_data <- dplyr::select(nuts_data, CNTR_CODE, NUTS_NAME, geometry)
@@ -820,6 +817,7 @@ colnames(nuts_data)[colnames(nuts_data)=="NUTS_NAME"] <- "reg"
 
 # Merge datasets
 reg_geodata <- left_join(EVS_reg, nuts_data, by = "reg") #problems with CZ and some Polish regions
+
 
 ##      5.5 Get nation data for regions that are not listed
 
