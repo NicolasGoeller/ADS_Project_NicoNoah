@@ -349,19 +349,22 @@ EVS %<>% within({ #index variables institutional trust
 
 #Checking for intercorrelatedness
 inst_trust <- dplyr::select(EVS,
+                     conf_church, conf_armed, conf_educ, 
                      conf_press, conf_tu, conf_police,
-                     conf_parl, conf_cs, conf_eu, 
-                     conf_socs, conf_nato, conf_un, 
+                     conf_parl, conf_cs, conf_socs, 
+                     conf_eu, conf_nato, conf_un, 
                      conf_hs, conf_just, conf_gov)
+
 inst_trust %<>% na.omit()
 cor_inst_trust <- cor(inst_trust) %>% round(2) #get correlation matrix
 inst_trust %>% as.matrix() %>% alpha(check.keys = T) #compute Cronbach's alpha 
 
 # Constructing institutional trust index and trimming scale
 EVS %<>% within({ #index institutional trust
-  inst_trust <- (conf_press + conf_tu + conf_police +
-                 conf_parl + conf_cs + conf_eu + 
-                 conf_socs + conf_nato + conf_un + 
+  inst_trust <- (conf_church + conf_armed + conf_educ + 
+                 conf_press + conf_tu + conf_police +
+                 conf_parl + conf_cs + conf_socs + 
+                 conf_eu + conf_nato + conf_un + 
                  conf_hs + conf_just + conf_gov)
   
   inst_trust <- inst_trust/4  
@@ -502,7 +505,7 @@ wb_data$nation <- wb_data$country
 
 # Creating a subsetted dataset for variable to be aggregated
 EVS_nat <- dplyr::select(EVS, nation, nowork, sat) 
-EVS_reg <- dplyr::select(EVS, reg, intp_trust, inst_trust, trust_wrth)
+EVS_reg <- dplyr::select(EVS, nation, c_code, reg, intp_trust, inst_trust, trust_wrth, fair)
 
 #Creating aggregated averages 
 EVS_nat <- EVS_nat %>% 
@@ -514,7 +517,8 @@ EVS_reg <- EVS_reg %>%
   dplyr::group_by(reg) %>% 
   dplyr::summarise(trust_wrth_reg = mean(trust_wrth, na.rm = T), 
             intp_trust_reg = mean(as.numeric(intp_trust), na.rm = T),
-            inst_trust_reg = mean(inst_trust, na.rm = T))
+            inst_trust_reg = mean(as.numeric(inst_trust), na.rm = T),
+            fair_reg = mean(as.numeric(fair), na.rm = T))
 
 
 #----------------------------------------------------------------------------------------

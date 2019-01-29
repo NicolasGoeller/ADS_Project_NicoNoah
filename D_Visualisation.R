@@ -146,6 +146,15 @@ ggplot(data = reg_geodata)+
           subtitle = "NUTS 1 Regions and Institutional Trust")+
   coord_sf(xlim = c(-24, 32), ylim = c(33, 71), expand = FALSE)
 
+#     3.1.2 Regions and Perception of fairness
+ggplot(data = reg_geodata)+
+  geom_sf(aes(fill = fair_reg))+
+  labs(fill = "Perception of fairness (from low to high)")+
+  ggtitle("Regional Europe Map", 
+          subtitle = "NUTS 1 Regions and Percieved  Fairness")+
+  coord_sf(xlim = c(-24, 32), ylim = c(33, 71), expand = FALSE)
+
+
 #----------------------------------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------------------------------
 
