@@ -20,12 +20,12 @@ EVS <- EVS_2008 %>%
   filter(country != 31) %>%  #Exclude Azerbaijan
   select( #Pre-selection of variables
     country, c_abrv, v371b_N1, v66, v8, #base
-    v62, v63, v64, v90, v339SIOPS, v203, #non-pecuniary
+    v62, v63, v90, v339SIOPS, #non-pecuniary
     v89, v353YR, v353MM, v353M_ppp, v339ISEI, v198, #pecuniary
     v1, v91, v92, v95, v96, v341, v338, #work variables
     v205:v218, v222, #index institutional trust
     v233, v234, v235, v237, v239, v245, v247, #index justification
-    v302, v303, v313, v336, v336_2, v370a, v337) #demographics
+    v302, v303, v313, v336, v336_2, v370a) #demographics
 
 #---------------------------------------#
 #Export new dataset EVS                 #
@@ -50,11 +50,11 @@ nat <- c("Albania", "Austria", "Armenia", "Belgium", "Bosnia Herzegovina",
 PN <- read_spss("Data/Democracy Cross-National Data V4.1 09092015.sav")
 
 #Selection of relevant variables
-PN_select <- dplyr::select(PN, Nation, fhrate08, WGI_voice2008, FreePress2008, UNDP_HDI2008)
+PN_select <- dplyr::select(PN, Nation, fhrate08, UNDP_HDI2008)
 
 #Filling up missing values
 PN_select[91,2] <- 5.5 #Kosovo: Freedom House rating 2008 from Freedom House
-PN_select[91,5] <- 0.743 #Kosovo: HDI value 2008 from Serbia
+PN_select[91,3] <- 0.743 #Kosovo: HDI value 2008 from Serbia
 PN_select[118,2] <- 3.0 #Montenegro: Freedom House rating 2008 from Freedom House
 
 #Adapting country names

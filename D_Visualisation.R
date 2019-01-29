@@ -156,21 +156,26 @@ ggplot(data = reg_geodata)+
 ?codebook
 
 EVS_book <- dplyr::select(EVS_final,
-                          nation, c_abrv, reg, eureg, sat,
-                          siops, intp_trust, job_sat, nowork, isei, inst_trust,
-                          trust_wrth, sex, age, mar_stat, edu_cat, edu, town,
-                          fhrate, hdi, gini, GDPpc)
+                          nation, c_code, reg, eureg, sat, happ,
+                          fair, siops,  job_sat, nowork, intp_trust, 
+                          inst_trust,
+                          trust_wrth,
+                          work_impo, free_job, talent, duty, work_first, sup, entre,
+                          isei, inc_mon, inc_an, incppp_mon, inc_eq,
+                          sex, age, mar_stat, edu_cat, edu, town,
+                          fhrate, hdi, gini, GDPpc, unemployment, life_sat,
+                          intp_trust_reg, inst_trust_reg, trust_wrth_reg)
 
 EVS_book <- as.data.set(EVS_book)
 
 EVS_book <- within(EVS_book,{
   
-  description() <- ""
-  wording() <- ""
-  measurement() <- ""
-  missing.values() <- c(NA)
-  annotation()["Source"] <- "European Value Survey 2008"
-  annotation()["Remark"] <- ""
+  #description() <- ""
+  #wording() <- ""
+  #measurement() <- ""
+  #missing.values() <- c(NA)
+  #annotation()["Source"] <- "European Value Survey 2008"
+  #annotation()["Remark"] <- ""
   
   description(nation) <- "Country of residence"
   measurement(nation) <- "nominal"
@@ -178,11 +183,11 @@ EVS_book <- within(EVS_book,{
   annotation(nation)["Source"] <- "European Value Survey 2008"
   annotation(nation)["Remark"] <- "The Russian Federation was excluded for purposes of visualisation. Northern Ireland and Northern Cyprus were recoded to belong to their respective legal states. Azerbaijan was excluded as there were no respondents in the sample."
   
-  description(c_abrv) <- "Country Code"
-  measurement(c_abrv) <- "nominal"
-  missing.values(c_abrv) <- c(NA)
-  annotation(c_abrv)["Source"] <- "European Value Survey 2008"
-  annotation(c_abrv)["Remark"] <- "Country codes were recoded to match changes in country selection (see 'Country of residence)."
+  description(c_code) <- "Country Code"
+  measurement(c_code) <- "nominal"
+  missing.values(c_code) <- c(NA)
+  annotation(c_code)["Source"] <- "European Value Survey 2008"
+  annotation(c_code)["Remark"] <- "Country codes were recoded to match changes in country selection (see 'Country of residence)."
   
   description(reg) <- "Region of residence"
   measurement(reg) <- "nominal"
@@ -203,20 +208,27 @@ EVS_book <- within(EVS_book,{
   annotation(sat)["Source"] <- "European Value Survey 2008"
   annotation(sat)["Remark"] <- "The assumption of quasi-metric variable was taken when recoding to numeric."
   
+  description(happ) <- "Individual level: Happiness"
+  wording(happ) <- "Taking all things together, how happy would you say you are? (1-very happy, 4-not at all happy)"
+  measurement(happ) <- "interval"
+  missing.values(happ) <- c(NA)
+  annotation(happ)["Source"] <- "European Value Survey 2008 (v8)"
+  annotation(happ)["Remark"] <- "The assumption of quasi-metric variable was taken when recoding to numeric."
+  
+  description(fair) <- "Individual level: Fairness"
+  wording(fair) <- "Do you think that most people would try to take advantage of you if they got the chance, or would they try to be fair? (1-try to take advantage, 10-try to be fair)"
+  measurement(fair) <- "interval"
+  missing.values(fair) <- c(NA)
+  annotation(fair)["Source"] <- "European Value Survey 2008"
+  annotation(fair)["Remark"] <- "The assumption of quasi-metric variable was taken when recoding to numeric."
+  
   description(siops) <- "Individual level: SIOPS-Index"
   wording(siops) <- "Standard Index of Occupational Prestige Scala (Values: 0-100)"
   measurement(siops) <- "interval"
   missing.values(siops) <- c(NA)
   annotation(siops)["Source"] <- "European Value Survey 2008"
   annotation(siops)["Remark"] <- "The SIOPS-Index is  a widely known measure for social prestige of different occupations."
-  
-  description(intp_trust) <- "Individual level: Interpersonal trust"
-  wording(intp_trust) <- "Generally speaking, would you say that most people can be trusted or that you can’t be too careful in dealing with people? (0-Distrustful, 1-Trustful)"
-  measurement(intp_trust) <- "nominal"
-  missing.values(intp_trust) <- c(NA)
-  annotation(intp_trust)["Source"] <- "European Value Survey 2008"
-  annotation(intp_trust)["Remark"] <- "The item was recoded and scales were switched."
-  
+    
   description(job_sat) <- "Individual level: Job satisfaction"
   wording(job_sat) <- "Overall, how satisfied or dissatisfied are you with your job? (1-dissatisfied, 10-satisfied)"
   measurement(job_sat) <- "interval"
@@ -231,13 +243,15 @@ EVS_book <- within(EVS_book,{
   annotation(nowork)["Source"] <- "European Value Survey 2008"
   annotation(nowork)["Remark"] <- "Item was recoded as factor variable."
   
-  description(isei) <- "Individual level: ISEI-Index"
-  wording(isei) <- "International Socio-Economic Index of Occupational Status (Values: 16-90)"
-  measurement(isei) <- "interval"
-  missing.values(isei) <- c(NA)
-  annotation(isei)["Source"] <- "European Value Survey 2008"
-  annotation(isei)["Remark"] <- "The ISEI-Index is  a widely known measure for socio-economic status of different occupations."
- 
+  
+  
+  description(intp_trust) <- "Individual level: Interpersonal trust"
+  wording(intp_trust) <- "Generally speaking, would you say that most people can be trusted or that you can’t be too careful in dealing with people? (0-Distrustful, 1-Trustful)"
+  measurement(intp_trust) <- "nominal"
+  missing.values(intp_trust) <- c(NA)
+  annotation(intp_trust)["Source"] <- "European Value Survey 2008"
+  annotation(intp_trust)["Remark"] <- "The item was recoded and scales were switched."
+
   #------------------index inst_trust variables
   
   description(inst_trust) <- "Individual level: Index for institutional trust"
@@ -254,6 +268,88 @@ EVS_book <- within(EVS_book,{
   annotation(trust_wrth)["Source"] <- "European Value Survey 2008"
   annotation(trust_wrth)["Remark"] <- "The index was calculated from 7 variables regarding the propensity to commit certain minor offenses for egoistic benefit. All were coded after the same 10-scale, that was switched. This procedure was based on research literature, refer to the theoretical paper for more detailed legitimation. The index variables have a high Cronbach's alpha of 0.84."
 
+  description(work_impo) <- "Individual level: Work importance in life"
+  wording(work_impo) <- "Please indicate, how important is work in your life (1-very, 4-not at all)"
+  measurement(work_impo) <- "interval"
+  missing.values(work_impo) <- c(NA)
+  annotation(work_impo)["Source"] <- "European Value Survey 2008 (v1)"
+  annotation(work_impo)["Remark"] <- ""
+  
+  description(free_job) <- "Individual level: Freedem of job decisions"
+  wording(free_job) <- "How free are you to make decisions in your job? (1-not at all, 10-a great deal)"
+  measurement(free_job) <- "interval"
+  missing.values(free_job) <- c(NA)
+  annotation(free_job)["Source"] <- "European Value Survey 2008 (v91)"
+  annotation(free_job)["Remark"] <- "The assumption of quasi-metric variable was taken when recoding to numeric."
+  
+  description(talent) <- "Individual level: Job development"
+  wording(talent) <- "Do you agree or disagree with: To fully develop your talents, you need to have a job. (1-disagree strongly, 5-agree strongly)"
+  measurement(talent) <- "interval"
+  missing.values(talent) <- c(NA)
+  annotation(talent)["Source"] <- "European Value Survey 2008 (v92)"
+  annotation(talent)["Remark"] <- "The assumption of quasi-metric variable was taken when recoding to numeric. From the original survey, the scales were switched."
+  
+  description(duty) <- "Individual level: Work duty to society"
+  wording(duty) <- "Do you agree or disagree with: Work is a duty towards society. (1-disagree strongly, 5-agree strongly)"
+  measurement(duty) <- "interval"
+  missing.values(duty) <- c(NA)
+  annotation(duty)["Source"] <- "European Value Survey 2008 (v95)"
+  annotation(duty)["Remark"] <- "The assumption of quasi-metric variable was taken when recoding to numeric. From the original survey, the scales were switched."
+  
+  description(work_first) <- "Individual level: Work should come always first"
+  wording(work_first) <- "Do you agree or disagree with: Work should always come first, even if it means less spare time.(1-disagree strongly, 5-agree strongly)"
+  measurement(work_first) <- "interval"
+  missing.values(work_first) <- c(NA)
+  annotation(work_first)["Source"] <- "European Value Survey 2008 (v96)"
+  annotation(work_first)["Remark"] <- "The assumption of quasi-metric variable was taken when recoding to numeric. From the original survey, the scales were switched."
+  
+  description(sup) <- "Individual level: Supervisor work"
+  wording(sup) <- "Do/did you have any responsibility for supervising the work of other employees? "
+  measurement(sup) <- "nominal"
+  missing.values(sup) <- c(NA)
+  annotation(sup)["Source"] <- "European Value Survey 2008 (v341)"
+  annotation(sup)["Remark"] <- "Item was recoded as nominal factors."
+  
+  description(entre) <- "Individual level: Entrepreneurial work"
+  wording(entre) <- "In your LAST job were you employed (either full time or part time) or were you self-employed?"
+  measurement(entre) <- "nominal"
+  missing.values(entre) <- c(NA)
+  annotation(entre)["Source"] <- "European Value Survey 2008 (v338)"
+  annotation(entre)["Remark"] <- "Item was recoded as nominal factors."
+  
+  description(isei) <- "Individual level: ISEI-Index"
+  wording(isei) <- "International Socio-Economic Index of Occupational Status (Values: 16-90)"
+  measurement(isei) <- "interval"
+  missing.values(isei) <- c(NA)
+  annotation(isei)["Source"] <- "European Value Survey 2008"
+  annotation(isei)["Remark"] <- "The ISEI-Index is  a widely known measure for socio-economic status of different occupations."
+  
+  description(inc_mon) <- "Individual level: Monthly income"
+  wording(inc_mon) <- "Here is a list of incomes and we would like to know in what group your household is, counting all wages, salaries, pensions and other incomes that come in. Just give the letter of the group your household falls into, after taxes and other deductions. (12 categories)"
+  measurement(inc_mon) <- "interval"
+  missing.values(inc_mon) <- c(NA)
+  annotation(inc_mon)["Source"] <- "European Value Survey 2008 (v353MM)"
+  annotation(inc_mon)["Remark"] <- "The assumption of quasi-metric variable was taken when recoding to numeric."
+  
+  description(inc_an) <- "Individual level: Annual income"
+  wording(inc_an) <- "Here is a list of incomes and we would like to know in what group your household is, counting all wages, salaries, pensions and other incomes that come in. Just give the letter of the group your household falls into, after taxes and other deductions. (12 categories)"
+  measurement(inc_an) <- "interval"
+  missing.values(inc_an) <- c(NA)
+  annotation(inc_an)["Source"] <- "European Value Survey 2008 (v353YR)"
+  annotation(inc_an)["Remark"] <- "The assumption of quasi-metric variable was taken when recoding to numeric."
+  
+  description(incppp_mon) <- "Individual level: Monthly household income (x1000), corrected for purchasing power parity in €"
+  measurement(incppp_mon) <- "interval"
+  missing.values(incppp_mon) <- c(NA)
+  annotation(incppp_mon)["Source"] <- "European Value Survey 2008 (v353M_ppp)"
+  
+  description(inc_eq) <- "Individual level: Equality on income incentives"
+  wording(inc_eq) <- "How would you place your views on this scale regarding equalize income incentives for individual effort?"
+  measurement(inc_eq) <- "interval"
+  missing.values(inc_eq) <- c(NA)
+  annotation(inc_eq)["Source"] <- "European Value Survey 2008 (v198)"
+  annotation(inc_eq)["Remark"] <- "The assumption of quasi-metric variable was taken when recoding to numeric."
+  
   description(sex) <- "Individual level: Sex of the respondent"
   measurement(sex) <- "nominal"
   missing.values(sex) <- c(NA)
@@ -294,63 +390,54 @@ EVS_book <- within(EVS_book,{
   annotation(town)["Remark"] <- "The assumption of quasi-metric variable was taken when recoding to numeric."
   
   description(fhrate) <- "National level: Freedom House Democracy rating for 2008"
-  wording() <- ""
   measurement(fhrate) <- "interval"
   missing.values(fhrate) <- c(NA)
   annotation(fhrate)["Source"] <- "Democracy Cross National Data by Pippa Norris"
   annotation(fhrate)["Remark"] <- "The assumption of quasi-metric variable was taken when recoding to numeric. Missing values for Kosovo and Montenegro were replace with data for 2008 from the Freedom House website."
   
   description(hdi) <- "National level: Human Development Index for 2008"
-  wording() <- ""
   measurement(hdi) <- "interval"
   missing.values(hdi) <- c(NA)
   annotation(hdi)["Source"] <- "Democracy Cross National Data by Pippa Norris"
   annotation(hdi)["Remark"] <- "The variable was multplied by 100 for better interpretaion. Kosovo had no HDI value for 2008, so the value of Serbia was taken as a proxy."
   
-  description(GDPpc) <- "National level: Gross Domestic Product per capita for 2008 in Dollars/ inhabitant"
-  wording() <- ""
+  description(GDPpc) <- "National level: Gross Domestic Product per capita for 2008 in 2018-Dollars per inhabitant"
   measurement(GDPpc) <- "ratio"
   missing.values(GDPpc) <- c(NA)
   annotation(GDPpc)["Source"] <- "World Bank Data"
-  annotation(GDPpc)["Remark"] <- ""
+  annotation(GDPpc)["Remark"] <- "Data was added"
   
   description(gini) <- "National level: Gini-Coeffiecient for 2008"
-  wording() <- ""
   measurement(gini) <- "interval"
   missing.values(gini) <- c(NA)
   annotation(gini)["Source"] <- "World Bank Data"
   annotation(gini)["Remark"] <- "Missing values for Germany and Poland were taken from the Eurostat viewer, for Serbia from the cIA World Factbook, all three regarding the year 2008. The missing values for Croatia, Kosovo and Macedonia were approximated by their values from 2009, for Bosnia Herzegovina the 2007 value was"
   
   description(unemployment) <- "National level: Unemployment rate for 2008"
-  wording() <- ""
-  measurement(unemployment) <- ""
+  measurement(unemployment) <- "ratio"
   missing.values(unemployment) <- c(NA)
   annotation(unemployment)["Source"] <- "European Value Survey 2008"
   annotation(unemployment)["Remark"] <- ""
   
   description(life_sat) <- "National level: Aggregated average life satisfaction 2008"
-  wording() <- ""
   measurement(life_sat) <- "ratio"
   missing.values(life_sat) <- c(NA)
   annotation(life_sat)["Source"] <- "European Value Survey 2008"
   annotation(life_sat)["Remark"] <- ""
   
   description(inst_trust_reg) <- "Regional level level: Aggregated average institutional trust 2008"
-  wording() <- ""
   measurement(inst_trust_reg) <- "interval"
   missing.values(inst_trust_reg) <- c(NA)
   annotation(inst_trust_reg)["Source"] <- "European Value Survey 2008"
   annotation(inst_trust_reg)["Remark"] <- ""
   
   description(intp_trust_reg) <- "Regional level: Aggregated average interpersonal trust for 2008"
-  wording() <- ""
   measurement(intp_trust_reg) <- "interval"
   missing.values(intp_trust_reg) <- c(NA)
   annotation(intp_trust_reg)["Source"] <- "Democracy Cross National Data by Pippa Norris"
   annotation(intp_trust_reg)["Remark"] <- ""
   
   description(trust_wrth_reg) <- "Regional level: Aggregated avereage trustworthiness for 2008"
-  wording() <- ""
   measurement(trust_wrth_reg) <- "interval"
   missing.values(trust_wrth_reg) <- c(NA)
   annotation(trust_wrth_reg)["Source"] <- "Democracy Cross National Data by Pippa Norris"
@@ -358,7 +445,7 @@ EVS_book <- within(EVS_book,{
 })
 
 codebook(EVS_book)
-description(EVS_book)
+
 Write(codebook(EVS_book), file = "EVS_final_cdbk.txt")
 
-?Write
+

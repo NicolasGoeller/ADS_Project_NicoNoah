@@ -72,13 +72,91 @@ EVS$nation <- mapvalues(EVS$nation, from = c("Great Britain", "Slovak Republic")
                              to = c("United Kingdom", "Slovakia")) 
 EVS$nation <- droplevels(EVS$nation, exclude = c(as.character(c("Northern Cyprus", 
                                   "Russian Federation", "Northern Ireland")))) 
-EVS$reg <- mapvalues(EVS$reg, from = c("GB-NIR: Northern Ireland"), 
-      to = c("GB-GBN: Northern Ireland"))
+EVS$c_code <- plyr::mapvalues(EVS$c_code, from = c("GB-GBN", "GB-NIR", "CY-TCC"), 
+                                  to = c("UK", "UK", "CY"))
+
 EVS$reg <- droplevels(EVS$reg, 
                 exclude = c(as.character(c("RU: Central Federal District", 
                       "RU: North West federal district", "RU: South Federal district",
                       "RU: Privolzhsky federal district", "RU: Urals federal district", 
                       "RU: Siberian federal district", "RU: Far East federal district"  )))) 
+
+reg_old <- c("AT: Ostösterreich", "AT: Südösterreich", "AT: Westösterreich",
+             "BE: Région de Bruxelles-Capitale/Brussels Hoofdstedelijk Gewest", 
+             "BE: Vlaams gewest", "BE: Région Wallonne",
+             "DE: Baden-Württemberg", "DE: Bayern", "DE: Berlin", "DE: Brandenburg",
+             "DE: Bremen", "DE: Hamburg", "DE: Hessen", "DE: Mecklenburg-Vorpommern",
+             "DE: Niedersachsen", "DE: Nordrhein-Westfalen", "DE: Rheinland-Pfalz",
+             "DE: Saarland", "DE: Sachsen", "DE: Sachsen-Anhalt", "DE: Schleswig-Holstein",
+             "DE: Thüringen",
+             "ES: Noroeste", "ES: Noreste", "ES: Comunidad de Madrid", "ES: Centro",
+             "ES: Este", "ES: Sur", "ES: Canarias",
+             "FR: Île de France", "FR: Bassin Parisien", "FR: Nord-Pas-de-Calais",
+             "FR: Est", "FR: Ouest", "FR: Sud-Ouest", "FR: Centre-Est", "FR: Méditerranée",
+             "HU: Közép-Magyarország", "HU: Dunántúl", "HU: Alföld és Észak",
+             "IT: Nord-Ovest", "IT: Nord-Est", "IT: Centro", "IT: Sud", "IT: Isole",
+             "NL: Noord-Nederland", "NL: Oost-Nederland", "NL: West-Nederland",
+             "NL: Zuid-Nederland",
+             "PL: Region centralny", "PL: Region Poludniowy", "PL: Region Wschodni",
+             "PL: Region Pólnocno-Zachodni", "PL: Region Póludniowo-Zachodni",
+             "PL: Region Pólnocny",
+             "RO: Macroregiunea unu","RO: Macroregiunea doi", "RO: Macroregiunea trei",
+             "RO: Macroregiunea patru",
+             "SE: Östra Sverige", "SE: Södra Sverige", "SE: Norra Sverige",
+             "GB-GBN: North East (England)", "GB-GBN: North West (England)",
+             "GB-GBN: Yorkshire and the Humber", "GB-GBN: East Midlands (England)",
+             "GB-GBN: West Midlands (England)", "GB-GBN: East of England",
+             "GB-GBN: London", "GB-GBN: South East (England)", "GB-GBN: South West (England)",
+             "GB-GBN: Wales", "GB-GBN: Scotland", "GB-NIR: Northern Ireland",
+             "GR: Voreia Ellada", "GR: Kentriki Ellada", "GR: Attiki", "GR: Nisia Aigaiou, Kriti",
+             "UA: West","UA: Centre", "UA: North", "UA: East", "UA: South",
+             "CY: Kypros / Kibris", "CY: Northern Cyprus",
+             "RS: Centralna Srbija", "RS: Vojvodina",
+             "BG: Severna i iztochna Bulgaria", "BG: Yugozapadna i yuzhna tsentralna Bulgaria",
+             "CH: Schweiz/Suisse/Svizzera", "CZ: Ceska Republika", "DK: Danmark",
+             "EE: Eesti", "FI: Manner-Suomi", "HR: Hrvatska", "IE: Ireland",
+             "IS: Ísland", "LT: Lietuva", "LU: Luxembourg (Grand-Duché)",
+             "LV: Latvija", "MT: Malta", "NO: Norge", "PT: Continente",
+             "SI: Slovenija", "SK: Slovenská Republika", "BY: Belarus", "TK: Turkey",
+             "GE: Georgia", "MD: Moldova", "ME: Montenegro", "AM: Armenia",
+             "BA: Bosna i Hercegovina", "AL: Albania", "MK: Poranesnata jugoslovenska Republika Makedonija",
+             "RS-KM: Kosovo")
+reg_new <- c("Ostösterreich", "Südösterreich", "Westösterreich",
+             "Région de Bruxelles-Capitale / Brussels Hoofdstedelijk Gewest",
+             "Vlaams Gewest", "Région Wallonne",
+             "Baden-Württemberg", "Bayern", "Berlin", "Brandenburg", "Bremen",
+             "Hamburg", "Hessen", "Mecklenburg-Vorpommern", "Niedersachsen",
+             "Nordrhein-Westfalen", "Rheinland-Pfalz", "Saarland", "Sachsen",
+             "Sachsen-Anhalt", "Schleswig-Holstein", "Thüringen",
+             "Noroeste", "Noreste", "Comunidad de Madrid", "Centro (E)", "Este",
+             "Sur", "Canarias",
+             "Île de France", "Bassin Parisien", "Nord - Pas-de-Calais", "Est",
+             "Ouest", "Sud-Ouest", "Centre-Est", "Méditerranée",
+             "Közép-Magyarország", "Dunántúl", "Alföld És Észak",
+             "Nord-Ovest", "Nord-Est", "Centro (I)", "Sud", "Isole",
+             "Noord-Nederland", "Oost-Nederland", "West-Nederland", "Zuid-Nederland",
+             "Region Centralny", "Region Poludniowy", "Region Wschodni", "Region Pólnocno-Zachodni",
+             "Region Poludniowo-Zachodni", "Region Pólnocny",
+             "Macroregiunea unu", "Macroregiunea doi", "Macroregiunea trei",
+             "Macroregiunea patru",
+             "Östra Sverige", "Södra Sverige", "Norra Sverige",
+             "North East (England)", "North West (England)", "Yorkshire and the Humber",
+             "East Midlands (England)", "West Midlands (England)", "East of England",
+             "London", "South East (England)", "South West (England)", "Wales",
+             "Scotland", "Northern Ireland",
+             "Voreia Ellada", "Kentriki Ellada", "Attiki", "Nisia Aigaiou, Kriti",
+             "West (UA)","Centre (UA)", "North (UA)", "East (UA)", "South (UA)",
+             "Kypros / Kibris", "Northern Cyprus",
+             "Centralna Srbija", "Vojvodina",
+             "Severna i iztochna Bulgaria", "Yugozapadna i yuzhna tsentralna Bulgaria",
+             "Schweiz/Suisse/Svizzera", "Ceská Republika", "Danmark", "Eesti",
+             "Manner-Suomi", "Hrvatska", "Ireland", "Ísland", "Lietuva", "Luxembourg (Grand-Duché)",
+             "Latvija", "Malta", "Norge", "Continente", "Slovenija", "Slovenská Republika",
+             "Belarus", "Turkey", "Georgia", "Moldova", "Montenegro", "Armenia",
+             "Bosna i Hercegovina", "Albania", "Poranesnata jugoslovenska Republika Makedonija",
+             "Kosovo")
+EVS$reg <- plyr::mapvalues(EVS$reg, from = reg_old, to = reg_new)
+
 EVS$eureg <- mapvalues(EVS$eureg, from = c("1", "2", "3", "4"), 
                        to = c("Northern Europe", "Western Europe", 
                               "Southern Europe", "Eastern Europe"))
@@ -179,10 +257,13 @@ EVS %<>% within({ #work variables
   sup <- v341 #are you supervising someone
   sup[v341 %in% c(-5, -4, -3, -2, -1)] <- NA
   sup <- (sup - 2) * -1 #0 = No, 1 = Yes
+  sup <- factor(sup, levels = c(0, 1), labels = c("Subordinate", "Supervisor"), 
+                       ordered = F)
   
-  entre <- v338 #Are you self employed
+  entre <- v338 #how was the employment relation in your last job?
   entre[v338 %in% c(-5, -4, -3, -2, -1)] <- NA
-  entre <- entre - 1 #0 = No, 1 = Yes
+  entre <- factor(entre, levels = c(1, 2, 3), labels = c("Employee", "Entrepreneur", "Never had paid job"), 
+                       ordered = F)
 }) #work variables
 
 
@@ -400,12 +481,6 @@ PN_select %<>% within({ #Variable treatment
   fhrate <- fhrate08 #Freedom House: Political Rights and Civil Liberties (1=highest, 7=lowest)
   fhrate <- as.numeric(fhrate)
   
-  voice_acc <- WGI_voice2008 #Voice and Accountability (WGI 2014)
-  voice_acc <- as.numeric(voice_acc)
-  
-  press_free <- FreePress2008 #Freedom House: Freedom of Press (low=free) (6 point)
-  press_free <- as.numeric(press_free)
-  
   hdi <- UNDP_HDI2008 #Human Development Index
   hdi <- as.numeric(hdi)
 })
@@ -426,17 +501,17 @@ wb_data$nation <- wb_data$country
 ##    2.4 European Value Survey 2008: Level-2-variables
 
 # Creating a subsetted dataset for variable to be aggregated
-EVS_nat <- dplyr::select(EVS, nation, nowork, sat) # backup: intp_trust
-EVS_reg <- dplyr::select(EVS, nation, c_code, reg, intp_trust, inst_trust, trust_wrth)
+EVS_nat <- dplyr::select(EVS, nation, nowork, sat) 
+EVS_reg <- dplyr::select(EVS, reg, intp_trust, inst_trust, trust_wrth)
 
-#Creating 
+#Creating aggregated averages 
 EVS_nat <- EVS_nat %>% 
   dplyr::group_by(nation) %>% 
   dplyr::summarise(unemployment = mean(as.numeric(nowork), na.rm = T),
             life_sat = mean(sat, na.rm = T))
 
 EVS_reg <- EVS_reg %>% 
-  dplyr::group_by(reg, c_code) %>% 
+  dplyr::group_by(reg) %>% 
   dplyr::summarise(trust_wrth_reg = mean(trust_wrth, na.rm = T), 
             intp_trust_reg = mean(as.numeric(intp_trust), na.rm = T),
             inst_trust_reg = mean(inst_trust, na.rm = T))
@@ -444,44 +519,15 @@ EVS_reg <- EVS_reg %>%
 
 #----------------------------------------------------------------------------------------
 
-##    2.5 Joining the complete Level-2 and Level-3 data files
+##    2.5 Joining the complete Level-3 data files
 
 #National Data File (Level-3)
 nat_data <- left_join(wb_data, PN_select, by = "nation")
 nat_data <- left_join(nat_data, EVS_nat, by = "nation")
 nat_data$nation <- as_factor(nat_data$nation)
 
-nat_data <- dplyr::select(nat_data, nation, unemployment, GDPpc, gini, hdi, press_free, 
-                   voice_acc, fhrate, life_sat)
-
-#Applying Grand Mean Centering to Macro-data
-nat_data %<>% within({ #Creating centered macro variables
-  gini_c <- gini - mean(gini, na.rm = T)
-  
-  gdppc_c <- GDPpc - mean(GDPpc, na.rm =T)
-  
-  hdi_c <- hdi - mean(hdi, na.rm = T)
-  
-  press_free_c <- press_free - mean(press_free, na.rm = T)
-  
-  voice_acc_c <- voice_acc - mean(voice_acc, na.rm = T)
-  
-  fhrate_c <- fhrate - mean(fhrate, na.rm = T)
-  
-  unemployment_c <- unemployment - mean(unemployment, na.rm = T)
-})  
-
-
-#Regional Data File (Level-2)
-
-EVS_reg %<>% within({ #Grand Mean Centering
-  intp_trust_reg_c <- intp_trust_reg - mean(intp_trust_reg, na.rm = T)
-  
-  trust_wrth_reg_c <- trust_wrth_reg - mean(trust_wrth_reg, na.rm = T)
-  
-  inst_trust_reg_c <- inst_trust_reg - mean(inst_trust_reg, na.rm = T)
-})  
-
+nat_data <- dplyr::select(nat_data, nation, unemployment, GDPpc, gini, hdi, 
+                          fhrate, life_sat)
 
 #---------------------------------------------------------------------------------
 #---------------------------------------------------------------------------------
@@ -529,325 +575,102 @@ nat_geodata <- left_join(nat_data, eur_s, by = "nation")
 #---------------------------------------------------------------------------------------------
 
 ###     5. Integrating regional data 
-          #We need EVS_reg to refer to regional EVS data that we grouped above
 
 ##      5.1 Get NUTS data for 2006 from eurostat and edit EVS_reg
 
 # Obtain NUTS 1 geodata 
 nuts_data <- get_eurostat_geospatial(output_class = "sf", resolution = "60", nuts_level = "1", year = "2006") #NUTS 2006
-nuts_data2 <- get_eurostat_geospatial(output_class = "sf", resolution = "60", nuts_level = "1") #no year
 
 # Plot NUTS 1 regions and zoom in appropiately 
 ggplot(data = nuts_data) + 
   geom_sf()+
   coord_sf(xlim = c(-24, 50), ylim = c(33, 71), expand = FALSE)
 
+#Exclude problematic regions because not contained in EVS or will cause 
+    #problems with regional conflicts
+nuts_data <- nuts_data %>% 
+              filter(NUTS_NAME != "Åland") %>% 
+              filter(NUTS_NAME != "Região Autónoma da Madeira") %>%  
+              filter(NUTS_NAME != "Região Autónoma dos Açores") %>% 
+              filter(NUTS_NAME != "Départements d'Outre-Mer") %>% 
+              filter(NUTS_ID != "CY0") %>% 
+              filter(CNTR_CODE != "LI")
+
+#Exclude regions to be replaced by their national geodata for reasons of 
+ #missing geo data or no data in EVS
+nuts_data <- nuts_data %>% 
+  filter(CNTR_CODE != "TR")
+
+#Renaming of regions
+nuts_data %<>% within({
+  NUTS_NAME[CNTR_CODE %in% c("MK")] <- "Poranesnata jugoslovenska Republika Makedonija"
+  
+  NUTS_NAME[CNTR_CODE %in% c("ME")] <- "Montenegro"
+  
+  NUTS_NAME[NUTS_ID %in% c("BG3")] <- "Severna i iztochna Bulgaria"
+  NUTS_NAME[NUTS_ID %in% c("BG4")] <- "Yugozapadna i yuzhna tsentralna Bulgaria"
+
+  NUTS_NAME[NUTS_ID %in% c("GR1")] <- "Voreia Ellada"
+  NUTS_NAME[NUTS_ID %in% c("GR2")] <- "Kentriki Ellada"
+  NUTS_NAME[NUTS_ID %in% c("GR3")] <- "Attiki"
+  NUTS_NAME[NUTS_ID %in% c("GR4")] <- "Nisia Aigaiou, Kriti"
+  })
+
 # Select necessary variables in nuts_data 
 nuts_data <- dplyr::select(nuts_data, CNTR_CODE, NUTS_NAME, geometry)
 
-# reorder EVS_reg data
-EVS_reg <- EVS_reg[c(2,1,3,4,5)]
+##Create new regional data set from EVS
 
-##      5.2 Exclude countries/regions in both datasets 
+EVS_reg2 <- dplyr::select(EVS, nation, reg, c_code,inst_trust, trust_wrth, intp_trust)
+
+#Renaming regions that have no geodata and will be taken as national regions
+EVS_reg2$reg <- mapvalues(EVS_reg2$reg, from = c("West (UA)", "North (UA)", "Centre (UA)", 
+                            "East (UA)", "South (UA)"), to = c("Ukraine", "Ukraine",
+                                        "Ukraine", "Ukraine", "Ukraine"))
+EVS_reg2$reg <- mapvalues(EVS_reg2$reg, from = c("Centralna Srbija", "Vojvodina"), 
+                                        to = c("Serbia", "Serbia"))
+EVS_reg2 <- EVS_reg2 %>% 
+  dplyr::group_by(reg, nation, c_code) %>% 
+  dplyr::summarise(trust_wrth_reg = mean(trust_wrth, na.rm = T), 
+                   intp_trust_reg = mean(as.numeric(intp_trust), na.rm = T),
+                   inst_trust_reg = mean(inst_trust, na.rm = T))
+
+# Exclude problematic regions fomr new data set
+EVS_reg2 <- EVS_reg2[-111, ] # exclude empty row for Swedish region in EVS
+EVS_reg2 <- EVS_reg2 %>% 
+  filter(c_code != c("CY"))
+     
+# reorder EVS_reg2 data
+EVS_reg2 <- EVS_reg2[c(2,1,3,4,5)]
 
 
-nuts_data <- nuts_data[-3, ] # excludeAland because empty in nuts_data
+##      5.2 Get nation data for regions that are not listed
 
-nuts_data <- nuts_data %>%
-  filter(CNTR_CODE != "TR") %>% # exclude turkey (not asked in EVS)
-  filter(NUTS_NAME != "ÅLAND") %>% # exclude ÅLAND because not in EVS
-  filter(NUTS_NAME != "Região Autónoma da Madeira") %>% # exclude Madeira because not in EVS
-  filter(NUTS_NAME != "Região Autónoma dos Açores") %>% # exclude Acores because not in EVS
-  filter(NUTS_NAME != "Départements d'Outre-Mer") %>% # exclude oversea departments because not in EVS
-  filter(CNTR_CODE != "LI") %>% # exclude Liechtenstein because not in EVS
-  filter(CNTR_CODE != "CY") %>% # exclude Cybrus to avoid issues
-  filter(CNTR_CODE != "BG") %>% #exclude Bulgaria because unknown regions in nuts_data
-  filter(CNTR_CODE != "GR") %>% #exclude Greece because unknown regions in nuts_data
-  filter(CNTR_CODE != "ME") %>% #exclude ME because unknown regions in nuts_data
-  filter(CNTR_CODE != "MK") #exclude MK because unknown regions in nuts_data
+# Get nation data for relevant variables
 
-EVS_reg <- EVS_reg[-116, ] # exclude empty row for Swedish region in EVS
-  
-EVS_reg <- EVS_reg %>%
-  filter(c_code != "TR") %>% # exclude turkey (not asked in EVS)
-  filter(c_code != "AL") %>% # exclude Albania because not in Eurostat
-  filter(c_code != "AM") %>% # exclude Armenia because not in Eurostat
-  filter(c_code != "UA") %>% # exclude Ukraine because not in Eurostat
-  filter(c_code != "RS") %>% # exclude Serbia because not in Eurostat
-  filter(c_code != "RS-KM") %>% # exclude Kosovo because not in Eurostat
-  filter(c_code != "GE") %>% # exclude Georgia because not in Eurostat
-  filter(c_code != "CY") %>% # exclude Cybrus to avoid issues
-  filter(c_code != "CY-TCC") %>% # exclude North Cyprus because not in Eurostat
-  filter(c_code != "BY") %>% # exclude Belarus to avoid issues
-  filter(c_code != "BA") %>%# exclude Bosnia H. to avoid issues
-  filter(c_code != "MD") %>% # exclude Moldova because not in nuts_data
-  filter(c_code != "BG") %>% #exclude Bulgaria because unknown regions in nuts_data
-  filter(c_code != "GR") %>% #exclude Greece because unknown regions in nuts_data
-  filter(c_code != "ME") %>% #exclude ME because unknown regions in nuts_data
-  filter(c_code != "MK") #exclude MK because unknown regions in nuts_data
+# Select necessary countries (i.e., those that have no regions in reg_geodata)
+selec_code <- c("AL", "AM", "BA", "BY", "GE", "RS-KM", "MD", "RS", "TR", "UA")
+selec_nat <- c("Albania", "Armenia", "Belarus", "Bosnia Herzegovina", "Georgia", 
+               "Kosovo","Moldova", "Serbia", "Turkey", "Ukraine")
 
-##      5.3 Rename regions in EVS_reg  
+# Get geodata for necessary countries
+natreg_geo <- eur_s %>% 
+  dplyr::select(nation, geometry) %>% 
+  filter(nation %in% selec_nat)
+natreg_geo <- cbind(selec_code, natreg_geo)
 
-# Rename UK observations in EVS_reg c_code variable
-EVS_reg$c_code <- plyr::mapvalues(EVS_reg$c_code, from = c("GB-GBN", "GB-NIR"), 
-                                  to = c("UK", "UK"))
-
-#Österreich
-EVS_reg$reg <- plyr::mapvalues(EVS_reg$reg, from = c("AT: Ostösterreich", 
-                                                     "AT: Südösterreich",
-                                                     "AT: Westösterreich"), 
-                               to = c("Ostösterreich",
-                                      "Südösterreich",
-                                      "Westösterreich"))
-
-#Belgique
-EVS_reg$reg <- plyr::mapvalues(EVS_reg$reg, from = c("BE: Région de Bruxelles-Capitale/Brussels Hoofdstedelijk Gewest", 
-                                                     "BE: Vlaams gewest",
-                                                     "BE: Région Wallonne"), 
-                               to = c("Région de Bruxelles-Capitale / Brussels Hoofdstedelijk Gewest",
-                                      "Vlaams Gewest",
-                                      "Région Wallonne"))
-
-#Deutschland
-EVS_reg$reg <- plyr::mapvalues(EVS_reg$reg, from = c("DE: Baden-Württemberg", 
-                                                     "DE: Bayern",
-                                                     "DE: Berlin",
-                                                     "DE: Brandenburg",
-                                                     "DE: Bremen",
-                                                     "DE: Hamburg",
-                                                     "DE: Hessen",
-                                                     "DE: Mecklenburg-Vorpommern",
-                                                     "DE: Niedersachsen",
-                                                     "DE: Nordrhein-Westfalen",
-                                                     "DE: Rheinland-Pfalz",
-                                                     "DE: Saarland",
-                                                     "DE: Sachsen",
-                                                     "DE: Sachsen-Anhalt",
-                                                     "DE: Schleswig-Holstein",
-                                                     "DE: Thüringen"), 
-                               to = c("Baden-Württemberg",
-                                      "Bayern",
-                                      "Berlin",
-                                      "Brandenburg",
-                                      "Bremen",
-                                      "Hamburg",
-                                      "Hessen",
-                                      "Mecklenburg-Vorpommern",
-                                      "Niedersachsen",
-                                      "Nordrhein-Westfalen",
-                                      "Rheinland-Pfalz",
-                                      "Saarland",
-                                      "Sachsen",
-                                      "Sachsen-Anhalt",
-                                      "Schleswig-Holstein",
-                                      "Thüringen"))
-
-#Espana 
-EVS_reg$reg <- plyr::mapvalues(EVS_reg$reg, from = c("ES: Noroeste", 
-                                                     "ES: Noreste",
-                                                     "ES: Comunidad de Madrid",
-                                                     "ES: Centro",
-                                                     "ES: Este",
-                                                     "ES: Sur",
-                                                     "ES: Canarias"), 
-                               to = c("Noroeste",
-                                      "Noreste",
-                                      "Comunidad de Madrid",
-                                      "Centro (E)",
-                                      "Este",
-                                      "Sur",
-                                      "Canarias"))
-
-#France
-EVS_reg$reg <- plyr::mapvalues(EVS_reg$reg, from = c("FR: Île de France", 
-                                                     "FR: Bassin Parisien",
-                                                     "FR: Nord-Pas-de-Calais",
-                                                     "FR: Est",
-                                                     "FR: Ouest",
-                                                     "FR: Sud-Ouest",
-                                                     "FR: Centre-Est",
-                                                     "FR: Méditerranée"), 
-                               to = c("Île de France",
-                                      "Bassin Parisien",
-                                      "Nord - Pas-de-Calais",
-                                      "Est",
-                                      "Ouest",
-                                      "Sud-Ouest",
-                                      "Centre-Est",
-                                      "Méditerranée"))
-
-#Magyr
-EVS_reg$reg <- plyr::mapvalues(EVS_reg$reg, from = c("HU: Közép-Magyarország", 
-                                                     "HU: Dunántúl",
-                                                     "HU: Alföld és Észak"), 
-                               to = c("Közép-Magyarország",
-                                      "Dunántúl",
-                                      "Alföld És Észak"))
-
-#Italia
-EVS_reg$reg <- plyr::mapvalues(EVS_reg$reg, from = c("IT: Nord-Ovest", 
-                                                     "IT: Nord-Est",
-                                                     "IT: Centro",
-                                                     "IT: Sud",
-                                                     "IT: Isole"), 
-                               to = c("Nord-Ovest",
-                                      "Nord-Est",
-                                      "Centro (I)",
-                                      "Sud",
-                                      "Isole"))
-
-#Nederlande 
-EVS_reg$reg <- plyr::mapvalues(EVS_reg$reg, from = c("NL: Noord-Nederland", 
-                                                     "NL: Oost-Nederland",
-                                                     "NL: West-Nederland",
-                                                     "NL: Zuid-Nederland"), 
-                               to = c("Noord-Nederland",
-                                      "Oost-Nederland",
-                                      "West-Nederland",
-                                      "Zuid-Nederland"))
-
-#Polska
-EVS_reg$reg <- plyr::mapvalues(EVS_reg$reg, from = c("PL: Region centralny", 
-                                                     "PL: Region Poludniowy",
-                                                     "PL: Region Wschodni",
-                                                     "PL: Region Pólnocno-Zachodni",
-                                                     "PL: Region Póludniowo-Zachodni",
-                                                     "PL: Region Pólnocny"), 
-                               to = c("Region Centralny",
-                                      "Region Poludniowy",
-                                      "Region Wschodni",
-                                      "Region Pólnocno-Zachodni",
-                                      "Region Poludniowo-Zachodni",
-                                      "Region Pólnocny"))
-
-#Romania 
-EVS_reg$reg <- plyr::mapvalues(EVS_reg$reg, from = c("RO: Macroregiunea unu", 
-                                                     "RO: Macroregiunea doi",
-                                                     "RO: Macroregiunea trei",
-                                                     "RO: Macroregiunea patru"), 
-                               to = c("Macroregiunea unu",
-                                      "Macroregiunea doi",
-                                      "Macroregiunea trei",
-                                      "Macroregiunea patru"))
-
-#Sverige
-EVS_reg$reg <- plyr::mapvalues(EVS_reg$reg, from = c("SE: Östra Sverige", 
-                                                     "SE: Södra Sverige",
-                                                     "SE: Norra Sverige"), 
-                               to = c("Östra Sverige",
-                                      "Södra Sverige",
-                                      "Norra Sverige"))
-
-#United Kingdom
-EVS_reg$reg <- plyr::mapvalues(EVS_reg$reg, from = c("GB-GBN: North East (England)", 
-                                                     "GB-GBN: North West (England)",
-                                                     "GB-GBN: Yorkshire and the Humber",
-                                                     "GB-GBN: East Midlands (England)",
-                                                     "GB-GBN: West Midlands (England)",
-                                                     "GB-GBN: East of England",
-                                                     "GB-GBN: London",
-                                                     "GB-GBN: South East (England)",
-                                                     "GB-GBN: South West (England)",
-                                                     "GB-GBN: Wales",
-                                                     "GB-GBN: Scotland",
-                                                     "GB-GBN: Northern Ireland"), 
-                               to = c("North East (England)",
-                                      "North West (England)",
-                                      "Yorkshire and the Humber",
-                                      "East Midlands (England)",
-                                      "West Midlands (England)",
-                                      "East of England",
-                                      "London",
-                                      "South East (England)",
-                                      "South West (England)",
-                                      "Wales",
-                                      "Scotland",
-                                      "Northern Ireland"))
-
-#Various
-EVS_reg$reg <- plyr::mapvalues(EVS_reg$reg, from = c("CH: Schweiz/Suisse/Svizzera", 
-                                                     "CZ: Ceska Republika",
-                                                     "DK: Danmark",
-                                                     "EE: Eesti",
-                                                     "FI: Manner-Suomi",
-                                                     "HR: Hrvatska",
-                                                     "IE: Ireland",
-                                                     "IS: Ísland",
-                                                     "LT: Lietuva",
-                                                     "LU: Luxembourg (Grand-Duché)",
-                                                     "LV: Latvija",
-                                                     "MT: Malta",
-                                                     "NO: Norge",
-                                                     "PT: Continente",
-                                                     "SI: Slovenija",
-                                                     "SK: Slovenská Republika"), 
-                               to = c("Schweiz/Suisse/Svizzera",
-                                      "Ceská Republika",
-                                      "Danmark",
-                                      "Eesti",
-                                      "Manner-Suomi",
-                                      "Hrvatska",
-                                      "Ireland",
-                                      "Ísland",
-                                      "Lietuva",
-                                      "Luxembourg (Grand-Duché)",
-                                      "Latvija",
-                                      "Malta",
-                                      "Norge",
-                                      "Continente",
-                                      "Slovenija",
-                                      "Slovenská Republika"))
+# Add the national region data to the NUTS data
+colnames(natreg_geo) <- c("CNTR_CODE", "NUTS_NAME", "geometry")
+nuts_data <- rbind(nuts_data, natreg_geo)
 
 ##      5.4 Merge EVS_reg and nuts_data
 
 # Rename NUTS_NAME variable in nuts_data
-colnames(nuts_data)[colnames(nuts_data)=="NUTS_NAME"] <- "reg"
+colnames(nuts_data) <- c("CNTR_CODE", "reg", "geometry")
 
 # Merge datasets
-reg_geodata <- left_join(EVS_reg, nuts_data, by = "reg") #problems with CZ and some Polish regions
-
-##      5.5 Get nation data for regions that are not listed
-
-# Get nation data for relevant variables
-EVS_reg2 <- dplyr::select(EVS, nation, c_code, intp_trust, inst_trust, trust_wrth)
-
-# Group nation data 
-EVS_reg2 <- EVS_reg2 %>%
-  dplyr::group_by(nation, c_code) %>%
-  dplyr::summarise(trust_wrth_reg = mean(trust_wrth, na.rm = T), 
-                   intp_trust_reg = mean(intp_trust, na.rm = T),
-                   inst_trust_reg = mean(inst_trust, na.rm = T))
-
-# Select necessary countries (i.e., those that have no regions in reg_geodata)
-selec_nat <- c("TR", "AL", "AM", "UA", "RS", "RS-KM",
-               "GE", "CY", "BY", "BA", "MD", "BG", 
-               "GR", "ME", "MK")
-
-EVS_reg2 <- EVS_reg2 %>%
-  filter(c_code %in% selec_nat)
-
-# Get geodata for necessary countries
-eur_s2 <- dplyr::select(eur_s, geometry, nation)
-
-selec_nat2 <- c("Turkey", "Albania", "Armenia", 
-                "Ukraine", "Serbia", "Kosovo",
-               "Georgia", "Cyprus", "Belarus", 
-               "Bosnia Herzegovina", "Moldova", "Bulgaria", 
-               "Greece", "Montenegro", "Macedonia")
-
-
-eur_s2 <- eur_s2 %>%
-  filter(nation %in% selec_nat2)
-
-# Rename nation variable in both datasets
-colnames(EVS_reg2)[colnames(EVS_reg2)=="nation"] <- "reg"
-colnames(eur_s2)[colnames(eur_s2)=="nation"] <- "reg"
-
-# Merge geodata and country data for regional variables
-reg2_geodata <- left_join(EVS_reg2, eur_s2, by = "reg") #problems with CZ and some Polish regions
-
-# Merge reg_geodata and reg2_geodata
-reg_final_geo <- full_join(reg_geodata, reg2_geodata) #problems with CZ and some Polish regions
+reg_geodata <- left_join(EVS_reg2, nuts_data, by = "reg") #problems with CZ and some Polish regions
+reg_geodata <- reg_geodata[,-6]
 
 
 #---------------------------------------------------------------------------------------------
@@ -860,10 +683,10 @@ write_rds(EVS_final, path = "Data/EVS_final.rds")            ##
 #------------------------------------------------------------##
 #--------------------------------------------------------------
 #Export nation Data File                                     ##
-write_rds(nat_geodata, path = "Data/Nation_geoData.rds")           ##
+write_rds(nat_geodata, path = "Data/Nation_geoData.rds")     ##
 #------------------------------------------------------------##
 #--------------------------------------------------------------
-#Export regions Data File                                     ##
-write_rds(reg_geodata, path = "Data/Region_geoData.rds")           ##
+#Export regions Data File                                    ##
+write_rds(reg_geodata, path = "Data/Region_geoData.rds")     ##
 #------------------------------------------------------------##
 #--------------------------------------------------------------
