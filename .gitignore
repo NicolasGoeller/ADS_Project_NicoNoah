@@ -35,6 +35,9 @@ vignettes/*.pdf
 #Everything in Data
 Data/
 
+#Random
+*.log
+
 #Everything in LaTex
 LaTex/
 ##Except the following files
