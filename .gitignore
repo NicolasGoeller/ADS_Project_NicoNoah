@@ -36,6 +36,8 @@ vignettes/*.pdf
 Data/
 
 #Everything in LaTex
-
+LaTex/
 ##Except the following files
-
+!/LaTex/*EVS_final_cdbk.tex
+!/LaTex/*Paper_fulltext.tex
+!/LaTex/*EVS_final_cdbk*
