@@ -1,0 +1,153 @@
+%% 
+%% Copyright 2007-2018 Elsevier Ltd
+%% 
+
+\documentclass[preprint,12pt,authoryear]{elsarticle}
+
+\usepackage{blindtext}
+%% For including figures, graphicx.sty has been loaded in
+%% elsarticle.cls. If you prefer to use the old commands
+%% please give \usepackage{epsfig}
+
+%% The amssymb package provides various useful mathematical symbols
+%%\usepackage{amssymb}
+%% The amsthm package provides extended theorem environments
+%% \usepackage{amsthm}
+
+%% The lineno packages adds line numbers. Start line numbering with
+%% \begin{linenumbers}, end it with \end{linenumbers}. Or switch it on
+%% for the whole article with \linenumbers.
+%% \usepackage{lineno}
+
+\journal{Dr. Florian Bader}
+
+\begin{document}
+
+\begin{frontmatter}
+
+%% Title, authors and addresses
+
+%% use the tnoteref command within \title for footnotes;
+%% use the tnotetext command for theassociated footnote;
+%% use the fnref command within \author or \address for footnotes;
+%% use the fntext command for theassociated footnote;
+%% use the corref command within \author for corresponding author footnotes;
+%% use the cortext command for theassociated footnote;
+%% use the ead command for the email address,
+%% and the form \ead[url] for the home page:
+%% use optional labels to link authors explicitly to addresses:
+%% \author[label1,label2]{}
+%% \address[label1]{}
+%% \address[label2]{}
+
+\title{Visualising Life Satisfaction in Countries across Europe: Individual- and Multi-Level Evidence on Cultural and Pecuniary Factors}
+
+\author{Nicolas F. K. Göller\fnref{label2}}
+\ead{n.goeller@zeppelin-university.net}
+\fntext[label2]{Student in Sociology, Politics and Economics}
+
+\author{Noah Peters\fnref{label1}}
+\ead{no.peters@zeppelin-university.net}
+\fntext[label2]{Student in Sociology, Politics and Economics}
+
+\address{Zeppelin University, Fallenbrunnen 3, 88045 Friedrichshafen\fnref{label3}}
+%% \fntext[label3]{}
+
+
+\begin{abstract}
+%% Text of abstract
+This project was set out to provide an easy access to a comprehensible way for exploring the differences in determinants of life satisfaction 
+all over Europe. While the actual analysis and presentation of results will be shown in different ways, this document
+shall provide an overview over the data used and the treatment of variables applied during the project. 
+The project's aim is not only to inspire interest into the determinants of happiness in human life, but also to encourage
+later researchers to critically enquire with the work done here in order to point out its shortcomings and improve the final
+result. Thus this document should provide the necessary transparency about sourcing of data and work on variables that
+has been done previously to conducting the analysis and visualising results.
+\end{abstract}
+
+\end{frontmatter}
+
+%% main text
+\newpage
+\tableofcontents
+\newpage
+
+
+\section{Introduction and Preliminary remarks}
+Anecdotal evidence suggests that people spend a significant share of their lifetime working (for a casual calculation 
+see: \citet{thompson_what_2016}). Moreover, people's work environment is changing constantly and especially today's 
+discussion about the impact of digitalisation on the labour market requires to investigate how occupational factors shape 
+people's life in general. Since work constitutes a considerable part of people’s life, satisfaction with one’s job and the
+occupational environment must severely determine overall well-being. Drawing on the above-mentioned diversity of 
+occupations, their respective circumstances and adaptation to the ‘digital revolution’, this assumption gains even more 
+ground and relevance: \textit{If work changes, life changes.} \\
+But which work-related factors contribute to a happy - or unhappy - life? Also, how does life satisfaction of the employed
+vary across regions and countries? \\
+Using data form the European Values Survey (EVS), we calculated multiple regression models to assess the causality of
+work-related factors and well-being on the individual level. Moreover, multi-level analyses with regard to social capital and
+macroeconomic as well as developmental indicators were performed to account for variation across regions and countries. 
+
+\section{Theory and Literature Review}
+Although the causal relation between work and happiness/life satisfaction seems straightforward and intuitively correct,
+its academic investigation is far from trivial. On the one hand, this appears in light of definitional questions regarding the 
+wo variables of interest. On the other hand, operationalising the constructs appropriately remains subject to discussions
+(for subjective well-being see: \cite{kahneman_developments_2006,layard_measuring_2010}). Lastly, the causal nature of job and life
+satisfaction presents itself as far more complex than intuitively assumed. \\
+Each of these three fields is addressed by a comprehensive literature review to set the tone for the subsequent analysis.
+As this analysis draws on specific independent variables on the individual level and several factors on higher aggregate
+levels (multi-level analysis), their respective relation to life satisfaction, as assessed in the literature, is discussed as well.
+
+\subsection{Life Satisfaction as a Component of Subjective Well-Being (SWB)}
+So far, the terms life satisfaction, happiness, and well-being have been used interchangeably. In fact, however, they
+are commonly understood to act upon each other therefore constituting the wider concept of subjective well-being (SWB)
+that includes life satisfaction, happiness, and positive affect  \citep{bowling_meta-analytic_2010,diener_subjective_1984}. 
+Paying debt to the European Value Study’s (EVS) operationalisation of SWB, we only include life satisfaction as a
+dependent variable: While life satisfaction is measured using a ten-point scale the other available component of SWB,
+happiness, comes in a four-point scale. Consequently, we only included the life satisfaction variable for our regression
+models. For the remains of this study, we concentrate on life satisfaction as a dependent variable. The variable selection
+is further elaborated upon in the method section. 
+
+\subsection{SWB and Job Satisfaction}
+The literature examining the causal relation of SWB and job satisfaction is extensive
+(for reviews see: \citet{bowling_meta-analytic_2010,erdogan_whistle_2012}). \citet{bowling_meta-analytic_2010}, in their
+meta-analysis, show a positive relationship between all three respective components of SWB and job satisfaction.
+Going even further, \citet{near_job_1987} postulate that “job satisfaction must logically constitute some part of the
+broader construct of life satisfaction; thus, the question regarding spillover between the two must be ‘how much’ not
+‘whether’." (p. 398). \\
+Before we examine the how much-question, it is necessary to discuss the direction of causality between SWB and job
+satisfaction. In general, the present literature differentiates two approaches: the part-whole theory
+\citep{bowling_meta-analytic_2010,hart_predicting_1999,judge_dispositional_1998} and the dispositional approach. The former
+proposes job satisfaction to act upon SWB. This appears because of the simple reason that has already been mentioned
+above: job satisfaction constitutes a sub-category of overall life satisfaction \citep[cf.]{near_job_1987}.
+Consequently, the approach is also conceived of as bottom-up approach \citep{erdogan_whistle_2012}. Conversely, the
+dispositional approach assumes a general predisposition of satisfaction with life to affect more specific domains like work
+i.e., satisfaction with those domains \citep{bowling_meta-analytic_2010,diener_subjective_1984,headey_top-down_1991,judge_job_1993,judge_another_1993}. 
+Erdogan et al. (2012) link these predispositions to personal traits that determine how satisfied people feel with certain
+domains and life in general (top-down approach). Positioned between the poles is the spillover hypothesis that just
+contents the basic linkage between job and life satisfaction or even other domains of life 
+\citep{bowling_meta-analytic_2010,erdogan_whistle_2012,judge_job_2001,judge_individual_1994}.
+Conceptually, this relation can be understood as a reciprocal relation between the various domains of life and people’s
+satisfaction (Bowling et al., 2010). \\
+While the direction of causality between life satisfaction and job satisfaction is an open discussion, the interplay of life
+satisfaction with other work-related variables might be easier to grasp. Indeed, our study also examines the effects of
+variables that characterise the working environment beyond perceived job satisfaction. This wider scope appears
+reasonable since “job satisfaction is only a partial indicator of satisfaction with work domain. A person’s satisfaction with
+career and work-related stress are important elements of the work domain that also need to be understood.” \citep[p. 1042]{erdogan_whistle_2012}.
+
+
+%% The Appendices part is started with the command \appendix; appendix sections are then done as normal sections
+%% \appendix
+
+%% \section{}
+%% \label{}
+
+%% If you have bibdatabase file and want bibtex to generate the bibitems, please use
+\bibliographystyle{elsarticle-harv} 
+\bibliography{Literature}
+
+
+\end{document}
+
+\endinput
+%%
+
