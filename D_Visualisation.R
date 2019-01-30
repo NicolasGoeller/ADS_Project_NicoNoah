@@ -171,8 +171,8 @@ EVS_book <- dplyr::select(EVS_final,
                           cl_sb, ch_tax, joy, lying, bribe, av_tax, av_pub_f,  
                           trust_wrth,
                           work_impo, free_job, talent, duty, work_first, sup, entre,
-                          isei, inc_mon, inc_an, incppp_mon, inc_eq,
-                          sex, age, mar_stat, edu_cat, edu, town,
+                          isei, inc_mon, inc_cat, inc_an, incppp_mon, inc_eq,
+                          sex, age, age_cat, mar_stat, edu_cat3, edu_cat7, edu, town,
                           fhrate, hdi, gini, GDPpc, unemployment, life_sat,
                           intp_trust_reg, inst_trust_reg, trust_wrth_reg, fair_reg)
 
@@ -403,12 +403,11 @@ EVS_book <- within(EVS_book,{
   annotation(isei)["Source"] <- "European Value Survey 2008 (v339ISEI)"
   annotation(isei)["Remark"] <- "The ISEI-Index is  a widely known measure for socio-economic status of different occupations."
   
-  description(inc_mon) <- "Individual level: Monthly income"
-  wording(inc_mon) <- "Here is a list of incomes and we would like to know in what group your household is, counting all wages, salaries, pensions and other incomes that come in. Just give the letter of the group your household falls into, after taxes and other deductions. (12 categories)"
-  measurement(inc_mon) <- "interval"
-  missing.values(inc_mon) <- c(NA)
-  annotation(inc_mon)["Source"] <- "European Value Survey 2008 (v353MM)"
-  annotation(inc_mon)["Remark"] <- "The assumption of quasi-metric variable was taken when recoding to numeric."
+  description(inc_cat) <- "Individual level: Income recoded categorical"
+  measurement(inc_cat) <- "ordinal"
+  missing.values(inc_cat) <- c(NA)
+  annotation(inc_cat)["Source"] <- "European Value Survey 2008 (v353_r)"
+  annotation(inc_cat)["Remark"] <- "The variable taken as given, recoded by the data publisher. Transformed to ordered factor."
   
   description(inc_an) <- "Individual level: Annual income"
   wording(inc_an) <- "Here is a list of incomes and we would like to know in what group your household is, counting all wages, salaries, pensions and other incomes that come in. Just give the letter of the group your household falls into, after taxes and other deductions. (12 categories)"
@@ -416,7 +415,14 @@ EVS_book <- within(EVS_book,{
   missing.values(inc_an) <- c(NA)
   annotation(inc_an)["Source"] <- "European Value Survey 2008 (v353YR)"
   annotation(inc_an)["Remark"] <- "The assumption of quasi-metric variable was taken when recoding to numeric."
-  
+
+  description(inc_mon) <- "Individual level: Monthly income"
+  wording(inc_mon) <- "Here is a list of incomes and we would like to know in what group your household is, counting all wages, salaries, pensions and other incomes that come in. Just give the letter of the group your household falls into, after taxes and other deductions. (12 categories)"
+  measurement(inc_mon) <- "interval"
+  missing.values(inc_mon) <- c(NA)
+  annotation(inc_mon)["Source"] <- "European Value Survey 2008 (v353MM)"
+  annotation(inc_mon)["Remark"] <- "The assumption of quasi-metric variable was taken when recoding to numeric."
+    
   description(incppp_mon) <- "Individual level: Monthly household income (x1000), corrected for purchasing power parity in €"
   measurement(incppp_mon) <- "interval"
   missing.values(incppp_mon) <- c(NA)
@@ -441,6 +447,12 @@ EVS_book <- within(EVS_book,{
   annotation(age)["Source"] <- "European Value Survey 2008 (v303)"
   annotation(age)["Remark"] <- "Item was coded based on the original variable of the respondent's year of birth, subtracted from 2008, the year of surveying."
   
+  description(age_cat) <- "Individual level: Age recoded categorical"
+  measurement(age_cat) <- "ordinal"
+  missing.values(age_cat) <- c(NA)
+  annotation(age_cat)["Source"] <- "European Value Survey 2008 (age_r2)"
+  annotation(age_cat)["Remark"] <- "The variable taken as given, recoded by the data publisher. Transformed to ordered factor."
+  
   description(mar_stat) <- "Individual level: Marital status of the respondent"
   wording(mar_stat) <- "What is your current legal marital status?"
   measurement(mar_stat) <- "nominal"
@@ -448,12 +460,18 @@ EVS_book <- within(EVS_book,{
   annotation(mar_stat)["Source"] <- "European Value Survey 2008 (v313)"
   annotation(mar_stat)["Remark"] <- "Item was recoded as nominal factors."
   
-  description(edu_cat) <- "Individual level: Educational categories for respondent"
-  wording(edu_cat) <- "What is the highest level you have completed in your education?"
-  measurement(edu_cat) <- "ordinal"
-  missing.values(edu_cat) <- c(NA)
-  annotation(edu_cat)["Source"] <- "European Value Survey 2008 (v336)"
-  annotation(edu_cat)["Remark"] <- "The item was asked based on the 'ISCED-one digit code'(6-scale)."
+  description(edu_cat3) <- "Individual level: Education recoded categorical"
+  measurement(edu_cat3) <- "ordinal"
+  missing.values(edu_cat3) <- c(NA)
+  annotation(edu_cat3)["Source"] <- "European Value Survey 2008 (v336_r)"
+  annotation(edu_cat3)["Remark"] <- "The variable taken as given, recoded by the data publisher. Transformed to ordered factor."
+  
+  description(edu_cat7) <- "Individual level: Educational categories for respondent"
+  wording(edu_cat7) <- "What is the highest level you have completed in your education?"
+  measurement(edu_cat7) <- "ordinal"
+  missing.values(edu_cat7) <- c(NA)
+  annotation(edu_cat7)["Source"] <- "European Value Survey 2008 (v336)"
+  annotation(edu_cat7)["Remark"] <- "The item was asked based on the 'ISCED-one digit code'(7-scale)."
   
   description(edu) <- "Individual level: Education of respondent"
   wording(edu) <- "What is the highest level you have completed in your education?"
@@ -532,5 +550,5 @@ EVS_book <- within(EVS_book,{
 codebook(EVS_book)
 
 Write(codebook(EVS_book), file = "EVS_final_cdbk.txt")
-#Write(codebook(EVS_book), file = "LaTex/EVS_final_cdbk.tex")
+Write(codebook(EVS_book), file = "LaTex/EVS_final_cdbk.tex")
 

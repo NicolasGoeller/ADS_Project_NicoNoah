@@ -8,6 +8,7 @@ library(magrittr)
 library(hrbrthemes)
 library(lme4)
 library(stargazer)
+library(viridis)
 
 #------------------------------------------------------------------------------------
 
@@ -19,8 +20,8 @@ shiny_data <- dplyr::select(EVS_final,
                             intp_trust,inst_trust, trust_wrth,
                             work_impo, free_job, talent, duty, work_first, sup, 
                             entre, nowork,
-                            isei, inc_mon, inc_an, incppp_mon, inc_eq,
-                            sex, age, mar_stat, edu_cat, edu, town, 
+                            isei, inc_cat, inc_an, inc_mon, incppp_mon, inc_eq,
+                            sex, age, age_cat, mar_stat, edu_cat3, edu_cat7, edu, town, 
                             nation, eureg, reg, 
                             hdi, gini, fhrate, unemployment, GDPpc, life_sat,
                             trust_wrth_reg, intp_trust_reg, inst_trust_reg, fair_reg)
@@ -45,15 +46,18 @@ shiny_data %<>% within({
   Unemployed <- nowork
   
   ISEI_Index <- isei
-  Monthly_income <- inc_mon
   Annual_income <- inc_an
+  Income_categories <- inc_cat
+  Monthly_income <- inc_mon
   Monthly_income_ppp <- incppp_mon
   Equality_of_income_incentives <- inc_eq
   
   Sex <- sex
   Age <- age
-  Education_categories <- edu_cat
-  Education <- edu
+  Age_categories <- age_cat
+  Education_categories <- edu_cat3
+  Education <- edu_cat7
+  Education_scale <- edu
   Marital_status <- mar_stat
   Town_size <- town
   
@@ -73,26 +77,28 @@ shiny_data %<>% within({
   Regional_interpersonal_trust <- intp_trust_reg
   Regional_expected_fairness <- fair_reg
 })
-shiny_data <- dplyr::select(shiny_data, #from now: 1:27
-                            Life_satisfaction, Happiness, SIOPS_Index, Job_satisfaction, 
-                            Fairness_of_other_people, Institutional_trust, Trustworthiness, 
-                            Trust_interpersonal, Importance_of_work, Freedom_in_job_decisions,
-                            Job_talent_development, Work_as_societal_duty, Work_devotion,
-                            Supervisory_work, Entrepreneurial_work, Unemployed, 
-                            ISEI_Index, Monthly_income, Annual_income, Monthly_income_ppp,
-                            Equality_of_income_incentives, Sex, Age, Education_categories,
-                            Education, Marital_status, Town_size, #from now: 28:30
+shiny_data <- dplyr::select(shiny_data, #from now: 1:30
+                            Life_satisfaction, Happiness, SIOPS_Index, Job_satisfaction, #4
+                            Fairness_of_other_people, Institutional_trust, Trustworthiness, #7 
+                            Trust_interpersonal, Importance_of_work, Freedom_in_job_decisions, #10
+                            Job_talent_development, Work_as_societal_duty, Work_devotion, #13
+                            Supervisory_work, Entrepreneurial_work, Unemployed, #16
+                            ISEI_Index, Annual_income, Income_categories, Monthly_income, #20 
+                            Monthly_income_ppp, Equality_of_income_incentives, #22
+                            Sex, Age, Age_categories, Education_categories, Education, #27 
+                            Education_scale, Marital_status, #29
+                            Town_size, #from now: 31:33
                             Country_of_residence, Region_of_residence, 
-                            Geographical_region, #from now: 31:36
+                            Geographical_region, #from now: 34:39
                             Human_Development_Index, Unemployment_rate, Gini_coefficient,
                             GDP_per_capita, Freedom_House_Democracy, 
-                            Aggregated_life_satisfaction, #from now: 37:40
+                            Aggregated_life_satisfaction, #from now: 40:43
                             Regional_institutional_trust, Regional_norm_salience,
                             Regional_interpersonal_trust, Regional_expected_fairness)
 #shiny_data %<>% na.omit
 
 shiny_nat <- read_rds("Data/Nation_geoData.rds")
-shiny_nat <- dplyr::select(nat_geodata, life_sat, unemployment, GDPpc, gini, hdi, fhrate, nation, geometry, X, Y)
+shiny_nat <- dplyr::select(shiny_nat, life_sat, unemployment, GDPpc, gini, hdi, fhrate, nation, geometry, X, Y)
 shiny_nat %<>% within({
   Aggregated_life_satisfaction <- life_sat
   Human_Development_Index <- hdi
@@ -144,6 +150,42 @@ nat <- as.list(nat)
 
 eureg <- c("None", "Northern Europe", "Western Europe", "Southern Europe", "Eastern Europe")
 eureg <- as.list(eureg)
+
+reg_new <- c("None", "Ostösterreich", "Südösterreich", "Westösterreich",
+             "Région de Bruxelles-Capitale / Brussels Hoofdstedelijk Gewest",
+             "Vlaams Gewest", "Région Wallonne",
+             "Baden-Württemberg", "Bayern", "Berlin", "Brandenburg", "Bremen",
+             "Hamburg", "Hessen", "Mecklenburg-Vorpommern", "Niedersachsen",
+             "Nordrhein-Westfalen", "Rheinland-Pfalz", "Saarland", "Sachsen",
+             "Sachsen-Anhalt", "Schleswig-Holstein", "Thüringen",
+             "Noroeste", "Noreste", "Comunidad de Madrid", "Centro (E)", "Este",
+             "Sur", "Canarias",
+             "Île de France", "Bassin Parisien", "Nord - Pas-de-Calais", "Est",
+             "Ouest", "Sud-Ouest", "Centre-Est", "Méditerranée",
+             "Közép-Magyarország", "Dunántúl", "Alföld És Észak",
+             "Nord-Ovest", "Nord-Est", "Centro (I)", "Sud", "Isole",
+             "Noord-Nederland", "Oost-Nederland", "West-Nederland", "Zuid-Nederland",
+             "Region Centralny", "Region Poludniowy", "Region Wschodni", "Region Pólnocno-Zachodni",
+             "Region Poludniowo-Zachodni", "Region Pólnocny",
+             "Macroregiunea unu", "Macroregiunea doi", "Macroregiunea trei",
+             "Macroregiunea patru",
+             "Östra Sverige", "Södra Sverige", "Norra Sverige",
+             "North East (England)", "North West (England)", "Yorkshire and the Humber",
+             "East Midlands (England)", "West Midlands (England)", "East of England",
+             "London", "South East (England)", "South West (England)", "Wales",
+             "Scotland", "Northern Ireland",
+             "Voreia Ellada", "Kentriki Ellada", "Attiki", "Nisia Aigaiou, Kriti",
+             "West (UA)","Centre (UA)", "North (UA)", "East (UA)", "South (UA)",
+             "Kypros / Kibris", "Northern Cyprus",
+             "Centralna Srbija", "Vojvodina",
+             "Severna i iztochna Bulgaria", "Yugozapadna i yuzhna tsentralna Bulgaria",
+             "Schweiz/Suisse/Svizzera", "Ceská Republika", "Danmark", "Eesti",
+             "Manner-Suomi", "Hrvatska", "Ireland", "Ísland", "Lietuva", "Luxembourg (Grand-Duché)",
+             "Latvija", "Malta", "Norge", "Continente", "Slovenija", "Slovenská Republika",
+             "Belarus", "Turkey", "Georgia", "Moldova", "Montenegro", "Armenia",
+             "Bosna i Hercegovina", "Albania", "Poranesnata jugoslovenska Republika Makedonija",
+             "Kosovo")
+reg <- as.list(reg_new)
 
 #-----------------------------------------------------------------------------------------
 
@@ -226,10 +268,11 @@ ui <- dashboardPage(
                 box(title = "Controls for bar chart", status = "warning", solidHeader = T, 
                     width = 4,
                     "Choose your variable for plotting, for singular countries or regions select from 'Country:' or 'Geographical region:'", br(),br(),
-                    varSelectInput(inputId = "variable", label = "Variable:", shiny_data[,1:27]),
+                    varSelectInput(inputId = "variable", label = "Variable:", shiny_data[,1:30]),
                     checkboxInput("check", "Allow for in-chart grouping"),
-                    varSelectInput(inputId = "fill", "Variable to group by:", shiny_data[,c(8, 14:16, 22)]),
-                    selectInput(inputId = "country", label = "Country:", nat),
+                    varSelectInput(inputId = "fill", "Variable to group by:", shiny_data[,c(8,14:16,19,23,25,26,29)]),
+                    selectInput("region", "Region of residence:", reg),
+                    selectInput(inputId = "country", label = "Country of residence:", nat),
                     selectInput(inputId = "eureg", label = "Geographical region:", eureg))
                 )),
       
@@ -240,9 +283,10 @@ ui <- dashboardPage(
                 box(title = "Controls for line plot", status = "warning", solidHeader = T, 
                     width = 4,
                     "Choose your variables for plotting, for singular countries or regions select from 'Country:' or 'Geographical region:'", br(),br(),
-                    varSelectInput("xvar", "Variable on x-axis:", shiny_data[,1:27]),
-                    varSelectInput("yvar", "Variable on y-axis:", shiny_data[,1:27]),
-                    selectInput("country2", "Country:", nat),
+                    varSelectInput("xvar", "Variable on x-axis:", shiny_data[,1:30]),
+                    varSelectInput("yvar", "Variable on y-axis:", shiny_data[,1:30]),
+                    selectInput("region2", "Region of residence:", reg),
+                    selectInput("country2", "Country of residence:", nat),
                     selectInput("eureg2", "Geographical region:", eureg))
               )),
       
@@ -252,9 +296,9 @@ ui <- dashboardPage(
                     plotOutput("boxplot")),
                 box(title = "Controls for boxplot", status = "warning", solidHeader = T, 
                     width = 4,
-                    varSelectInput("group", "Plot grouped by (x-Axis):", shiny_data[,c(28:30)]),
-                    varSelectInput("observ", "Variable to observe (y-Axis):", shiny_data[,1:27]),
-                    varSelectInput("order", "Variable to order groups:", shiny_data[,31:36]))
+                    varSelectInput("group", "Plot grouped by (x-Axis):", shiny_data[,c(31:33)]),
+                    varSelectInput("observ", "Variable to observe (y-Axis):", shiny_data[,1:30]),
+                    varSelectInput("order", "Variable to order groups:", shiny_data[,34:39]))
               )),
       
       tabItem(tabName = "regress", h1("Linear, mixed-effects models to customize"),
@@ -263,12 +307,12 @@ ui <- dashboardPage(
                     uiOutput("regtab")),
                 box(title = "Controls for regression", status = "warning", solidHeader = T, 
                     width = 4,
-                    varSelectInput("DV", "Dependent variable:", shiny_data[,1:27]),
-                    varSelectInput("IDV", "Independent variable:", shiny_data[,1:27]),
+                    varSelectInput("DV", "Dependent variable:", shiny_data[,1:30]),
+                    varSelectInput("IDV", "Independent variable:", shiny_data[,1:30]),
                     checkboxGroupInput("mixreg", "Multilevel features:", selected = "None", 
                                        choices = c("None", "National level", "Regional level", "Both levels")),
-                    varSelectInput("natvar", "Variables on national level:", shiny_data[,31:36]),
-                    varSelectInput("regvar", "Variables on regional level:", shiny_data[,37:40]))
+                    varSelectInput("natvar", "Variables on national level:", shiny_data[,34:39]),
+                    varSelectInput("regvar", "Variables on regional level:", shiny_data[,40:43]))
               )),
       
       tabItem(tabName = "data", h1("Raw data table"), 
@@ -298,7 +342,6 @@ server <- function(input, output) {
       ggplot(data = shiny_nat)+
         geom_sf(aes(fill = !!input$macro))+
         labs(fill = paste(input$macro))+
-        scale_fill_viridis_d()+
         coord_sf(xlim = c(-24, 50), ylim = c(33, 71), expand = FALSE)
     }
   })
@@ -310,7 +353,7 @@ server <- function(input, output) {
   output$down <- downloadHandler("EVS_final_cdbk.txt", "EVS_final_cdbk.txt")
   
   output$barchart <- renderPlot({
-    if(!!input$country == "None" & !!input$eureg == "None"){
+    if(!!input$country == "None" & !!input$eureg == "None" & !!input$region == "None"){
       if(!!input$check != T){
         ggplot(shiny_data, aes(x = !!input$variable))+
           geom_bar(color = "grey58", fill = "grey58")+
@@ -329,7 +372,7 @@ server <- function(input, output) {
           coord_flip()
       }
       
-    }else if(!!input$country == "None" & !!input$eureg != "None"){
+    }else if(!!input$country == "None" & !!input$eureg != "None" & !!input$region == "None"){
       if(!!input$check != T){
         shiny_data %>% 
           filter(Geographical_region == input$eureg) %>% 
@@ -352,7 +395,7 @@ server <- function(input, output) {
           coord_flip()
       }
       
-    }else if(!!input$country != "None" & !!input$eureg == "None"){
+    }else if(!!input$country != "None" & !!input$eureg == "None" & !!input$region == "None"){
       if(!!input$check != T){
         shiny_data %>% 
           filter(Country_of_residence == input$country) %>% 
@@ -375,10 +418,34 @@ server <- function(input, output) {
           coord_flip()
       }
       
+    }else if(!!input$country == "None" & !!input$eureg == "None" & !!input$region != "None"){
+      if(!!input$check != T){
+        shiny_data %>% 
+          filter(Region_of_residence == input$region) %>% 
+          ggplot(aes(x = !!input$variable))+
+          geom_bar(color = "grey58", fill = "grey58")+
+          labs(x = paste(input$variable), caption = paste("n =", paste(shiny_data %>%
+                                                                         filter(Region_of_residence == input$region) %>% 
+                                                                         summarise(n()))))+
+          theme_ipsum(grid = "Y") +
+          coord_flip()
+      }else {
+        shiny_data %>% 
+          filter(Region_of_residence == input$country) %>% 
+          ggplot(aes(x = !!input$variable, fill = !!input$fill))+
+          geom_bar()+
+          labs(x = paste(input$variable), caption = paste("n =", paste(shiny_data %>%
+                                                                         filter(Region_of_residence == input$region) %>% 
+                                                                         summarise(n()))))+
+          theme_ipsum(grid = "Y") +
+          coord_flip()
+      }
+      
     }else{
-      text = paste("\n   You chose from both 'Country:' and 'Geographical region:'.\n",
-                   "       Please do only select from one of those at a time.\n",
-                   "       To deselect, put the dropdown on 'None'.")
+      text = paste("\n   You chose from two of 'Country_of_residence:',\n",
+                   "    'Geographical_region:' or 'Region_of_residence'.\n",
+                   "    Please do only select from one of those at a time.\n",
+                   "         To deselect, put the dropdown on 'None'.")
       ggplot() + 
         annotate("text", x = 4, y = 25, size=8, label = text) + 
         theme_void() +
@@ -388,14 +455,15 @@ server <- function(input, output) {
   })
   
   output$lineplot <- renderPlot({
-    if(!!input$country2 == "None" & !!input$eureg2 == "None"){
+    if(!!input$country2 == "None" & !!input$eureg2 == "None" & !!input$region2 == "None"){
       ggplot(shiny_data, aes(x = !!input$xvar, y = !!input$yvar))+
         geom_jitter(alpha = 0.7, color = "grey58")+
         geom_smooth(method = "lm", size = 1.1)+
         labs(x = paste(input$xvar), y = paste(input$yvar), caption = paste("n =", 
                   paste(shiny_data %>% summarise(n()))))+
         theme_ipsum(grid = "Y")
-    }else if(!!input$country2 == "None" & !!input$eureg2 != "None"){
+      
+    }else if(!!input$country2 == "None" & !!input$eureg2 != "None" & !!input$region2 == "None"){
       shiny_data %>% 
         filter(Geographical_region == input$eureg2) %>% 
         ggplot(aes(x = !!input$xvar, y = !!input$yvar))+
@@ -405,7 +473,8 @@ server <- function(input, output) {
                   paste(shiny_data %>% filter(Geographical_region == input$eureg2) %>% 
                       summarise(n()))))+
         theme_ipsum(grid = "Y")
-    }else if(!!input$country2 != "None" & !!input$eureg2 == "None"){
+      
+    }else if(!!input$country2 != "None" & !!input$eureg2 == "None" & !!input$region2 == "None"){
       shiny_data %>% 
         filter(Country_of_residence == input$country2) %>% 
         ggplot(aes(x = !!input$xvar, y = !!input$yvar))+
@@ -415,10 +484,23 @@ server <- function(input, output) {
                   paste(shiny_data %>% filter(Country_of_residence == input$country2) %>% 
                       summarise(n()))))+
         theme_ipsum(grid = "Y")
+      
+    }else if(!!input$country2 == "None" & !!input$eureg2 == "None" & !!input$region2 != "None"){
+      shiny_data %>% 
+        filter(Region_of_residence == input$region2) %>% 
+        ggplot(aes(x = !!input$xvar, y = !!input$yvar))+
+        geom_jitter(alpha = 0.7, color = "grey58")+
+        geom_smooth(method = "lm", size = 1.1)+
+        labs(x = paste(input$xvar), y = paste(input$yvar), caption = paste("n =", 
+                  paste(shiny_data %>% filter(Region_of_residence == input$region2) %>% 
+                      summarise(n()))))+
+        theme_ipsum(grid = "Y")
+      
     }else{
-      text = paste("\n   You chose from both 'Country:' and 'Geographical region:'.\n",
-                   "       Please do only select from one of those at a time.\n",
-                   "       To deselect, put the dropdown on 'None'.")
+      text = paste("\n   You chose from two of 'Country_of_residence:',\n",
+                   "    'Geographical_region:' or 'Region_of_residence'.\n",
+                   "    Please do only select from one of those at a time.\n",
+                   "         To deselect, put the dropdown on 'None'.")
       ggplot() + 
         annotate("text", x = 4, y = 25, size=8, label = text) + 
         theme_void() +
@@ -520,5 +602,7 @@ shinyApp(ui, server)
 
 #End of app code##------------------------------------------------------------------------------------
 #------------------------------------------------------------------------------------------
-?stargazer
-?`stargazer models`
+EVS_final %>% 
+  select(reg) %>% 
+  summarise(mean())
+mean(EVS_final$reg, na.rm = T)

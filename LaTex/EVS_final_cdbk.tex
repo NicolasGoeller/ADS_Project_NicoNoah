@@ -1,8 +1,8 @@
-=================================================================================
+=======================================================================
 
    nation 'Country of residence'
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: integer
    Measurement: nominal
@@ -60,16 +60,17 @@
 
    Remark:
 
-       The Russian Federation was excluded for purposes of visualisation.
-       Northern Ireland and Northern Cyprus were recoded to belong to their
-       respective legal states. Azerbaijan was excluded as there were no
-       respondents in the sample.
+       The Russian Federation was excluded for purposes of
+       visualisation. Northern Ireland and Northern Cyprus were
+       recoded to belong to their respective legal states.
+       Azerbaijan was excluded as there were no respondents in
+       the sample.
 
-=================================================================================
+=======================================================================
 
    c_code 'Country Code'
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: character
    Measurement: nominal
@@ -85,14 +86,14 @@
 
    Remark:
 
-       Country codes were recoded to match changes in country selection
-       (see 'Country of residence).
+       Country codes were recoded to match changes in country
+       selection (see 'Country of residence).
 
-=================================================================================
+=======================================================================
 
    reg 'Region of residence'
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: integer
    Measurement: nominal
@@ -223,14 +224,14 @@
 
    Remark:
 
-       Based on NUTS-1 coding, region codes were recoded to match changes
-       in country selection.
+       Based on NUTS-1 coding, region codes were recoded to match
+       changes in country selection.
 
-=================================================================================
+=======================================================================
 
    eureg 'Geopgraphical region in Europe'
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: integer
    Measurement: nominal
@@ -249,18 +250,18 @@
 
    Remark:
 
-       The item was recoded after the UN classification from the variable
-       'nation'. 'Armenia' was added to Southern Europe and 'Georgia' was
-       added to Eastern Europe.
+       The item was recoded after the UN classification from the
+       variable 'nation'. 'Armenia' was added to Southern Europe
+       and 'Georgia' was added to Eastern Europe.
 
-=================================================================================
+=======================================================================
 
    sat 'Individual level: Life satisfaction'
 
-   "All things considered, how satisfied are you with your life as a whole these
-   days? (1-dissatisfied, 10-satisfied)"
+   "All things considered, how satisfied are you with your life as a
+   whole these days? (1-dissatisfied, 10-satisfied)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -281,17 +282,17 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric.
 
-=================================================================================
+=======================================================================
 
    happ 'Individual level: Happiness'
 
-   "Taking all things together, how happy would you say you are? (1-very happy,
-   4-not at all happy)"
+   "Taking all things together, how happy would you say you are?
+   (1-very happy, 4-not at all happy)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -312,18 +313,18 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric.
 
-=================================================================================
+=======================================================================
 
    fair 'Individual level: Fairness'
 
-   "Do you think that most people would try to take advantage of you if they got
-   the chance, or would they try to be fair? (1-try to take advantage, 10-try to
-   be fair)"
+   "Do you think that most people would try to take advantage of you
+   if they got the chance, or would they try to be fair? (1-try to
+   take advantage, 10-try to be fair)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -344,16 +345,16 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric.
 
-=================================================================================
+=======================================================================
 
    siops 'Individual level: SIOPS-Index'
 
    "Standard Index of Occupational Prestige Scala (Values: 0-100)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -374,17 +375,17 @@
 
    Remark:
 
-       The SIOPS-Index is a widely known measure for social prestige of
-       different occupations.
+       The SIOPS-Index is a widely known measure for social
+       prestige of different occupations.
 
-=================================================================================
+=======================================================================
 
    job_sat 'Individual level: Job satisfaction'
 
    "Overall, how satisfied or dissatisfied are you with your job?
    (1-dissatisfied, 10-satisfied)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -405,16 +406,16 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric.
 
-=================================================================================
+=======================================================================
 
    nowork 'Individual level: Employment'
 
    "Are you yourself employed or not? (0-Employed, 1-Unemployed)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: integer
    Measurement: nominal
@@ -434,14 +435,15 @@
 
        Item was recoded as factor variable.
 
-=================================================================================
+=======================================================================
 
    intp_trust 'Individual level: Interpersonal trust'
 
-   "Generally speaking, would you say that most people can be trusted or that
-   you can't be too careful in dealing with people? (0-Distrustful, 1-Trustful)"
+   "Generally speaking, would you say that most people can be trusted
+   or that you can't be too careful in dealing with people?
+   (0-Distrustful, 1-Trustful)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: integer
    Measurement: nominal
@@ -461,13 +463,14 @@
 
        The item was recoded and scales were switched.
 
-=================================================================================
+=======================================================================
 
    conf_church 'variable for index: Trust in institutions'
 
-   "How much confidence you have in the church? (1-none at all, 4-a great deal)"
+   "How much confidence you have in the church? (1-none at all, 4-a
+   great deal)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -484,21 +487,22 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric. The item was recoded and scales were switched.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric. The item was recoded and scales were
+       switched.
 
    Source:
 
        European Value Survey 2008 (v205)
 
-=================================================================================
+=======================================================================
 
    conf_armed 'variable for index: Trust in institutions'
 
-   "How much confidence you have in the armed forces? (1-none at all, 4-a great
-   deal)"
+   "How much confidence you have in the armed forces? (1-none at all,
+   4-a great deal)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -515,20 +519,21 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric. The item was recoded and scales were switched.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric. The item was recoded and scales were
+       switched.
 
    Source:
 
        European Value Survey 2008 (v206)
 
-=================================================================================
+=======================================================================
 
    conf_educ 'variable for index: Trust in institutions'
 
    "How much confidence you have in ? (1-none at all, 4-a great deal)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -545,20 +550,22 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric. The item was recoded and scales were switched.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric. The item was recoded and scales were
+       switched.
 
    Source:
 
        European Value Survey 2008 (v207)
 
-=================================================================================
+=======================================================================
 
    conf_press 'variable for index: Trust in institutions'
 
-   "How much confidence you have in the press? (1-none at all, 4-a great deal)"
+   "How much confidence you have in the press? (1-none at all, 4-a
+   great deal)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -575,21 +582,22 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric. The item was recoded and scales were switched.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric. The item was recoded and scales were
+       switched.
 
    Source:
 
        European Value Survey 2008 (v208)
 
-=================================================================================
+=======================================================================
 
    conf_tu 'variable for index: Trust in institutions'
 
-   "How much confidence you have in trade unsions? (1-none at all, 4-a great
-   deal)"
+   "How much confidence you have in trade unsions? (1-none at all, 4-a
+   great deal)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -606,20 +614,22 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric. The item was recoded and scales were switched.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric. The item was recoded and scales were
+       switched.
 
    Source:
 
        European Value Survey 2008 (v209)
 
-=================================================================================
+=======================================================================
 
    conf_police 'variable for index: Trust in institutions'
 
-   "How much confidence you have in the police? (1-none at all, 4-a great deal)"
+   "How much confidence you have in the police? (1-none at all, 4-a
+   great deal)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -636,21 +646,22 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric. The item was recoded and scales were switched.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric. The item was recoded and scales were
+       switched.
 
    Source:
 
        European Value Survey 2008 (v210)
 
-=================================================================================
+=======================================================================
 
    conf_parl 'variable for index: Trust in institutions'
 
-   "How much confidence you have in the parliament? (1-none at all, 4-a great
-   deal)"
+   "How much confidence you have in the parliament? (1-none at all,
+   4-a great deal)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -667,21 +678,22 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric. The item was recoded and scales were switched.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric. The item was recoded and scales were
+       switched.
 
    Source:
 
        European Value Survey 2008 (v211)
 
-=================================================================================
+=======================================================================
 
    conf_cs 'variable for index: Trust in institutions'
 
-   "How much confidence you have in the civil service? (1-none at all, 4-a great
-   deal)"
+   "How much confidence you have in the civil service? (1-none at all,
+   4-a great deal)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -698,21 +710,22 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric. The item was recoded and scales were switched.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric. The item was recoded and scales were
+       switched.
 
    Source:
 
        European Value Survey 2008 (v212)
 
-=================================================================================
+=======================================================================
 
    conf_socs 'variable for index: Trust in institutions'
 
-   "How much confidence you have in the social security system? (1-none at all,
-   4-a great deal)"
+   "How much confidence you have in the social security system?
+   (1-none at all, 4-a great deal)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -729,20 +742,22 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric. The item was recoded and scales were switched.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric. The item was recoded and scales were
+       switched.
 
    Source:
 
        European Value Survey 2008 (v213)
 
-=================================================================================
+=======================================================================
 
    conf_eu 'variable for index: Trust in institutions'
 
-   "How much confidence you have in the EU? (1-none at all, 4-a great deal)"
+   "How much confidence you have in the EU? (1-none at all, 4-a great
+   deal)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -759,20 +774,22 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric. The item was recoded and scales were switched.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric. The item was recoded and scales were
+       switched.
 
    Source:
 
        European Value Survey 2008 (v214)
 
-=================================================================================
+=======================================================================
 
    conf_nato 'variable for index: Trust in institutions'
 
-   "How much confidence you have in NATO? (1-none at all, 4-a great deal)"
+   "How much confidence you have in NATO? (1-none at all, 4-a great
+   deal)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -789,21 +806,22 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric. The item was recoded and scales were switched.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric. The item was recoded and scales were
+       switched.
 
    Source:
 
        European Value Survey 2008 (v215)
 
-=================================================================================
+=======================================================================
 
    conf_un 'variable for index: Trust in institutions'
 
-   "How much confidence you have in the United Nations? (1-none at all, 4-a
-   great deal)"
+   "How much confidence you have in the United Nations? (1-none at
+   all, 4-a great deal)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -820,21 +838,22 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric. The item was recoded and scales were switched.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric. The item was recoded and scales were
+       switched.
 
    Source:
 
        European Value Survey 2008 (v216)
 
-=================================================================================
+=======================================================================
 
    conf_hs 'variable for index: Trust in institutions'
 
-   "How much confidence you have in the health care system? (1-none at all, 4-a
-   great deal)"
+   "How much confidence you have in the health care system? (1-none at
+   all, 4-a great deal)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -851,21 +870,22 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric. The item was recoded and scales were switched.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric. The item was recoded and scales were
+       switched.
 
    Source:
 
        European Value Survey 2008 (v217)
 
-=================================================================================
+=======================================================================
 
    conf_just 'variable for index: Trust in institutions'
 
-   "How much confidence you have in the justice system? (1-none at all, 4-a
-   great deal)"
+   "How much confidence you have in the justice system? (1-none at
+   all, 4-a great deal)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -882,21 +902,22 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric. The item was recoded and scales were switched.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric. The item was recoded and scales were
+       switched.
 
    Source:
 
        European Value Survey 2008 (v218)
 
-=================================================================================
+=======================================================================
 
    conf_gov 'variable for index: Trust in institutions'
 
-   "How much confidence you have in the government? (1-none at all, 4-a great
-   deal)"
+   "How much confidence you have in the government? (1-none at all,
+   4-a great deal)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -913,18 +934,19 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric. The item was recoded and scales were switched.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric. The item was recoded and scales were
+       switched.
 
    Source:
 
        European Value Survey 2008 (v222)
 
-=================================================================================
+=======================================================================
 
    inst_trust 'Individual level: Index for institutional trust'
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -945,21 +967,22 @@
 
    Remark:
 
-       The index was calculated from 15 variables regarding trust in
-       different institutions. All were coded after the same 4-scale. This
-       procedure was based on research literature, refer to the theoretical
-       paper for more detailed legitimation. The index variables have a
-       high Cronbach's alpha of 0.89.
+       The index was calculated from 15 variables regarding trust
+       in different institutions. All were coded after the same
+       4-scale. This procedure was based on research literature,
+       refer to the theoretical paper for more detailed
+       legitimation. The index variables have a high Cronbach's
+       alpha of 0.89.
 
-=================================================================================
+=======================================================================
 
    cl_sb 'variable for index: Moral trustworthiness'
 
-   "Please tell me for non-entitled state benefits whether you think it can
-   always be justified, never be justified, or something in between? (1-always,
-   4-never)"
+   "Please tell me for non-entitled state benefits whether you think
+   it can always be justified, never be justified, or something in
+   between? (1-always, 4-never)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -976,22 +999,23 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric. The item was recoded and scales were switched.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric. The item was recoded and scales were
+       switched.
 
    Source:
 
        European Value Survey 2008 (v233)
 
-=================================================================================
+=======================================================================
 
    ch_tax 'variable for index: Moral trustworthiness'
 
-   "Please tell me for cheating from tax if possible whether you think it can
-   always be justified, never be justified, or something in between? (1-always,
-   4-never)"
+   "Please tell me for cheating from tax if possible whether you think
+   it can always be justified, never be justified, or something in
+   between? (1-always, 4-never)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -1008,21 +1032,23 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric. The item was recoded and scales were switched.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric. The item was recoded and scales were
+       switched.
 
    Source:
 
        European Value Survey 2008 (v234)
 
-=================================================================================
+=======================================================================
 
    joy 'variable for index: Moral trustworthiness'
 
-   "Please tell me for joyriding whether you think it can always be justified,
-   never be justified, or something in between? (1-always, 4-never)"
+   "Please tell me for joyriding whether you think it can always be
+   justified, never be justified, or something in between? (1-always,
+   4-never)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -1039,22 +1065,23 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric. The item was recoded and scales were switched.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric. The item was recoded and scales were
+       switched.
 
    Source:
 
        European Value Survey 2008 (v235)
 
-=================================================================================
+=======================================================================
 
    lying 'variable for index: Moral trustworthiness'
 
-   "Please tell me for lying in your own interest whether you think it can
-   always be justified, never be justified, or something in between? (1-always,
-   4-never)"
+   "Please tell me for lying in your own interest whether you think it
+   can always be justified, never be justified, or something in
+   between? (1-always, 4-never)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -1071,22 +1098,23 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric. The item was recoded and scales were switched.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric. The item was recoded and scales were
+       switched.
 
    Source:
 
        European Value Survey 2008 (v237)
 
-=================================================================================
+=======================================================================
 
    bribe 'variable for index: Moral trustworthiness'
 
-   "Please tell me for accepting a bribe in course of duty whether you think it
-   can always be justified, never be justified, or something in between?
-   (1-always, 4-never)"
+   "Please tell me for accepting a bribe in course of duty whether you
+   think it can always be justified, never be justified, or something
+   in between? (1-always, 4-never)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -1103,22 +1131,23 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric. The item was recoded and scales were switched.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric. The item was recoded and scales were
+       switched.
 
    Source:
 
        European Value Survey 2008 (v239)
 
-=================================================================================
+=======================================================================
 
    av_tax 'variable for index: Moral trustworthiness'
 
-   "Please tell me for paying cash to avoid taxes whether you think it can
-   always be justified, never be justified, or something in between? (1-always,
-   4-never)"
+   "Please tell me for paying cash to avoid taxes whether you think it
+   can always be justified, never be justified, or something in
+   between? (1-always, 4-never)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -1135,22 +1164,23 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric. The item was recoded and scales were switched.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric. The item was recoded and scales were
+       switched.
 
    Source:
 
        European Value Survey 2008 (v245)
 
-=================================================================================
+=======================================================================
 
    av_pub_f 'variable for index: Moral trustworthiness'
 
-   "Please tell me for avoiding the public transfer fare whether you think it
-   can always be justified, never be justified, or something in between?
-   (1-always, 4-never)"
+   "Please tell me for avoiding the public transfer fare whether you
+   think it can always be justified, never be justified, or something
+   in between? (1-always, 4-never)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -1167,18 +1197,19 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric. The item was recoded and scales were switched.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric. The item was recoded and scales were
+       switched.
 
    Source:
 
        European Value Survey 2008 (v247)
 
-=================================================================================
+=======================================================================
 
    trust_wrth 'Individual level: Index for moral trustworthiness'
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -1199,20 +1230,22 @@
 
    Remark:
 
-       The index was calculated from 7 variables regarding the propensity
-       to commit certain minor offenses for egoistic benefit. All were
-       coded after the same 10-scale, that was switched. This procedure was
-       based on research literature, refer to the theoretical paper for
-       more detailed legitimation. The index variables have a high
-       Cronbach's alpha of 0.82.
+       The index was calculated from 7 variables regarding the
+       propensity to commit certain minor offenses for egoistic
+       benefit. All were coded after the same 10-scale, that was
+       switched. This procedure was based on research literature,
+       refer to the theoretical paper for more detailed
+       legitimation. The index variables have a high Cronbach's
+       alpha of 0.82.
 
-=================================================================================
+=======================================================================
 
    work_impo 'Individual level: Work importance in life'
 
-   "Please indicate, how important is work in your life (1-very, 4-not at all)"
+   "Please indicate, how important is work in your life (1-very, 4-not
+   at all)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -1233,17 +1266,17 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric.
 
-=================================================================================
+=======================================================================
 
    free_job 'Individual level: Freedem of job decisions'
 
-   "How free are you to make decisions in your job? (1-not at all, 10-a great
-   deal)"
+   "How free are you to make decisions in your job? (1-not at all,
+   10-a great deal)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -1264,17 +1297,17 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric.
 
-=================================================================================
+=======================================================================
 
    talent 'Individual level: Job development'
 
-   "Do you agree or disagree with: To fully develop your talents, you need to
-   have a job. (1-disagree strongly, 5-agree strongly)"
+   "Do you agree or disagree with: To fully develop your talents, you
+   need to have a job. (1-disagree strongly, 5-agree strongly)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -1295,17 +1328,18 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric. From the original survey, the scales were switched.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric. From the original survey, the scales
+       were switched.
 
-=================================================================================
+=======================================================================
 
    duty 'Individual level: Work duty to society'
 
-   "Do you agree or disagree with: Work is a duty towards society. (1-disagree
-   strongly, 5-agree strongly)"
+   "Do you agree or disagree with: Work is a duty towards society.
+   (1-disagree strongly, 5-agree strongly)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -1326,17 +1360,19 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric. From the original survey, the scales were switched.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric. From the original survey, the scales
+       were switched.
 
-=================================================================================
+=======================================================================
 
    work_first 'Individual level: Work should come always first'
 
-   "Do you agree or disagree with: Work should always come first, even if it
-   means less spare time.(1-disagree strongly, 5-agree strongly)"
+   "Do you agree or disagree with: Work should always come first, even
+   if it means less spare time.(1-disagree strongly, 5-agree
+   strongly)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -1357,17 +1393,18 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric. From the original survey, the scales were switched.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric. From the original survey, the scales
+       were switched.
 
-=================================================================================
+=======================================================================
 
    sup 'Individual level: Supervisor work'
 
-   "Do/did you have any responsibility for supervising the work of other
-   employees? "
+   "Do/did you have any responsibility for supervising the work of
+   other employees? "
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: integer
    Measurement: nominal
@@ -1387,14 +1424,14 @@
 
        Item was recoded as nominal factors.
 
-=================================================================================
+=======================================================================
 
    entre 'Individual level: Entrepreneurial work'
 
-   "In your LAST job were you employed (either full time or part time) or were
-   you self-employed?"
+   "In your LAST job were you employed (either full time or part time)
+   or were you self-employed?"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: integer
    Measurement: nominal
@@ -1415,13 +1452,14 @@
 
        Item was recoded as nominal factors.
 
-=================================================================================
+=======================================================================
 
    isei 'Individual level: ISEI-Index'
 
-   "International Socio-Economic Index of Occupational Status (Values: 16-90)"
+   "International Socio-Economic Index of Occupational Status (Values:
+   16-90)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -1442,19 +1480,20 @@
 
    Remark:
 
-       The ISEI-Index is a widely known measure for socio-economic status
-       of different occupations.
+       The ISEI-Index is a widely known measure for
+       socio-economic status of different occupations.
 
-=================================================================================
+=======================================================================
 
    inc_mon 'Individual level: Monthly income'
 
-   "Here is a list of incomes and we would like to know in what group your
-   household is, counting all wages, salaries, pensions and other incomes that
-   come in. Just give the letter of the group your household falls into, after
-   taxes and other deductions. (12 categories)"
+   "Here is a list of incomes and we would like to know in what group
+   your household is, counting all wages, salaries, pensions and other
+   incomes that come in. Just give the letter of the group your
+   household falls into, after taxes and other deductions. (12
+   categories)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -1475,19 +1514,46 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric.
 
-=================================================================================
+=======================================================================
+
+   inc_cat 'Individual level: Income recoded categorical'
+
+-----------------------------------------------------------------------
+
+   Storage mode: integer
+   Measurement: ordinal
+   Missing values: NA
+
+   Values and labels     N     Percent  
+                                        
+        1   'Low'    18457    34.9  28.5
+        2   'Medium' 18954    35.9  29.3
+        3   'High'   15455    29.2  23.9
+       NA M          11911          18.4
+
+   Source:
+
+       European Value Survey 2008 (v353_r)
+
+   Remark:
+
+       The variable taken as given, recoded by the data
+       publisher. Transformed to ordered factor.
+
+=======================================================================
 
    inc_an 'Individual level: Annual income'
 
-   "Here is a list of incomes and we would like to know in what group your
-   household is, counting all wages, salaries, pensions and other incomes that
-   come in. Just give the letter of the group your household falls into, after
-   taxes and other deductions. (12 categories)"
+   "Here is a list of incomes and we would like to know in what group
+   your household is, counting all wages, salaries, pensions and other
+   incomes that come in. Just give the letter of the group your
+   household falls into, after taxes and other deductions. (12
+   categories)"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -1508,15 +1574,15 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric.
 
-=================================================================================
+=======================================================================
 
-   incppp_mon 'Individual level: Monthly household income (x1000), corrected for
-   purchasing power parity in <e2><82><ac>'
+   incppp_mon 'Individual level: Monthly household income (x1000),
+   corrected for purchasing power parity in <e2><82><ac>'
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -1535,14 +1601,14 @@
 
        European Value Survey 2008 (v353M_ppp)
 
-=================================================================================
+=======================================================================
 
    inc_eq 'Individual level: Equality of income incentives'
 
-   "How would you place your views on this scale regarding equalize income
-   incentives for individual effort?"
+   "How would you place your views on this scale regarding equality of
+   income incentives for individual effort?"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -1563,14 +1629,14 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric.
 
-=================================================================================
+=======================================================================
 
    sex 'Individual level: Sex of the respondent'
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: integer
    Measurement: nominal
@@ -1590,11 +1656,11 @@
 
        Item was recoded as nominal factors.
 
-=================================================================================
+=======================================================================
 
    age 'Individual level: Age of the respondent'
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: ratio
@@ -1615,16 +1681,43 @@
 
    Remark:
 
-       Item was coded based on the original variable of the respondent's
-       year of birth, subtracted from 2008, the year of surveying.
+       Item was coded based on the original variable of the
+       respondent's year of birth, subtracted from 2008, the year
+       of surveying.
 
-=================================================================================
+=======================================================================
+
+   age_cat 'Individual level: Age recoded categorical'
+
+-----------------------------------------------------------------------
+
+   Storage mode: integer
+   Measurement: ordinal
+   Missing values: NA
+
+     Values and labels     N     Percent  
+                                          
+    1   '15-29'        13672    21.2  21.1
+    2   '30 - 49'      22769    35.3  35.1
+    3   '50 and older' 28059    43.5  43.3
+   NA M                  277           0.4
+
+   Source:
+
+       European Value Survey 2008 (age_r2)
+
+   Remark:
+
+       The variable taken as given, recoded by the data
+       publisher. Transformed to ordered factor.
+
+=======================================================================
 
    mar_stat 'Individual level: Marital status of the respondent'
 
    "What is your current legal marital status?"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: integer
    Measurement: nominal
@@ -1653,33 +1746,54 @@
 
        Item was recoded as nominal factors.
 
-=================================================================================
+=======================================================================
 
-   edu_cat 'Individual level: Educational categories for respondent'
+   edu_cat3 'Individual level: Education recoded categorical'
 
-   "What is the highest level you have completed in your education?"
-
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: integer
    Measurement: ordinal
    Missing values: NA
 
-                                                  Values and labels     N     Percent  
-                                                                                       
-    1   'other missing'                                                 0     0.0   0.0
-    2   'question not asked'                                            0     0.0   0.0
-    3   'not applicable'                                                0     0.0   0.0
-    4   'no answer'                                                     0     0.0   0.0
-    5   'don't know'                                                    0     0.0   0.0
-    6   ' 0 :  Pre-primary education or none education'              2079     3.2   3.2
-    7   ' 1 :  Primary education or first stage of basic education'  6520    10.2  10.1
-    8   ' 2 :  Lower secondary or second stage of basic education'  11039    17.2  17.0
-    9   ' 3 :  (Upper) secondary education'                         26246    40.9  40.5
-   10   ' 4 :  Post-secondary non-tertiary education'                3647     5.7   5.6
-   11   ' 5 :  First stage of tertiary education'                   14221    22.2  22.0
-   12   ' 6 :  Second stage of tertiary education'                    421     0.7   0.6
-   NA M                                                               604           0.9
+   Values and labels     N     Percent  
+                                        
+        1   'Lower'  19638    30.6  30.3
+        2   'Middle' 29893    46.6  46.1
+        3   'Upper'  14642    22.8  22.6
+       NA M            604           0.9
+
+   Source:
+
+       European Value Survey 2008 (v336_r)
+
+   Remark:
+
+       The variable taken as given, recoded by the data
+       publisher. Transformed to ordered factor.
+
+=======================================================================
+
+   edu_cat7 'Individual level: Educational categories for respondent'
+
+   "What is the highest level you have completed in your education?"
+
+-----------------------------------------------------------------------
+
+   Storage mode: integer
+   Measurement: ordinal
+   Missing values: NA
+
+                                            Values and labels     N     Percent  
+                                                                                 
+    1   'Pre-primary education or no education'                2079     3.2   3.2
+    2   'Primary education or first stage of basic education'  6520    10.2  10.1
+    3   'Lower secondary or second stage of basic education'  11039    17.2  17.0
+    4   '(Upper) secondary education'                         26246    40.9  40.5
+    5   'Post-secondary non-tertiary education'                3647     5.7   5.6
+    6   'First stage of tertiary education'                   14221    22.2  22.0
+    7   'Second stage of tertiary education'                    421     0.7   0.6
+   NA M                                                         604           0.9
 
    Source:
 
@@ -1687,15 +1801,16 @@
 
    Remark:
 
-       The item was asked based on the 'ISCED-one digit code'(6-scale).
+       The item was asked based on the 'ISCED-one digit
+       code'(7-scale).
 
-=================================================================================
+=======================================================================
 
    edu 'Individual level: Education of respondent'
 
    "What is the highest level you have completed in your education?"
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -1716,15 +1831,15 @@
 
    Remark:
 
-       The item was asked based on the 'ISCED-two digit code' (13-scale).
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric.
+       The item was asked based on the 'ISCED-two digit code'
+       (13-scale). The assumption of quasi-metric variable was
+       taken when recoding to numeric.
 
-=================================================================================
+=======================================================================
 
    town 'Individual level: Size of town where interview was conducted'
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -1745,14 +1860,14 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric.
 
-=================================================================================
+=======================================================================
 
    fhrate 'National level: Freedom House Democracy rating for 2008'
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -1771,15 +1886,16 @@
 
    Remark:
 
-       The assumption of quasi-metric variable was taken when recoding to
-       numeric. Missing values for Kosovo and Montenegro were replace with
-       data for 2008 from the Freedom House website.
+       The assumption of quasi-metric variable was taken when
+       recoding to numeric. Missing values for Kosovo and
+       Montenegro were replace with data for 2008 from the
+       Freedom House website.
 
-=================================================================================
+=======================================================================
 
    hdi 'National level: Human Development Index for 2008'
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: interval
@@ -1794,18 +1910,19 @@
 
    Source:
 
-       Democracy Cross National Data by Pippa Norris (UNDP_HDI2008)
+       Democracy Cross National Data by Pippa Norris
+       (UNDP_HDI2008)
 
    Remark:
 
-       Kosovo has no HDI value for 2008, so the value of Serbia was taken
-       as a proxy.
+       Kosovo has no HDI value for 2008, so the value of Serbia
+       was taken as a proxy.
 
-=================================================================================
+=======================================================================
 
    gini 'National level: Gini-Coeffiecient for 2008'
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: ratio
@@ -1824,18 +1941,19 @@
 
    Remark:
 
-       Missing values for Germany and Poland were taken from the Eurostat
-       viewer, for Serbia from the cIA World Factbook, all three regarding
-       the year 2008. The missing values for Croatia, Kosovo and Macedonia
-       were approximated by their values from 2009, for Bosnia Herzegovina
-       the 2007 value was taken as a proxy.
+       Missing values for Germany and Poland were taken from the
+       Eurostat viewer, for Serbia from the cIA World Factbook,
+       all three regarding the year 2008. The missing values for
+       Croatia, Kosovo and Macedonia were approximated by their
+       values from 2009, for Bosnia Herzegovina the 2007 value
+       was taken as a proxy.
 
-=================================================================================
+=======================================================================
 
-   GDPpc 'National level: Gross Domestic Product per capita for 2008 in
-   2018-Dollars per inhabitant'
+   GDPpc 'National level: Gross Domestic Product per capita for 2008
+   in 2018-Dollars per inhabitant'
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: ratio
@@ -1856,11 +1974,11 @@
 
        -
 
-=================================================================================
+=======================================================================
 
    unemployment 'National level: Unemployment rate for 2008'
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: ratio
@@ -1879,14 +1997,15 @@
 
    Remark:
 
-       Aggregated variable from individual level responses, no official
-       data.
+       Aggregated variable from individual level responses, no
+       official data.
 
-=================================================================================
+=======================================================================
 
-   life_sat 'National level: Aggregated average life satisfaction 2008'
+   life_sat 'National level: Aggregated average life satisfaction
+   2008'
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: ratio
@@ -1907,11 +2026,12 @@
 
        -
 
-=================================================================================
+=======================================================================
 
-   intp_trust_reg 'Regional level: Aggregated average interpersonal trust'
+   intp_trust_reg 'Regional level: Aggregated average interpersonal
+   trust'
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: ratio
@@ -1932,12 +2052,12 @@
 
        -
 
-=================================================================================
+=======================================================================
 
-   inst_trust_reg 'Regional level level: Aggregated average institutional trust
-   2008'
+   inst_trust_reg 'Regional level level: Aggregated average
+   institutional trust 2008'
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: ratio
@@ -1958,11 +2078,12 @@
 
        -
 
-=================================================================================
+=======================================================================
 
-   trust_wrth_reg 'Regional level: Aggregated average moral trustworthiness'
+   trust_wrth_reg 'Regional level: Aggregated average moral
+   trustworthiness'
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: ratio
@@ -1983,11 +2104,11 @@
 
        -
 
-=================================================================================
+=======================================================================
 
-   fair_reg 'Regional level: Aggregated average fairness'
+   fair_reg 'Regional level: Aggregated average expected fairness'
 
----------------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
    Storage mode: double
    Measurement: ratio

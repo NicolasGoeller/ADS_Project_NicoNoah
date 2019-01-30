@@ -178,11 +178,11 @@ EVS %<>% within({ #non-pecuniary factors
   job_sat <- v90 #Job satisfaction (10 point)
   job_sat[v90 %in% c(-5, -4, -3, -2, -1)] <- NA
   job_sat <- as.numeric(job_sat)
-  job_sat_c <- job_sat - mean(job_sat, na.rm = T)
   
   siops <- v339SIOPS #Standard Index of Occupational Prestige Scala (1-100)
+  siops[v339SIOPS %in% c(-5, -4, -3, -2, -1)] <- NA 
   siops <- as.numeric(siops)
-  siops_c <- siops - mean(siops, na.rm = T)
+  
   
 }) #non-pecuniary factors
 
@@ -196,29 +196,29 @@ EVS %<>% within({ #pecuniary factors
   nowork <- factor(nowork, levels = c(0, 1), labels = c("Employed", "Unemployed"), 
                        ordered = F)
   
+  inc_cat <- v353_r #Income recoded in three categories
+  inc_cat[v353_r %in% c(-5, -4, -3, -2, -1)] <- NA
+  inc_cat <- factor(inc_cat, levels = c(1, 2, 3), labels = c("Low", "Medium", "High"))
+  
   inc_an <- v353YR #Annual income in euros
   inc_an[v353YR %in% c(-5, -4, -3, -2, -1)] <- NA
   inc_an <- as.numeric(inc_an)
-  inc_an_c <- inc_an - mean(inc_an, na.rm = T)
   
   inc_mon <- v353MM #Monthly income in euros
   inc_mon[v353MM %in% c(-5, -4, -3, -2, -1)] <- NA
   inc_mon <- as.numeric(inc_mon)
-  inc_mon_c <- inc_mon - mean(inc_mon, na.rm = T)
   
   incppp_mon <- v353M_ppp #Monthly income after purchasing power parity
   incppp_mon[v353M_ppp %in% c(-5, -4, -3, -2, -1)] <- NA
   incppp_mon <- as.numeric(incppp_mon)
-  incppp_mon_c <- incppp_mon - mean(incppp_mon, na.rm = T)
   
   isei <- v339ISEI #International Socio-Economic Index of Occupational Status
+  isei[v339ISEI %in% c(-5, -4, -3, -2, -1)] <- NA 
   isei <- as.numeric(isei)
-  isei_c <- isei - mean(isei, na.rm = T)
   
   inc_eq <- v198 #Income equality from 1 to 10 (1 indicating more equality)
   inc_eq[v198 %in% c(-5, -4, -3, -2, -1)] <- NA 
   inc_eq <- as.numeric(inc_eq)
-  inc_eq_c <- inc_eq - mean(inc_eq, na.rm = T)
   
 }) #pecuniary factors
 
@@ -229,30 +229,25 @@ EVS %<>% within({ #work variables
   work_impo <- v1 #How important is work in your life (4 point)
   work_impo[v1 %in% c(-5, -4, -3, -2, -1)] <- NA
   work_impo <- as.numeric(work_impo)
-  work_impo_c <- work_impo - mean(work_impo, na.rm = T)
   
   free_job <- v91 #How free are you to make decisions in your job (10 point)
   free_job[v91 %in% c(-5, -4, -3, -2, -1)] <- NA
   free_job <- as.numeric(free_job)
-  free_job_c <- free_job - mean(free_job, na.rm = T)
   
   talent <- v92 #Need job to develop your talents (5 point)
   talent[v92 %in% c(-5, -4, -3, -2, -1)] <- NA
   talent <- as.numeric(talent)
   talent <- (talent - 5) * -1
-  talent_c <- talent - mean(talent, na.rm = T)
   
   duty <- v95 #Work is a duty towards society (5 point)
   duty[v95 %in% c(-5, -4, -3, -2, -1)] <- NA
   duty <- as.numeric(duty)
   duty <- (duty - 5) * -1
-  duty_c <- duty - mean(duty, na.rm = T)
   
   work_first <- v96 #Work comes always first (5 point)
   work_first[v96 %in% c(-5, -4, -3, -2, -1)] <- NA
   work_first <- as.numeric(work_first)
   work_first <- (work_first - 5) * -1
-  work_first_c <- work_first - mean(work_first, na.rm = T)
   
   sup <- v341 #are you supervising someone
   sup[v341 %in% c(-5, -4, -3, -2, -1)] <- NA
@@ -437,25 +432,38 @@ EVS %<>% within({ #demographics
   age[v303 %in% c(-5, -4, -3, -2, -1)] <- NA
   age <- as.numeric(age)
   age <- 2008 - age
-  age_c <- age - mean(age, na.rm = T)
+  
+  age_cat <- age_r2 #age recoded in three categories
+  age_cat[age_r2 %in% c(-5, -4, -3, -2, -1)] <- NA
+  age_cat <- factor(age_cat, levels = c(1, 2, 3), labels = c("15-29", "30 - 49", "50 and older"), ordered = T)
   
   mar_stat <- v313 #Current marital status
   mar_stat[v313 %in% c(-5, -4, -3, -2, -1)] <- NA
   mar_stat <- as_factor(mar_stat, ordered = F)
   
-  edu_cat <- v336 #Education after ISCED code (6 point)
-  edu_cat[v336 %in% c(-5, -4, -3, -2, -1)] <- NA
-  edu_cat <- as_factor(edu_cat, ordered = T)
+  edu_cat3 <- v336_r #Education recoded
+  edu_cat3[v336_r %in% c(-5, -4, -3, -2, -1)] <- NA
+  edu_cat3 <- factor(edu_cat3, levels = c(1, 2, 3),
+                     labels = c("Lower", "Middle", "Upper"),ordered = T)
   
+  edu_cat7 <- v336 #Education after ISCED 1-digit (6 point)
+  edu_cat7[v336 %in% c(-5, -4, -3, -2, -1)] <- NA
+  edu_cat7 <- factor(edu_cat7, levels = c(0, 1, 2, 3, 4, 5, 6), 
+                     labels = c("Pre-primary education or no education",
+                                "Primary education or first stage of basic education",
+                                "Lower secondary or second stage of basic education",
+                                "(Upper) secondary education",
+                                "Post-secondary non-tertiary education",
+                                "First stage of tertiary education",
+                                "Second stage of tertiary education") ,ordered = T)
+
   edu <- v336_2 #Education after ISCED 2-digit
   edu[v336_2 %in% c(-5, -4, -3, -2, -1)] <- NA
   edu <- as.numeric(edu)
-  edu_c <- edu - mean(edu, na.rm = T)
   
   town <- v370a #size of town
   town[v370a %in% c(-5, -4, -3, -2, -1)] <- NA
   town <- as.numeric(town)
-  town_c <- town - mean(town, na.rm = T)
   
 }) #demographics
 
