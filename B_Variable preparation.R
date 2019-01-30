@@ -20,9 +20,9 @@ library(eurostat)
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------
-###   1. European Values Survey
+###   1. European Values Study
 
-##    1.1 Read European Values Survey 2008
+##    1.1 Read European Values Study 2008
 EVS <- read_rds("Data/EVS.rds")
 
 
@@ -509,7 +509,7 @@ wb_data$nation <- wb_data$country
 
 #----------------------------------------------------------------------------------------
 
-##    2.4 European Value Survey 2008: Level-2-variables
+##    2.4 European Value Study 2008: Level-2-variables
 
 # Creating a subsetted dataset for variable to be aggregated
 EVS_nat <- dplyr::select(EVS, nation, nowork, sat) 

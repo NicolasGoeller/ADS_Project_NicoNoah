@@ -11,7 +11,7 @@ library(magrittr)
 
 #-----------------------------------------------------------------------------------------
 
-###  1. European Value Survey 2008
+###  1. European Value Study 2008
 EVS_2008 <- read_spss("Data/ZA4800_v4-0-0.sav") # Seems to have the missing countries
 
 #Preliminary exclusions and selection

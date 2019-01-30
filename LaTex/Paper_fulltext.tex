@@ -4,7 +4,6 @@
 
 \documentclass[preprint,12pt,authoryear]{elsarticle}
 
-\usepackage{blindtext}
 %% For including figures, graphicx.sty has been loaded in
 %% elsarticle.cls. If you prefer to use the old commands
 %% please give \usepackage{epsfig}
@@ -22,136 +21,175 @@
 \journal{Dr. Florian Bader}
 
 \begin{document}
-
-\begin{frontmatter}
-
-%% Title, authors and addresses
-
-%% use the tnoteref command within \title for footnotes;
-%% use the tnotetext command for theassociated footnote;
-%% use the fnref command within \author or \address for footnotes;
-%% use the fntext command for theassociated footnote;
-%% use the corref command within \author for corresponding author footnotes;
-%% use the cortext command for theassociated footnote;
-%% use the ead command for the email address,
-%% and the form \ead[url] for the home page:
-%% use optional labels to link authors explicitly to addresses:
-%% \author[label1,label2]{}
-%% \address[label1]{}
-%% \address[label2]{}
-
-\title{Visualising Life Satisfaction in Countries across Europe: Individual- and Multi-Level Evidence on Cultural and Pecuniary Factors}
-
-\author{Nicolas F. K. Göller\fnref{label2}}
-\ead{n.goeller@zeppelin-university.net}
-\fntext[label2]{Student in Sociology, Politics and Economics}
-
-\author{Noah Peters\fnref{label1}}
-\ead{no.peters@zeppelin-university.net}
-\fntext[label2]{Student in Sociology, Politics and Economics}
-
-\address{Zeppelin University, Fallenbrunnen 3, 88045 Friedrichshafen\fnref{label3}}
-%% \fntext[label3]{}
-
-
-\begin{abstract}
-%% Text of abstract
-This project was set out to provide an easy access to a comprehensible way for exploring the differences in determinants of life satisfaction 
-all over Europe. While the actual analysis and presentation of results will be shown in different ways, this document
-shall provide an overview over the data used and the treatment of variables applied during the project. 
-The project's aim is not only to inspire interest into the determinants of happiness in human life, but also to encourage
-later researchers to critically enquire with the work done here in order to point out its shortcomings and improve the final
-result. Thus this document should provide the necessary transparency about sourcing of data and work on variables that
-has been done previously to conducting the analysis and visualising results.
-\end{abstract}
-
-\end{frontmatter}
-
-%% main text
-\newpage
-\tableofcontents
-\newpage
-
-
-\section{Introduction and Preliminary remarks}
-Anecdotal evidence suggests that people spend a significant share of their lifetime working (for a casual calculation 
-see: \citet{thompson_what_2016}). Moreover, people's work environment is changing constantly and especially today's 
-discussion about the impact of digitalisation on the labour market requires to investigate how occupational factors shape 
-people's life in general. Since work constitutes a considerable part of people’s life, satisfaction with one’s job and the
-occupational environment must severely determine overall well-being. Drawing on the above-mentioned diversity of 
-occupations, their respective circumstances and adaptation to the ‘digital revolution’, this assumption gains even more 
-ground and relevance: \textit{If work changes, life changes.} \\
-But which work-related factors contribute to a happy - or unhappy - life? Also, how does life satisfaction of the employed
-vary across regions and countries? \\
-Using data form the European Values Survey (EVS) and several other sources, we calculated multiple regression models to assess the causality of
-work-related factors and well-being on the individual level. Moreover, multi-level analyses with regard to social capital and
-macroeconomic as well as developmental indicators were performed to account for variation across regions and countries. 
-%% Könntest du den Fokus ein wenig weg von Work und hin auf multilevel + pecuniary/ non-pecuiary setzen, für so viel Fokus haben wir nicht genug work-relatedness
-\section{Motivational Manifesto}
-In a time of widespread digitalisation for many aspects of modern society, 'datafication' and subsequent analysis of data has become ever more prevalent \cite{baack_datafication_2015, lycett_datafication:_2013}. Transparency of data sourcing, data access and methods employed in the course of this analysis is a chief concern of the 'Open Science' movement\cite{delfanti_open_2010}. With more and more transparency, reproducibility of procedures is expected to increase and thus the quality of insights by replication and and improvements of methods through a 'wisdom of the (educated) crowd'. There have been extensive developments in the form of guidelines and protocols for researchers, universities and scientific journals that are aimed at promoting more transparency in the scientific process \cite{nosek_promoting_2015, miguel_promoting_2014}. 
-At the same time, large shares of the population lack the essential skills to participate in the research process or perceive the barrier of entry in acquiring the necessary skills to do so, as unsurmountably high. The concept of 'Citizen Science' has thus emerged sitting at the edge of both science and education. Citizen science projects enlist non-scientiest members of the public to participate in the research (mainly in data collection), allowing to survey large amounts of data, while educating participants about the research topic \cite{shirk_public_2012}. Originally coming from environmental research this approach has already allowed researcher to survey wide ranges of locations and time periods and thus provides access to high-quality data that could quite impossibly be attained by professional research teams on their own \cite{bonney_citizen_2009}.
-
-Conceptually, 'Open Science' and 'Citizen Science' are deeply intertwined as 'Citizen Science' needs to be as transparent and easily accessible as possible to be effective on a large scale\cite{nov_dusting_2011} and 'Open Science' needs to offer educational value and low entry barriers if it wants to gain attention and participation of a broader audience \cite{newman_future_2012}. We feel committed to the mission of these movements and have thus designed our project in order to advance it for the social sciences. 
-
-\section{Theory and Literature Review}
-Although the causal relation between work and happiness/life satisfaction seems straightforward and intuitively correct,
-its academic investigation is far from trivial. On the one hand, this appears in light of definitional questions regarding the 
-wo variables of interest. On the other hand, operationalising the constructs appropriately remains subject to discussions
-(for subjective well-being see: \cite{kahneman_developments_2006,layard_measuring_2010}). Lastly, the causal nature of job and life
-satisfaction presents itself as far more complex than intuitively assumed. \\
-Each of these three fields is addressed by a comprehensive literature review to set the tone for the subsequent analysis.
-As this analysis draws on specific independent variables on the individual level and several factors on higher aggregate
-levels (multi-level analysis), their respective relation to life satisfaction, as assessed in the literature, is discussed as well.
-
-\subsection{Life Satisfaction as a Component of Subjective Well-Being (SWB)}
-So far, the terms life satisfaction, happiness, and well-being have been used interchangeably. In fact, however, they
-are commonly understood to act upon each other therefore constituting the wider concept of subjective well-being (SWB)
-that includes life satisfaction, happiness, and positive affect  \citep{bowling_meta-analytic_2010,diener_subjective_1984}. 
-Paying debt to the European Value Study’s (EVS) operationalisation of SWB, we only include life satisfaction as a
-dependent variable: While life satisfaction is measured using a ten-point scale the other available component of SWB,
-happiness, comes in a four-point scale. Consequently, we only included the life satisfaction variable for our regression
-models. For the remains of this study, we concentrate on life satisfaction as a dependent variable. The variable selection
-is further elaborated upon in the method section. 
-
-\subsection{SWB and Job Satisfaction}
-The literature examining the causal relation of SWB and job satisfaction is extensive
-(for reviews see: \citet{bowling_meta-analytic_2010,erdogan_whistle_2012}). \citet{bowling_meta-analytic_2010}, in their
-meta-analysis, show a positive relationship between all three respective components of SWB and job satisfaction.
-Going even further, \citet{near_job_1987} postulate that “job satisfaction must logically constitute some part of the
-broader construct of life satisfaction; thus, the question regarding spillover between the two must be ‘how much’ not
-‘whether’." (p. 398). \\
-Before we examine the how much-question, it is necessary to discuss the direction of causality between SWB and job
-satisfaction. In general, the present literature differentiates two approaches: the part-whole theory
-\citep{bowling_meta-analytic_2010,hart_predicting_1999,judge_dispositional_1998} and the dispositional approach. The former
-proposes job satisfaction to act upon SWB. This appears because of the simple reason that has already been mentioned
-above: job satisfaction constitutes a sub-category of overall life satisfaction \citep[cf.]{near_job_1987}.
-Consequently, the approach is also conceived of as bottom-up approach \citep{erdogan_whistle_2012}. Conversely, the
-dispositional approach assumes a general predisposition of satisfaction with life to affect more specific domains like work
-i.e., satisfaction with those domains \citep{bowling_meta-analytic_2010,diener_subjective_1984,headey_top-down_1991,judge_job_1993,judge_another_1993}. 
-Erdogan et al. (2012) link these predispositions to personal traits that determine how satisfied people feel with certain
-domains and life in general (top-down approach). Positioned between the poles is the spillover hypothesis that just
-contents the basic linkage between job and life satisfaction or even other domains of life 
-\citep{bowling_meta-analytic_2010,erdogan_whistle_2012,judge_job_2001,judge_individual_1994}.
-Conceptually, this relation can be understood as a reciprocal relation between the various domains of life and people’s
-satisfaction (Bowling et al., 2010). \\
-While the direction of causality between life satisfaction and job satisfaction is an open discussion, the interplay of life
-satisfaction with other work-related variables might be easier to grasp. Indeed, our study also examines the effects of
-variables that characterise the working environment beyond perceived job satisfaction. This wider scope appears
-reasonable since “job satisfaction is only a partial indicator of satisfaction with work domain. A person’s satisfaction with
-career and work-related stress are important elements of the work domain that also need to be understood.” \citep[p. 1042]{erdogan_whistle_2012}.
-
-
-%% The Appendices part is started with the command \appendix; appendix sections are then done as normal sections
-%% \appendix
-
-%% \section{}
-%% \label{}
-
-%% If you have bibdatabase file and want bibtex to generate the bibitems, please use
-\bibliographystyle{elsarticle-harv} 
-\bibliography{Literature}
-
-
+	
+	\begin{frontmatter}
+		
+		%% Title, authors and addresses
+		
+		%% use the tnoteref command within \title for footnotes;
+		%% use the tnotetext command for theassociated footnote;
+		%% use the fnref command within \author or \address for footnotes;
+		%% use the fntext command for theassociated footnote;
+		%% use the corref command within \author for corresponding author footnotes;
+		%% use the cortext command for theassociated footnote;
+		%% use the ead command for the email address,
+		%% and the form \ead[url] for the home page:
+		%% use optional labels to link authors explicitly to addresses:
+		%% \author[label1,label2]{}
+		%% \address[label1]{}
+		%% \address[label2]{}
+		
+		\title{Visualising Life Satisfaction in Countries across Europe: Individual- and Multi-Level Evidence on Cultural and Pecuniary Factors}
+		
+		\author{Nicolas F. K. Göller\fnref{label2}}
+		\ead{n.goeller@zeppelin-university.net}
+		\fntext[label2]{Student in Sociology, Politics and Economics}
+		
+		\author{Noah Peters\fnref{label1}}
+		\ead{no.peters@zeppelin-university.net}
+		\fntext[label2]{Student in Sociology, Politics and Economics}
+		
+		\address{Zeppelin University, Fallenbrunnen 3, 88045 Friedrichshafen\fnref{label3}}
+		%% \fntext[label3]{}
+		
+		
+		\begin{abstract}
+			%% Text of abstract
+			This project was set out to provide an easy access to a comprehensible way for exploring the differences in determinants of life satisfaction 
+			all over Europe. While the actual analysis and presentation of results will be shown in different ways, this document
+			shall provide an overview over the data used and the treatment of variables applied during the project. 
+			The project's aim is not only to inspire interest into the determinants of happiness in human life, but also to encourage
+			later researchers to critically enquire with the work done here in order to point out its shortcomings and improve the final
+			result. Thus this document should provide the necessary transparency about sourcing of data and work on variables that
+			has been done previously to conducting the analysis and visualising results.
+		\end{abstract}
+		
+	\end{frontmatter}
+	
+	%% main text
+	\newpage
+	\tableofcontents
+	\newpage
+	
+	
+	\section{Introduction and Preliminary remarks}
+	Anecdotal evidence suggests that people spend a significant share of their lifetime working (for a casual calculation 
+	see: \citet{thompson_what_2016}). Moreover, people's work environment is changing constantly and especially today's 
+	discussion about the impact of digitalisation on the labour market requires to investigate how occupational factors shape 
+	people's life in general. Since work constitutes a considerable part of people’s life, satisfaction with one’s job and the
+	occupational environment must severely determine overall well-being. Drawing on the above-mentioned diversity of 
+	occupations, their respective circumstances and adaptation to the ‘digital revolution’, this assumption gains even more 
+	ground and relevance: \textit{If work changes, life changes.} \\
+	But which work-related factors contribute to a happy - or unhappy - life? Also, how does life satisfaction of the employed
+	vary across regions and countries? \\
+	Using data form the European Values Study (EVS) and several other sources, we calculated multiple regression models to assess the causality of
+	work-related factors and well-being on the individual level. Moreover, multi-level analyses with regard to social capital and
+	macroeconomic as well as developmental indicators were performed to account for variation across regions and countries. 
+	%% Könntest du den Fokus ein wenig weg von Work und hin auf multilevel + pecuniary/ non-pecuiary setzen, für so viel Fokus haben wir nicht genug work-relatedness
+	\section{Motivational Manifesto}
+	In a time of widespread digitalisation for many aspects of modern society, 'datafication' and subsequent analysis of data has become ever more prevalent \citep{baack_datafication_2015, lycett_datafication:_2013}. Transparency of data sourcing, data access and methods employed in the course of this analysis is a chief concern of the 'Open Science' movement \citep{delfanti_open_2010}. With more and more transparency, reproducibility of procedures is expected to increase and thus the quality of insights by replication and and improvements of methods through a 'wisdom of the (educated) crowd'. There have been extensive developments in the form of guidelines and protocols for researchers, universities and scientific journals that are aimed at promoting more transparency in the scientific process \citep{nosek_promoting_2015, miguel_promoting_2014}. 
+	At the same time, large shares of the population lack the essential skills to participate in the research process or perceive the barrier of entry in acquiring the necessary skills to do so, as unsurmountably high. The concept of 'Citizen Science' has thus emerged sitting at the edge of both science and education. Citizen science projects enlist non-scientiest members of the public to participate in the research (mainly in data collection), allowing to survey large amounts of data, while educating participants about the research topic \citep{shirk_public_2012}. Originally coming from environmental research this approach has already allowed researcher to survey wide ranges of locations and time periods and thus provides access to high-quality data that could quite impossibly be attained by professional research teams on their own \citep{bonney_citizen_2009}.
+	
+	Conceptually, 'Open Science' and 'Citizen Science' are deeply intertwined as 'Citizen Science' needs to be as transparent and easily accessible as possible to be effective on a large scale \citep{nov_dusting_2011} and 'Open Science' needs to offer educational value and low entry barriers if it wants to gain attention and participation of a broader audience \citep{newman_future_2012}. We feel committed to the mission of these movements and have thus designed our project in order to advance it for the social sciences. 
+	
+	\section{Theory and Literature Review}
+	Although the causal relation between work and happiness/life satisfaction seems straightforward and intuitively correct,
+	its academic investigation is far from trivial. On the one hand, this appears in light of definitional questions regarding the 
+	wo variables of interest. On the other hand, operationalising the constructs appropriately remains subject to discussions
+	(for subjective well-being see: \citet{kahneman_developments_2006,layard_measuring_2010}). Lastly, the causal nature of job and life
+	satisfaction presents itself as far more complex than intuitively assumed. \\
+	Each of these three fields is addressed by a comprehensive literature review to set the tone for the subsequent analysis.
+	As this analysis draws on specific independent variables on the individual level and several factors on higher aggregate
+	levels (multi-level analysis), their respective relation to life satisfaction, as assessed in the literature, is discussed as well.
+	
+	\subsection{Life Satisfaction as a Component of Subjective Well-Being (SWB)}
+	So far, the terms life satisfaction, happiness, and well-being have been used interchangeably. In fact, however, they
+	are commonly understood to act upon each other therefore constituting the wider concept of subjective well-being (SWB)
+	that includes life satisfaction, happiness, and positive affect  \citep{bowling_meta-analytic_2010,diener_subjective_1984}. 
+	Paying debt to the European Value Study’s (EVS) operationalisation of SWB, we only include life satisfaction as a
+	dependent variable: While life satisfaction is measured using a ten-point scale the other available component of SWB,
+	happiness, comes in a four-point scale. Consequently, we only included the life satisfaction variable for our regression
+	models. For the remains of this study, we concentrate on life satisfaction as a dependent variable. The variable selection
+	is further elaborated upon in the method section. 
+	
+	\subsection{SWB and Job Satisfaction}
+	The literature examining the causal relation of SWB and job satisfaction is extensive
+	(for reviews see: \citet{bowling_meta-analytic_2010,erdogan_whistle_2012}). \citet{bowling_meta-analytic_2010}, in their
+	meta-analysis, show a positive relationship between all three respective components of SWB and job satisfaction.
+	Going even further, \citet{near_job_1987} postulate that “job satisfaction must logically constitute some part of the
+	broader construct of life satisfaction; thus, the question regarding spillover between the two must be ‘how much’ not
+	‘whether’." (p. 398). \\
+	Before we examine the how much-question, it is necessary to discuss the direction of causality between SWB and job
+	satisfaction. In general, the present literature differentiates two approaches: the part-whole theory
+	\citep{bowling_meta-analytic_2010,hart_predicting_1999,judge_dispositional_1998} and the dispositional approach. The former
+	proposes job satisfaction to act upon SWB. This appears because of the simple reason that has already been mentioned
+	above: job satisfaction constitutes a sub-category of overall life satisfaction \citep[cf.]{near_job_1987}.
+	Consequently, the approach is also conceived of as bottom-up approach \citep{erdogan_whistle_2012}. Conversely, the
+	dispositional approach assumes a general predisposition of satisfaction with life to affect more specific domains like work
+	i.e., satisfaction with those domains \citep{bowling_meta-analytic_2010,diener_subjective_1984,headey_top-down_1991,judge_job_1993,judge_another_1993}. 
+	Erdogan et al. (2012) link these predispositions to personal traits that determine how satisfied people feel with certain
+	domains and life in general (top-down approach). Positioned between the poles is the spillover hypothesis that just
+	contents the basic linkage between job and life satisfaction or even other domains of life 
+	\citep{bowling_meta-analytic_2010,erdogan_whistle_2012,judge_job_2001,judge_individual_1994}.
+	Conceptually, this relation can be understood as a reciprocal relation between the various domains of life and people’s
+	satisfaction (Bowling et al., 2010). \\
+	While the direction of causality between life satisfaction and job satisfaction is an open discussion, the interplay of life
+	satisfaction with other work-related variables might be easier to grasp. Indeed, our study also examines the effects of
+	variables that characterise the working environment beyond perceived job satisfaction. This wider scope appears
+	reasonable since “job satisfaction is only a partial indicator of satisfaction with work domain. A person’s satisfaction with
+	career and work-related stress are important elements of the work domain that also need to be understood.” \citep[p. 1042]{erdogan_whistle_2012}.
+	
+	\section{Data}
+	All data employed in this project i acquired from official sources and with permission of the provider or in the course of open access. Data as well as original codebooks will be made available for the user upon request, or delivered within the project.
+	The project is mainly built on data from the 'European Value Study 2008' (EVS), which is the fourth survey wave \citep{evs_european_2016}. The EVS contains questions regarding values of Europeans on aspects like moral, work, family, politics, society, religion, as well as an extensive collection of sociodemographic items. Issues and questions regarding surveying of the data, errata, harmonizing of results etc. may be settled with the publisher or from the original codebook.
+	The file contains a total 66281 observations for 477 variables over 46 European countries. All transformations on variables can be read in detail in the codebook. Significant changes to the data were made through exclusion of 'Russian Federation' from the sample for the purpose of better visualisation. Furthermore, 'Northern Cyprus' and 'Northern Ireland' which were coded as own countries were added to their respective states after international law. Thus, data for 43 countries was processed for use in the project. Furthermore, aggregations were made from the data in total of 5 cases to create variables that are applicable for multilevel analysis. Finally, a variable of 'Geographical region' was created from the country variable in the EVS. This classification was based on the 'Standard Country or Area Codes for Statistics Use' from the UN Statistics Division.
+	Structural data for nations was obtained from the World Bank for 'GDP per capita of 2008' (in 2018 dollars per inhabitant), and for 'Gini Coefficient 2008' (in ration scale 0-1). In the case of 'Gini Coefficient 2008', missing values for Germany, Poland, Serbia, Kosovo, Macedonia, Croatia and Bosnia Herzegovina were taken from Eurostat 2008 (Germany, Poland), from the CIA World Factbook (Serbia 2008) from World Bank Gini Coefficient 2009 (Kosovo, Macedonia, Croatia), and from World Bank Gini Coefficient 2007 (Bosnia Herzegovina). Data was also obtained from the 'Democracy Cross-National' dataset created by Pippa Norris for the Freedom House Democracy rating 2008 and the Human Development Index 2008. Missing values of the Freedom House rating for Kosovo and Montenegro were replaced by the indication for 2008 on the Freedom House website. Missing values of the HDI for Kosovo was approximated by the value for Serbia in 2008.
+	
+\section{Responsibility for Project Areas}
+	
+	\begin{tabular}{|c|c|c|}
+		\hline 
+		\textbf{Project area}	& \textbf{Noah Peters} 	& \textbf{Nicolas Goeller} 	\\ 
+		\hline 
+		Data wrangling			&  		   				&  				 			\\ 
+		\hline 
+		Variable preparation 	&  		   				&  				 			\\ 
+		\hline 
+		Geodata					&  		   				&  				 			\\ 
+		\hline 
+		Git	     			 	&  		   				&  				 			\\ 
+		\hline 			
+		Indices				 	&  		   				&  				 			\\ 
+		\hline 
+		Paper visualisations 	&  		   				&  				 			\\ 
+		\hline 
+		Shiny 				 	&  		   				&  				 			\\ 
+		\hline 
+		Codebook 			 	&  		   				&  				 			\\ 
+		\hline 
+		Geoplots 			 	&  		   				&  				 			\\ 
+		\hline 
+		LaTex				 	&  		   				&  				 			\\ 
+		\hline 
+		Motivation			 	&  		   				&  				 			\\ 
+		\hline 
+		Theory				 	&  		   				&  				 			\\ 
+		\hline 
+		User manual			 	&  		   				&  				 			\\ 
+		\hline 
+	\end{tabular}
+	
+	%% The Appendices part is started with the command \appendix; appendix sections are then done as normal sections
+	%% \appendix
+	
+	%% \section{}
+	%% \label{}
+ 
+	%% If you have bibdatabase file and want bibtex to generate the bibitems, please use
+	\bibliographystyle{elsarticle-harv} 
+	\bibliography{Literature}
+	
+	
 \end{document}
 
 \endinput

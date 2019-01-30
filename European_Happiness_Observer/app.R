@@ -234,8 +234,6 @@ ui <- dashboardPage(
                     width = 3,
                     "Choose your variable for plotting",br(), br(),
                     varSelectInput("macro", "Variable:", shiny_nat[,1:7]))
-                #box(title = "Data indicator", status = "success", solidHeader = T, width = 3,
-                #    selectInput("nat", choices = nat))
               )),
       tabItem(tabName = "regmap", h1("Geographical overview"),
               fluidRow(
