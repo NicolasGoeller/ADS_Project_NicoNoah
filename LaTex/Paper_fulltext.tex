@@ -191,9 +191,44 @@ The following variables can be examined using the European Happiness Observer:
    \item Status of employment (i.e., being self-employed)
    \item International Socio-Economic Index of Occupational Status   
 \end{itemize}
+
+\subsection{Macro-Level Variables and Multilevel Analyses}
+So far, the theoretical background sketched relations between life satisfaction and various individual-level variables. While
+this perspective enables us to assess psychological constructs and individual life realities in general, a core feature of our
+analysis is the incorporation of multilevel investigations. \\
+Being interested in life satisfaction across European countries and regions, we examined variables that might account for 
+between-variance. The background on these factors and their respective relation to life satisfaction is examined in this 
+section. We point out that the macro-variables cover a wider array than the work-related aspects described above. Nonetheless,
+the macro-variables and the multilevel models can be used to supplement individual-level analyses as it is common practice
+in multilevel contexts.
+
+\subsubsection{Social capital} 
+\citet{bartolini_happy_2014} inspect the relation between life satisfaction and social capital on a micro-level and resume that
+social capital can explain variation in life satisfaction in the medium- and long-run while the association is less striking in a
+short-run perspective. \citet{mikucka_when_2017} underpin this verdict with their multilevel analysis using World Values Study 
+and EVS data. While we did not obtain time-series data to inspect associations over time, we recommend to incorporate 
+social capital as a regional level-two variable (here: European NUTS1 regions). Referring to Putnam, \citet{Savelkoul_explaining_2011} imply that social 
+capital is especially related to the regional level. \\
+Having set the level of inspection, we focussed on the operationalisation of social capital given EVS data. \citet{van_schaik_social_2002}
+recommends a procedure specifically related to the EVS that builds on using several categories of social capital as a proxy
+for the overall concept. In this fashion, we constructed two indices for (i) institutional trust and (ii) trustworthiness that measures
+the prevalence of social norms legal compliance. Additionally, the EVS includes a binary item covering interpersonal trust. \citet{van_schaik_social_2002}
+also associates the respective categories of social capital with European NUTS1 regions, as we do. \\
+Comprehensive plots of the proxies can be found in our Observer app and multilevel regressions can be computed. 
+
+\subsubsection{Economic macro-data}
+Building on \citet{easterlin_does_1974} and the diverse remarks on the association of life satisfaction (see above), GDP presents itself
+as a useful multilevel factor. We use country data on GDP for 2008 (the year of the EVS's fourth wave) as a level-3 variable.
+Furthermore, Human Development Index (HDI) data can be incorporated to capture a wider socio-economic context. 
+
+\subsubsection{Freedom House Ratings}
+In order to inspect level-3 effects regarding differences in the political system, we offer to incorporate various Freedom House 
+indicators measuring a country's level of democracy. While this perspective offers an additional flavour, it lies not within the main
+focus of this project. \\
+A detailed description of all data used for this project is presented in the following section. 	
 	
 \section{Data}
-All data employed in this project i acquired from official sources and with permission of the provider or in the course of open access. Data as well as original codebooks will be made available for the user upon request, or delivered within the project.
+All data employed in this project is acquired from official sources and with permission of the provider or in the course of open access. Data as well as original codebooks will be made available for the user upon request, or delivered within the project.
 The project is mainly built on data from the 'European Value Study 2008' (EVS), which is the fourth survey wave \citep{evs_european_2016}. The EVS contains questions regarding values of Europeans on aspects like moral, work, family, politics, society, religion, as well as an extensive collection of socio-demographic items. Issues and questions regarding surveying of the data, errata, harmonizing of results etc. may be settled with the publisher or from the original codebook. The file contains a total 66281 observations for 477 variables over 46 European countries. All transformations on variables can be read in detail from the codebook. Significant changes to the data were made through exclusion of 'Russian Federation' from the sample for the purpose of better visualisation. Furthermore, 'Northern Cyprus' and 'Northern Ireland' which were coded as own countries were added to their respective states after international law. Thus, data for 43 countries was processed for use in the project. Furthermore, aggregations were made from the data in total of 5 cases to create variables that are applicable for multilevel analysis. Finally, a variable of 'Geographical region' was created from the country variable in the EVS. This classification was based on the 'Standard Country or Area Codes for Statistics Use' from the UN Statistics Division \citep{unsd_standard_2019}.
 Structural data for nations was obtained from the World Bank for 'GDP per capita of 2008' (in 2018 dollars per inhabitant)\citep{world_bank_gdp_2019}, and for 'Gini Coefficient 2008' (in ration scale 0-1)\citep{world_bank_gini_2019}. In the case of 'Gini Coefficient 2008', missing values for Germany, Poland, Serbia, Kosovo, Macedonia, Croatia and Bosnia Herzegovina were taken from Eurostat 2008 (Germany, Poland) \citep{eurostat_eurostat_2019}, from the CIA World Factbook (Serbia 2008) \citep{central_intelligence_agency_serbia_2019}, from World Bank Gini Coefficient 2009 (Kosovo, Macedonia, Croatia), and from World Bank Gini Coefficient 2007 (Bosnia Herzegovina) \citep{world_bank_gini_2019}. Data was also obtained from the 'Democracy Cross-National' dataset created by Pippa Norris \citep{norris_data_2015} for the Freedom House Democracy rating 2008 and the Human Development Index 2008. Missing values of the Freedom House rating for Kosovo \citep{freedom_house_kosovo_2012} and Montenegro \citep{freedom_house_montenegro_2012} were replaced by the indication for 2008 on the Freedom House website. The missing value of the HDI 2008 for Kosovo was approximated by the value for Serbia in 2008.
 	
