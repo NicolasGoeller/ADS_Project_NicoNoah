@@ -41,8 +41,8 @@ stargazer(m1,  #regression models
 
 ##  2. Regional models (Level 2)
 
-m2 <- lme4::lmer(sat ~ job_sat + + (1|reg), data = ana_dat)
-summary(m2)
+#m2 <- lme4::lmer(sat ~ job_sat + + (1|reg), data = ana_dat)
+#summary(m2)
 
 #---------------------------------------------------------------------------------------------
 
@@ -73,12 +73,12 @@ stargazer(m3,  #regression models
 ##  4. Intergrated models (Level 2 & 3)
 
 #Null model for both regions and nations
-m6 <- lmer(sat ~ 1 + (1|reg) + (1|nation), data = ana_dat)
-summary(m6)
-icc(m6)
+#m6 <- lmer(sat ~ 1 + (1|reg) + (1|nation), data = ana_dat)
+#summary(m6)
+#icc(m6)
 
 #Model with predictors from all levels
-m7 <- lmer(sat ~ 1 + (1|reg) + (1|nation), data = ana_dat)
-summary(m7)
+#m7 <- lmer(sat ~ 1 + (1|reg) + (1|nation), data = ana_dat)
+#summary(m7)
 
 #---------------------------------------------------------------------------------------------------------------------------
