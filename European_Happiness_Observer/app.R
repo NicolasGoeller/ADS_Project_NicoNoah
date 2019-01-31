@@ -237,12 +237,12 @@ ui <- dashboardPage(
               )),
       tabItem(tabName = "regmap", h1("Geographical overview"),
               fluidRow(
-                box(title = "Europe map plot for regions", status = "primary", solidHeader = T, width = 9,
+                box(title = "Europe map plot for regions on NUTS-1 level", status = "primary", solidHeader = T, width = 9,
                     plotOutput("regiomap")),
                 box(title = "Controls for map plot", status = "warning", solidHeader = T, 
                     width = 3,
                     "Choose your variable for plotting",br(), br(),
-                    varSelectInput("regio", "Variable:", shiny_nat[,1:7]))
+                    varSelectInput("regio", "Variable:", shiny_reg[,c(3:6,8)]))
               )),
       
       tabItem(tabName = "graphics", h1("Graphics for detailed analysis"),
@@ -344,7 +344,21 @@ server <- function(input, output) {
     }
   })
   
-  output$regiomap <- renderPlot({})
+  output$regiomap <- renderPlot({
+    if(!!input$regio != "Country_of_residence" & !!input$regio != "Region_of_residence"){
+      ggplot(data = shiny_reg)+
+        geom_sf(aes(fill = !!input$regio))+
+        labs(fill = paste(input$regio))+
+        scale_fill_viridis_c()+
+        coord_sf(xlim = c(-24, 50), ylim = c(33, 71), expand = FALSE)
+    } else{
+      ggplot(data = shiny_reg)+
+        geom_sf(aes(fill = !!input$regio))+
+        labs(fill = paste(input$regio))+
+        coord_sf(xlim = c(-24, 50), ylim = c(33, 71), expand = FALSE)
+    }
+    
+  })
   
   output$cdb <- renderText(includeText("EVS_final_cdbk"))
   
@@ -600,7 +614,3 @@ shinyApp(ui, server)
 
 #End of app code##------------------------------------------------------------------------------------
 #------------------------------------------------------------------------------------------
-EVS_final %>% 
-  select(reg) %>% 
-  summarise(mean())
-mean(EVS_final$reg, na.rm = T)
