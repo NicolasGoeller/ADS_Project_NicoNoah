@@ -140,14 +140,68 @@
 	reasonable since “job satisfaction is only a partial indicator of satisfaction with work domain. A person’s satisfaction with
 	career and work-related stress are important elements of the work domain that also need to be understood.” \citep[p. 1042]{erdogan_whistle_2012}.
 	
-	\section{Data}
-	All data employed in this project i acquired from official sources and with permission of the provider or in the course of open access. Data as well as original codebooks will be made available for the user upon request, or delivered within the project.
-	The project is mainly built on data from the 'European Value Study 2008' (EVS), which is the fourth survey wave \citep{evs_european_2016}. The EVS contains questions regarding values of Europeans on aspects like moral, work, family, politics, society, religion, as well as an extensive collection of socio-demographic items. Issues and questions regarding surveying of the data, errata, harmonizing of results etc. may be settled with the publisher or from the original codebook. The file contains a total 66281 observations for 477 variables over 46 European countries. All transformations on variables can be read in detail from the codebook. Significant changes to the data were made through exclusion of 'Russian Federation' from the sample for the purpose of better visualisation. Furthermore, 'Northern Cyprus' and 'Northern Ireland' which were coded as own countries were added to their respective states after international law. Thus, data for 43 countries was processed for use in the project. Furthermore, aggregations were made from the data in total of 5 cases to create variables that are applicable for multilevel analysis. Finally, a variable of 'Geographical region' was created from the country variable in the EVS. This classification was based on the 'Standard Country or Area Codes for Statistics Use' from the UN Statistics Division \citep{unsd_standard_2019}.
-	Structural data for nations was obtained from the World Bank for 'GDP per capita of 2008' (in 2018 dollars per inhabitant)\citep{world_bank_gdp_2019}, and for 'Gini Coefficient 2008' (in ration scale 0-1)\citep{world_bank_gini_2019}. In the case of 'Gini Coefficient 2008', missing values for Germany, Poland, Serbia, Kosovo, Macedonia, Croatia and Bosnia Herzegovina were taken from Eurostat 2008 (Germany, Poland) \citep{eurostat_eurostat_2019}, from the CIA World Factbook (Serbia 2008) \citep{central_intelligence_agency_serbia_2019}, from World Bank Gini Coefficient 2009 (Kosovo, Macedonia, Croatia), and from World Bank Gini Coefficient 2007 (Bosnia Herzegovina) \citep{world_bank_gini_2019}. Data was also obtained from the 'Democracy Cross-National' dataset created by Pippa Norris \citep{norris_data_2015} for the Freedom House Democracy rating 2008 and the Human Development Index 2008. Missing values of the Freedom House rating for Kosovo \citep{freedom_house_kosovo_2012} and Montenegro \citep{freedom_house_montenegro_2012} were replaced by the indication for 2008 on the Freedom House website. The missing value of the HDI 2008 for Kosovo was approximated by the value for Serbia in 2008.
+	\subsection{The Wider Interplay of Work-Related Variables with Life Satisfaction}
+Our analysis features a myriad of variables that can be examined with regard to their effect on overall life satisfaction.
+In order to justify our variable selection the following remarks elucidate the respective variables' interplay with life satisfaction.
+In contrast to the previous examination of the overall concept of SWB, to accounts on the different variables are presented 
+in a briefer manner. Rather than covering the entire theoretical background, the following elaboration is though to spur interest
+and curiosity to examine the relation of life satisfaction and other factors on one's own - aided by our interactive 
+European Happiness Observer interface. 
+
+\subsubsection{Life satisfaction and income}
+The life satisfaction-income discussion almost always refers back to \citet{easterlin_does_1974} whose observations regarding
+the relation of life satisfaction i.e., happiness and income were dubbed the `Easterlin Paradox'. Indeed, his findings from time series data
+suggest that life satisfaction remains flat, despite increases in GDP per capita. These findings still heavily inform other researchers'
+work and indicate that the relative income in comparision to others might influence SWB \citep{di_tella_happiness_2010,drichoutis_reference_2010,pedersen_happiness_2011}.
+Emphasising relative position follows the lead of behavioural labour economics that builds on the findings of prospect theory \citep{kahneman_prospect_1979}.
+This concept implies that reference points rather than absolute positions inform people's choices. In the course of behavioural
+labour economics, this backgroundis highly relevant \citep{dohmen_behavioral_2014}. 
+While investigations examining relative status and changes over time appear highly relevant and theoretically justified, the present
+project ist not suited to cover these questions. Not being in posession of either time series or relative income data, we need
+to focus on absolute income at a certain point in time. Although this independent variable might not capture the underlying relation
+of income and life satisfaction, it qualifies as a basic means of inquiry that sheds light on the distinction between life satisfaction
+and happiness: “high income buys life satisfaction but not happiness.” \citep[p. 16489]{kahneman_high_2010}. 
+
+\subsubsection{Pecuniary vs. non-pecuniary factors}
+Income-related investigations also stimulate inquiries examining the opposite of monetary factors, namely non-pecuniary
+variables. \textit{Since high income might not be all to strive for, which `softer' factors determine a satisfactory life?}
+In general, health takes centre-stage as a determinant of life satisfaction. This statement is not only backed by common 
+sense or daily wisdom (Who has not said or been told that health is life's most precious gift?) but also by empirical observations \citep{pedersen_happiness_2011}. \\
+In the working environment, health is not a trivial factor either. The \citet{who_global_1994} stresses the importance of health at the work place and terms like `work-life-balance' and `Generation Y' imply changing perceptions of a pleasant working environment. Also \citet{andersson_happiness_2008}
+investigates the special relation between self-employment and life satisfaction with ample regard to health issues. \\
+Self-employment as such exhibits a variable that is thought to affect life satisfaction \citep{andersson_happiness_2008,schneck_why_2014,van_der_zwan_self-employment_2018}
+due to non-pecuniary circumstances that are innate and to the status of self-employment. \\
+This remark also leads to a greater discussion of features proposed by self-determinantion theory \citep{deci_intrinsic_1985,deci_self-determination_1989,ryan_self-determination_2000}.
+Lastly, \citet{luo_essays_2018} uses EVS data estimate the effects of pecuniary and non-pecuniary factors on life satisfaction
+The EVS, for example, captures to which degree respondents feel the need for a job that enables employees to develop their talents. \\
+of the unemployed. Intuitively, financial uncertainty might appear as the major concern of unemployment but further investigations
+show the significant role that social and psychological factors play. This observation can be interpreted as a general plea for research on
+the interplay of non-pecuniary factors of the work environment and life satisfaction. 
+
+\subsubsection{Non-pecuniary factors of the work environment}
+Drawing on the previous remarks regarding in incorporation of work-related non-pecuniary variables, our analysis comprises of
+multiple factors that touch on leadership responsibilities, self-determination related factors, or the occupation's reputation.
+The following variables can be examined using the European Happiness Observer:
+\begin{itemize}
+   \item Work importance in life
+   \item Freedem of job decisions
+   \item Job development
+   \item Work duty to society
+   \item Work should come always first
+   \item Supervising responsibilities 
+   \item Status of employment (i.e., being self-employed)
+   \item International Socio-Economic Index of Occupational Status   
+\end{itemize}
+	
+\section{Data}
+All data employed in this project i acquired from official sources and with permission of the provider or in the course of open access. Data as well as original codebooks will be made available for the user upon request, or delivered within the project.
+The project is mainly built on data from the 'European Value Study 2008' (EVS), which is the fourth survey wave \citep{evs_european_2016}. The EVS contains questions regarding values of Europeans on aspects like moral, work, family, politics, society, religion, as well as an extensive collection of socio-demographic items. Issues and questions regarding surveying of the data, errata, harmonizing of results etc. may be settled with the publisher or from the original codebook. The file contains a total 66281 observations for 477 variables over 46 European countries. All transformations on variables can be read in detail from the codebook. Significant changes to the data were made through exclusion of 'Russian Federation' from the sample for the purpose of better visualisation. Furthermore, 'Northern Cyprus' and 'Northern Ireland' which were coded as own countries were added to their respective states after international law. Thus, data for 43 countries was processed for use in the project. Furthermore, aggregations were made from the data in total of 5 cases to create variables that are applicable for multilevel analysis. Finally, a variable of 'Geographical region' was created from the country variable in the EVS. This classification was based on the 'Standard Country or Area Codes for Statistics Use' from the UN Statistics Division \citep{unsd_standard_2019}.
+Structural data for nations was obtained from the World Bank for 'GDP per capita of 2008' (in 2018 dollars per inhabitant)\citep{world_bank_gdp_2019}, and for 'Gini Coefficient 2008' (in ration scale 0-1)\citep{world_bank_gini_2019}. In the case of 'Gini Coefficient 2008', missing values for Germany, Poland, Serbia, Kosovo, Macedonia, Croatia and Bosnia Herzegovina were taken from Eurostat 2008 (Germany, Poland) \citep{eurostat_eurostat_2019}, from the CIA World Factbook (Serbia 2008) \citep{central_intelligence_agency_serbia_2019}, from World Bank Gini Coefficient 2009 (Kosovo, Macedonia, Croatia), and from World Bank Gini Coefficient 2007 (Bosnia Herzegovina) \citep{world_bank_gini_2019}. Data was also obtained from the 'Democracy Cross-National' dataset created by Pippa Norris \citep{norris_data_2015} for the Freedom House Democracy rating 2008 and the Human Development Index 2008. Missing values of the Freedom House rating for Kosovo \citep{freedom_house_kosovo_2012} and Montenegro \citep{freedom_house_montenegro_2012} were replaced by the indication for 2008 on the Freedom House website. The missing value of the HDI 2008 for Kosovo was approximated by the value for Serbia in 2008.
 	
 \section{User Manual}
 	
 \section{Conclusion}
+
 	
 	%% The Appendices part is started with the command \appendix; appendix sections are then done as normal sections
 \newpage
@@ -187,62 +241,13 @@
 	\hline 
 \end{tabular}
 
-\subsection{The Wider Interplay of Work-Related Variables with Life Satisfaction}
-Our analysis features a myriad of variables that can be examined with regard to their effect on overall life satisfaction.
-In order to justify our variable selection the following remarks elucidate the respective variables' interplay with life satisfaction.
-In contrast to the previous examination of the overall concept of SWB, to accounts on the different variables are presented 
-in a briefer manner. Rather than covering the entire theoretical background, the following elaboration is though to spur interest
-and curiosity to examine the relation of life satisfaction and other factors on one's own - aided by our interactive 
-European Happiness Observer interface. 
-
-\subsubsection{Life satisfaction and income}
-The life satisfaction-income discussion almost always refers back to \citet{easterlin_does_1974} whose observations regarding
-the relation of life satisfaction i.e., happiness and income were dubbed the `Easterlin Paradox'. Indeed, his findings from time series data
-suggest that life satisfaction remains flat, despite increases in GDP per capita. These findings still heavily inform other researchers'
-work and indicate that the relative income in comparision to others might influence SWB \citep{di_tella_happiness_2010,drichoutis_reference_2010,pedersen_happiness_2011}.
-Emphasising relative position follows the lead of behavioural labour economics that builds on the findings of prospect theory \citep{kahneman_prospect_1979}.
-This concept implies that reference points rather than absolute positions inform people's choices. In the course of behavioural
-labour economics, this backgroundis highly relevant \citep{dohmen_behavioral_2014}. 
-While investigations examining relative status and changes over time appear highly relevant and theoretically justified, the present
-project ist not suited to cover these questions. Not being in posession of either time series or relative income data, we need
-to focus on absolute income at a certain point in time. Although this independent variable might not capture the underlying relation
-of income and life satisfaction, it qualifies as a basic means of inquiry that sheds light on the distinction between life satisfaction
-and happiness: “high income buys life satisfaction but not happiness.” \citep[p. 16489]{kahneman_high_2010}. 
-
-\subsubsection{Pecuniary vs. non-pecuniary factors}
-Income-related investigations also stimulate inquiries examining the opposite of monetary factors, namely non-pecuniary
-variables. \textit{Since high income might not be all to strive for, which `softer' factors determine a satisfactory life?}
-In general, health takes centre-stage as a determinant of life satisfaction. This statement is not only backed by common 
-sense or daily wisdom (Who has not said or been told that health is life's most precious gift?) but also by empirical observations \citep{pedersen_happiness_2011}. \\
-at the work place and terms like `work-life-balance' and `Generation Y' imply changing perceptions of a pleasant working environment. Also \citet{andersson_happiness_2008}
-investigates the special relation between self-employment and life satisfaction with ample regard to health issues. \\
-Self-employment as such exhibits a variable that is thought to affect life satisfaction \citep{andersson_happiness_2008,schneck_why_2014,van_der_zwan_self-employment_2018}
-due to non-pecuniary circumstances that are innate and to the status of self-employment. \\
-This remark also leads to a greater discussion of features proposed by self-determinantion theory \citep{deci_intrinsic_1985,deci_self-determination_1989,ryan_self-determination_2000}.
-Lastly, \citet{luo_essays_2018} uses EVS data estimate the effects of pecuniary and non-pecuniary factors on life satisfaction
-The EVS, for example, captures to which degree respondents feel the need for a job that enables employees to develop their talents. \\
-of the unemployed. Intuitively, financial uncertainty might appear as the major concern of unemployment but further investigations
-show the significant role that social and psychological factors play. This observation can be interpreted as a general plea for research on
-the interplay of non-pecuniary factors of the work environment and life satisfaction. 
-
-\subsubsection{Non-pecuniary factors of the work environment}
-Drawing on the previous remarks regarding in incorporation of work-related non-pecuniary variables, our analysis comprises of
-multiple factors that touch on leadership responsibilities, self-determination related factors, or the occupation's reputation.
-The following variables can be examined using the European Happiness Observer:
-\begin{itemize}
-   \item Work importance in life
-   \item Freedem of job decisions
-   \item Job development
-   \item Work duty to society
-   \item Work should come always first
-   \item Supervising responsibilities 
-   \item Status of employment (i.e., being self-employed)
-   \item International Socio-Economic Index of Occupational Status   
-\end{itemize}
+\newpage
 %% If you have bibdatabase file and want bibtex to generate the bibitems, please use
 \bibliographystyle{elsarticle-harv} 
 \bibliography{Literature}
-In the working environment, health is not a trivial factor either. The \citet{who_global_1994} stresses the importance of health
+
+
+
 \end{document}
 
 \endinput
