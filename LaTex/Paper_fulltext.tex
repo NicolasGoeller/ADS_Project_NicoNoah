@@ -82,7 +82,7 @@
 	- The European Happiness Observer - to inspect life satisfaction and its various antecedents across Europe. The app offers
 	a myriad of possibilities to inspect life satisfaction on a descriptive basis or delve deeper by computing regression and multilevel
 	analyses. Here, the user can select various options and combinations from a pre-selected pool of variables. \\
-	Consciously, the scope of our visualisation tool is kept wider and should steer curiosity and inclination to develop own 
+	Consciously, the scope of our visualisation tool is kept wide and should steer curiosity and inclination to develop own 
 	happiness-related (research) questions. To assure at least some theoretical embeddedness, this paper elaborates upon the
 	relation of life satisfaction and work-related variables. This perspective served as a broad orientation during the development
 	phase of our tool, illustrates the variable selection and comprehensively exhibits what kind of aspects happiness research
@@ -114,7 +114,7 @@
 	\section{Theoretical Background and Methodological Implementation}
 	Although the causal relation between work and happiness/life satisfaction seems straightforward and intuitively correct,
 	its academic investigation is far from trivial. On the one hand, this appears in light of definitional questions regarding the 
-	wo variables of interest. On the other hand, operationalising the constructs appropriately remains subject to discussions
+	two variables of interest. On the other hand, operationalising the constructs appropriately remains subject to discussions
 	(for subjective well-being see: \citet{kahneman_developments_2006,layard_measuring_2010}). Lastly, the causal nature of job and life
 	satisfaction presents itself as far more complex than intuitively assumed. \\
 	Each of these three fields is addressed by a comprehensive literature review to set the tone for the subsequent analysis.
@@ -138,7 +138,7 @@
 	Going even further, \citet{near_job_1987} postulate that “job satisfaction must logically constitute some part of the
 	broader construct of life satisfaction; thus, the question regarding spillover between the two must be ‘how much’ not
 	‘whether’." (p. 398). \\
-	Before we examine the how much-question, it is necessary to discuss the direction of causality between SWB and job
+	Before examining the how much-question, it is necessary to discuss the direction of causality between SWB and job
 	satisfaction. In general, the present literature differentiates two approaches: the part-whole theory
 	\citep{bowling_meta-analytic_2010,hart_predicting_1999,judge_dispositional_1998} and the dispositional approach. The former
 	proposes job satisfaction to act upon SWB. This appears because of the simple reason that has already been mentioned
@@ -162,8 +162,8 @@
 Our analysis features a myriad of variables that can be examined with regard to their effect on overall life satisfaction.
 In order to justify our variable selection the following remarks elucidate the respective variables' interplay with life satisfaction.
 In contrast to the previous examination of the overall concept of SWB, to accounts on the different variables are presented 
-in a briefer manner. Rather than covering the entire theoretical background, the following elaboration is though to spur interest
-and curiosity to examine the relation of life satisfaction and other factors on one's own - aided by our interactive 
+in a briefer manner. Rather than covering the entire theoretical background, the following elaboration is thought to spur interest
+and curiosity in examining the relation of life satisfaction and other factors on one's own - aided by our interactive 
 European Happiness Observer interface. 
 
 \subsubsection{Life satisfaction and income}
@@ -255,24 +255,24 @@ Geo data for European regions (NUTS1 2006) were obtained from Eurostat with the 
 processing of geo data, the `sf' package was employed \citep{pebesma_sf:_2018}.
 	
 \section{User Manual}
-The section is aimed at enabling the user to use the project results competently. To do so, a working model of the statistical software R is required, the following instructions are made for application within its GUI RStudio. The project is divided in 'Data preparation', "Varaible Preparation', 'Visualisation' and 'app'. The latter is the most important for the first time user as it will provide access to the reactive visualisation tool 'European Happiness Observer' that is the centrepiece of this project. First time users, may ignore the other files and can execute the whole 'app' file after installing all required packages. The visualisation tool will open itself subsequently, no further steps or data provision needed. The application has guidelines itself that should be helpful for the user in navigating through its function. Generally speaking, it offers opportunities to build mapplots for the nations and most of the regions at NUTS-1 level, other visualisations can be made using bar charts, bivariate line plots and boxplots grouped by geographical entities. Additionally, it is possible to adapt some linear regression models and display their output. Finally, raw data tables are displayed as the most unrefined view on the data. While the mapplots, bar charts and line plots can be understood quite intuitively, this paragraph is aimed at giving some guidelines for working with the 'Boxplot' and 'Regression table' elements in the application.\\
+The section is aimed at enabling the user to use the project results competently. To do so, a working model of the statistical software R is required, the following instructions are made for application within its GUI RStudio. The project is divided in 'Data preparation', "Variable Preparation', 'Analysis, 'Visualisation' and 'app'. The latter is the most important for the first-time user as it will provide access to the reactive visualisation tool 'European Happiness Observer' that is the centrepiece of this project. First time users may ignore the other files and can execute the whole 'app' file after installing all required packages. The visualisation tool will open itself subsequently, no further steps or data provision needed. The application has guidelines itself that should be helpful for the user in navigating through its functions. Generally speaking, the app offers opportunities to build mapplots for the nations and most of the regions at NUTS-1 level, other visualisations can be made using bar charts, bivariate line plots and boxplots grouped by geographical entities. Additionally, it is possible to adapt some linear and multilevel regression models and display their output. Finally, raw data tables are displayed as the most unrefined view on the data. While the mapplots, bar charts and line plots can be understood quite intuitively, this paragraph is aimed at giving some guidelines for working with the 'Boxplot' and 'Regression table' elements in the application.\\
 
-A boxplot is a visualisation that displays the distribution of data on the y-axis,  The dark bar inside the box indicates the position of the median, while the box itself indicates the value for the first and third quartile of the data. Thus the inside of the box contains 50\% of the data. The antennas around the box (also called 'whiskers') have a distance from it of 1.5 times the size of the box (distance between the third and first quartile, called interquartile range). Any data points outside the range of box and whiskers are considered outliers from the data distribution. Thus, the boxplot allows to compare the spread of data for different groups that are displayed on the x-axis. In the application it is possible, to order the groups after certain variables to see, whether the variable may have an effect on the spread of data.\\
+A boxplot is a visualisation that displays the distribution of data on the y-axis, the dark bar inside the box indicates the position of the median, while the box itself indicates the value for the first and third quartile of the data. Thus the inside of the box contains 50\% of the data. The antennas around the box (also called 'whiskers') have a distance from it of 1.5 times the size of the box (distance between the third and first quartile, called interquartile range). Any data points outside the range of box and whiskers are considered outliers from the data distribution. Thus, the boxplot allows to compare the spread of data for different groups that are displayed on the x-axis. In the application it is possible, to order the groups after certain variables to see, whether the variable may have an effect on the spread of data.\\
 
 \input{table1}
 
-The regression tables provide the user with the opportunity to compile customized regression models that will give formally statistical evidence on the substance of relations in the data. The simple linear regression without multilevel elements is to be interpreted very similar to the line plot, as starting with the constant value, every increase in the independent variable changes the dependent variable by a certain amount. The number of stars next to the independent variables indicate the significance of its effect (significance as in 'being present'). The total validity of the model can be taken from the value of R$^2$ as it indicates the share of data spread in the dependent variable that is explained by the data spread in the independent variable. In table 1, this is exemplified for the model from 'Job satisfaction' on 'Life satisfaction'. 
+The regression tables provide the user with the opportunity to compile customized regression models that will give formal statistical evidence on the substance of relations in the data. The simple linear regression without multilevel elements is to be interpreted very similar to the line plot, as starting with the constant value, every increase in the independent variable changes the dependent variable by a certain amount. The number of stars next to the independent variables indicate the significance of its effect (significance as in 'being present'). The total validity of the model can be taken from the value of R$^2$ as it indicates the share of data spread in the dependent variable that is explained by the data spread in the independent variable. In table 1, this is exemplified for the model from 'Job satisfaction' on 'Life satisfaction'. 
 
 \input{table2}
 
 However, by introducing multilevel elements into the regression model, the interpretation changes. Multilevel models rest on the assumption that the state of a variable as a characteristic of an individual (like life satisfaction) is expected to be influenced by structural factors. These influences can be accounted for when looking at the effect of variables that are measured on a structural level (like GDP per capita). The effect of this independent variable will then explain differences in the dependent variable that occur because there is variation between the groups, where the structural variable is measured (between-variance). It is then possible to account with variables for the individuals (like job satisfaction) exclusively for the variance inside the group (within-variance). This is exemplified in table 2. Like before, the significance of a variable is indicated by its number of stars. However, the quality of the model calculated is more difficult to assess than before. In table 2 the Akaike Information criterion (AIC) is provided for that purpose. This measure in absolute says nothing about the quality of the model but comparing several model, the one with the smallest value will be the one that explains the most.\\ 
 
-Users might be interested in seeing more detailed information on variables and can do so in the codebook 'EVS\_final\_cdbk' in the project file. It is also possible to generate the codebook anew by executing the 'Visualisations file'. if users may wish to make changes to data or transformation of variables, the may do so in the files 'Data preparation' and 'Variable preparation'.
+Users might be interested in seeing more detailed information on variables and can do so in the codebook 'EVS\_final\_cdbk' in the project file. It is also possible to generate the codebook anew by executing the 'Visualisation' file. If users wish to make changes to data or transformation of variables, the may do so in the files 'Data preparation' and 'Variable preparation'.
 
 \section{Conclusion}
 To conclude this project description, it remains to say that the project outline was, at times, torn between several 
 different, sometimes conflicting expectations. The ambition to produce high-quality analytical insights combined with 
-deep-diving theoretical contextualisation is a challenging endeavour. Conducting a project that allows easily accessible 
+deep-diving theoretical contextualisation is a challenging endeavour. But also conducting a project that allows easily accessible 
 data exploration for lay people is tough in its own right. One the one hand, one has to cater to an audience that has only
 little understanding of the statistics or programming behing the figures. On the other hand, 
 offering enough substance and educational value to spark further interest on the topic and the method should be assured.
